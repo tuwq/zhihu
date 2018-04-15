@@ -1,0 +1,16 @@
+@zhc: #0084ff;
+.clearfix:after {
+	content: "";
+	height: 0;
+	visibility: hidden;
+	overflow: hidden;
+	display: block;
+	clear: both;
+}
+.clearfix {
+	zoom: 1;
+}
+.clearfix:before,.clearfix:after {
+	display: table;
+	clear: both;
+}
