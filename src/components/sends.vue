@@ -1,7 +1,8 @@
 <template>
 	<div class="sends">
 		<ul class="send-inner">
-			<li class="send-item"><i class="icon-question-sign"></i><a href="">提问</a></li>
+			<li class="send-item" @click="put_question"><i class="icon-question-sign">
+				</i><a href="">提问</a></li>
 			<li class="send-item"><i class="icon-edit"></i><a href="">回答</a></li>
 			<li class="send-item"><i class="icon-pencil"></i><a href="">写文章</a></li>
 			<li class="send-item"><i class="icon-comment"></i><a href="">写想法</a></li>
@@ -11,6 +12,13 @@
 </template>
 
 <script type="text/ecmascript-6">
+	export default {
+		methods: {
+			put_question() {
+				console.log('put');
+			}
+		}
+	}
 </script>
 
 <style scoped lang="less" rel="stylesheet/less" type="text/less">

@@ -1,23 +1,32 @@
 <template>
  	<div class="search-wrapper">
  		<div class="search-bar">
- 			<input type="search" @blur="blur" @focus="focus" @placeholder="搜索你感兴趣的内容" class="search-input">
+ 			<input type="search" @blur="blur" @focus="focus" placeholder="搜索你感兴趣的内容" class="search-input">
  			<i class="icon-search"></i>
  		</div>
- 		<div class="search-btn">
- 			<button class="search-submit">提交</button>
+ 		<div>
+ 			
  		</div>
+ 		<transition name="disappear">
+	 		<div class="search-btn">
+	 			<button class="search-submit">提交</button>
+	 		</div>
+ 		</transition>
  	</div>
 </template>
 
-<script type="text/ecmascript-6">
+<script type="text/ecmascript-7">
+	import { sleep } from 'common/js/common.js';
 	export default {
 		methods: {
 			blur(event) {
-				$('.search-btn').css('display','inline-block');
+				$('.search-btn').removeClass('Zoom');
+				$('.search-bar').removeClass('extended');
 			},
 			focus(event) {
-				$('.search-btn').css('display','none');
+				$('.search-btn').addClass('Zoom');
+				sleep(2000);
+				$('.search-bar').addClass('extended');
 			}
 		}
 	}

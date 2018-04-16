@@ -4,15 +4,25 @@
 	margin-top: 10px;
 	background: #fff;
 	.infos {
-		padding-top: 20px;
-		padding-left: 20px;
+		padding-top: 15px;
 		padding-bottom: 5px;
 		li {
 			position: relative;
 			display: block;
-			font-size: 20px;
-			margin-bottom: 20px;
+			font-size: 18px;
+			padding-bottom: 20px;
+			padding-left: 20px;
 			cursor: pointer;
+			height: 44px;
+			box-sizing: border-box;
+			line-height: 44px;
+			vertical-align: baseline;
+			&:hover {
+				background: #f6f6f6;
+				.inum {
+					background: #fff;
+				}
+			}
 			i {
 				position: relative;
 				left: -6px;
@@ -27,12 +37,18 @@
 			}
 			.inum {
 				position: relative;
-				top: 2px;
+				display: inline-block;
+				width: 32px;
+				line-height: 32px;
+				height: 100%;
+				top: 8px;
 				float: right;
 				.clearfix;
 				font-size: 12px;
-				padding: 2px;
+				padding: 1px;
 				background: #F6F6F6;
+				text-align: center;
+				vertical-align: top;
 			}
 		}
 	}	

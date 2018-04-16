@@ -7,15 +7,20 @@
         <router-view></router-view>
       </keep-alive>
     </div>
+    <div class="special">
+      <put-question></put-question>
+    </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 import ZHeader from 'components/z-header.vue'; 
+import PutQuestion from 'components/putQuestion.vue';
 import './lib/jquery/jquery-3.3.1.min.js';
   export default {
     components: {
-      ZHeader
+      ZHeader,
+      PutQuestion
     }
   }
 </script>
