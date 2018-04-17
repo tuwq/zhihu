@@ -17,6 +17,9 @@
 		position: relative;
 		padding-top: 20px;
 		padding-left: 20px;
+		&:hover .cls{
+			opacity: 1;
+		}
 		.question-type {
 			display: inline-block;
 			font-size: 15px;
@@ -25,17 +28,26 @@
 		}
 		.cls {
 			position: absolute;
+			display: inline-block;
 			right: 10px;
 			top: 10px;
-			display: inline-block;
 			text-align: right;
+			transition: all 0.5s;
+			opacity: 0;
+			&:hover .z-tag {  
+				opacity: 1;  
+			} 
 			button {
 				color: #8590A6;
 				font-size: 18px;
 				border-color: #fff;
 				width: 20px;
 				background: #fff;
+				cursor: pointer;
 			}
+		}
+		.z-tag {
+			opacity: 0;
 		}
 		.userinfo {
 			margin-top: 5px;

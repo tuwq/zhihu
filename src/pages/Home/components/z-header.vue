@@ -9,7 +9,7 @@
 	  		<a href="#" class="nav-item">发现</a>
 	  		<a href="#" class="nav-item">话题</a>
 	  	</nav>
-	  	<search-box></search-box>
+	  	<search-bar></search-bar>
 	  	<div class="userinfo">
 	  		<span class="avatar">
 	  			<img src="../../../common/image/header/avatar.png" width='45' height="45">
@@ -22,10 +22,10 @@
 </template>
 
 <script type="text/ecmascript-6">
-import searchBox from 'z_components/search-bar.vue';
+import searchBar from 'z_components/search-bar.vue';
 	export default {
 		components: {
-			'search-box' : searchBox
+			'search-bar' : searchBar
 		}
 	}
 </script>

@@ -1,0 +1,45 @@
+@import url('../../../common/style/common.less');
+.search-wrapper {
+	display: inline-block;
+	width: 367px;
+	height: 32px;
+	line-height: 40px;
+	vertical-align: top;
+	.search-bar {
+		position: relative;
+		display: inline-block;
+		width: 367px;
+		height: 32px;
+		.search-input {
+			display: inline-block;
+			box-sizing: border-box;
+			width: 367px;
+			height: 32.73px;
+			padding-top: 7px;
+			padding-bottom: 7px;
+			padding-left: 10px;
+			margin-left: 10px;
+			padding-right: 50px;
+			border-radius: 3px;
+			background: #E1EAF2;
+			border: 1px solid #C3CBD1;
+			.input-placeholder;
+			transition: all 0.2s;
+		}
+		.search-submit {
+			position: absolute;
+			width: 40px;
+			height: 33px;
+			right: -10px;
+			top: 5px;
+			border-radius: 2px;
+			text-align: center;
+			background: linear-gradient(to bottom,#0e7bef,#0d73da);
+			cursor: pointer;
+			i {
+				position: relative;
+				top: -2px;
+			}
+		}
+	}
+}
