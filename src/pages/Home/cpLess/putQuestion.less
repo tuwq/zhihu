@@ -1,14 +1,15 @@
-@import url('../common/style/common.less');
+@import url('../../../common/style/common.less');
 
 .mask {
-	position: fixed;
-	display: none;
+	position: absolute;
+	display: block;
 	left: 0;
     right: 0;
     top: 0;
     bottom: 0;
 	background: rgba(0, 0, 0,0.3);
 	z-index: 100;
+	vertical-align: top;
 	.mask-inner {
 		position: absolute;
 		top: 65px;
@@ -16,6 +17,7 @@
 		width: 700px;
 		height: 600px;
 		background: #fff;
+		z-index: 120;
 		.mask-left {
 			display: inline-block;
 			width: 90%;

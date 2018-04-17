@@ -14,11 +14,11 @@
 </template>
 
 <script type="text/ecmascript-6">
-	import questions from 'components/questions.vue';
-	import sends from 'components/sends.vue';
-	import help from 'components/help.vue';
-	import author from 'components/author.vue';
-	import myInfo from 'components/myInfo.vue';
+	import questions from 'z_components/questions.vue';
+	import sends from 'z_components/sends.vue';
+	import help from 'z_components/help.vue';
+	import author from 'z_components/author.vue';
+	import myInfo from 'z_components/myInfo.vue';
 	export default {
 		components: {
 			questions,

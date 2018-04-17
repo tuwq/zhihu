@@ -1,17 +1,16 @@
 <template>
  	<div class="search-wrapper">
- 		<div class="search-bar">
- 			<input type="search" @blur="blur" @focus="focus" placeholder="搜索你感兴趣的内容" class="search-input">
- 			<i class="icon-search"></i>
- 		</div>
- 		<div>
- 			
- 		</div>
- 		<transition name="disappear">
-	 		<div class="search-btn">
-	 			<button class="search-submit">提交</button>
+ 		<form action="">
+	 		<div class="search-bar">
+	 			<input type="search" @blur="blur" @focus="focus" placeholder="搜索你感兴趣的内容" class="search-input">
+	 			<i class="icon-search"></i>
 	 		</div>
- 		</transition>
+	 		<transition name="disappear">
+		 		<div class="search-btn">
+		 			<button class="search-submit">提交</button>
+		 		</div>
+	 		</transition>
+ 		</form>
  	</div>
 </template>
 

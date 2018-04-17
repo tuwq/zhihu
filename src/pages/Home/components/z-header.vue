@@ -2,7 +2,7 @@
   <div class="header-wrapper">
   	<div class="center">	
   		<router-link to="/" class="logo-link">
-  			<img class="logo" src="../common/image/header/logo.svg" width="85" height="52">
+  			<img class="logo" src="../../../common/image/header/logo.svg" width="85" height="52">
   		</router-link>
 	  	<nav class="nav-list">
 	  		<a href="#" class="nav-item">首页</a>
@@ -12,7 +12,7 @@
 	  	<search-box></search-box>
 	  	<div class="userinfo">
 	  		<span class="avatar">
-	  			<img src="../common/image/header/avatar.png" width='45' height="45">
+	  			<img src="../../../common/image/header/avatar.png" width='45' height="45">
 	  		</span>
 	  		<span><i class="icon icon-comments"></i></span>
 	  		<span><i class="icon icon-bell"></i></span>
@@ -22,7 +22,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-import searchBox from 'components/search-bar.vue';
+import searchBox from 'z_components/search-bar.vue';
 	export default {
 		components: {
 			'search-box' : searchBox

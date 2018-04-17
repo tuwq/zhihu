@@ -9,7 +9,7 @@
 	 				<button>x</button>
 	 			</div>
 	 			<div class="userinfo">
-	 				<span class="avatar" width="33" height="33"><img src="../common/image/index/avatar-mini.png"></span>
+	 				<span class="avatar" width="33" height="33"><img src="../../../common/image/index/avatar-mini.png"></span>
 	 				<span class="username">兔小淘,</span>
 	 				<span class="info">正负能量中和场</span>
 	 			</div>
@@ -49,7 +49,7 @@
 	 				<button>x</button>
 	 			</div>
 	 			<div class="userinfo">
-	 				<span class="avatar" width="33" height="33"><img src="../common/image/index/avatar-mini.png"></span>
+	 				<span class="avatar" width="33" height="33"><img src="../../../common/image/index/avatar-mini.png"></span>
 	 				<span class="username">兔小淘,</span>
 	 				<span class="info">正负能量中和场</span>
 	 			</div>
