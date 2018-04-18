@@ -15,9 +15,11 @@
 	 				<span class="info">正负能量中和场</span>
 	 			</div>
 	 			<div class="title">一个人去吃海底捞最合算的吃法是什么样的?</div>
-	 			<div class="content">我有一个好玩的吃法，并不是为了省钱，但这个吃法屡次让同行的人赞不绝口。
-	 				这个吃法就是：我会在等待上菜的时候先调一碗五香牛肉粒当零食吃，具体做法:五香牛肉...
-	 				<span class="readQuestion"><a href="">阅读全文 v</a></span>
+	 			<div class="content-inner">
+		 			<span class="content">我有一个好玩的吃法，并不是为了省钱，但这个吃法屡次让同行的人赞不绝口。
+		 				这个吃法就是：我会在等待上菜的时候先调一碗五香牛肉粒当零食吃，具体做法:五香牛肉
+		 			</span>
+		 			<span class="readQuestion"><a href="">阅读全文 v</a></span>
 	 			</div>	
 	 			<div class="msg">
 	 				<div class="vote">

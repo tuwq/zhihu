@@ -1,0 +1,57 @@
+@import url('../../../common/style/common.less');
+.question-inner {
+	.question-item {
+		padding: 10px 0;
+		position: relative;
+		margin-left: 0;
+		outline: 0;
+		font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
+	    font-size: 13px;
+	    line-height: 1.7;
+	    word-wrap: break-word;
+	    color: #222;
+	    border-bottom: 1px solid rgba(0,0,0,.1);
+	    .topic {
+	    	font-size: 15px;
+			a {
+				color: #666;
+				cursor: pointer;
+				line-height: 1.7;
+				word-wrap: break-word;
+			}
+	    }
+	    .title {
+			a {
+				color: #259;
+				font-size: 15px;
+				font-weight: 700;
+				line-height: 1.7;
+			}
+	    }
+	    .meta {
+	    	font-size: 15px;
+	    	line-height: 1.7;
+	    	word-wrap: break-word;
+	    	.meta-item {
+				color: #999;
+	    	}	
+	    	.bull {
+				padding: 0 3px;
+				color: #BBB;
+				font-family: Arial;
+	    	}
+	    	.cls-bubble {
+				.cls;
+				opacity: 1;
+				.z-tag {
+					opacity: 0;
+				}
+				button {
+					&:hover + .z-tag{
+						 opacity: 1;
+					}
+				}
+	    	}
+	    }
+	}
+}

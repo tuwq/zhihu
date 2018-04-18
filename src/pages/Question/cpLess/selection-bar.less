@@ -1,0 +1,33 @@
+.selection-bar {
+	display: block;
+	padding-top: 15px;
+	width: 632px;
+	height: 33.82px;
+	.bar-item {
+		display: inline-block;
+		width: 83.99;
+		height: 33.82px;
+		line-height: 20px;
+		font-size: 17px;
+		box-sizing: border-box;
+		padding: 5px 15px;
+		color: #2255A5;
+		text-align: center;
+		background: #fff;
+		&.active {
+			background: #fff;
+			color: #333;
+			border-top: 1px solid rgba(0,0,0,0.3);
+			border-left: 1px solid rgba(0,0,0,0.3);
+			border-right: 1px solid rgba(0,0,0,0.3);
+		}
+		&:hover {
+			background: #EFF6FA;
+			color: #225599;
+		}
+		&:after {
+			display: inline-block;
+			width: 5px;
+		}
+	}
+}

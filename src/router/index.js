@@ -4,10 +4,15 @@ import Router from 'vue-router'
 import Home from '@/pages/Home/home.vue';
 import ZIndex from '@/pages/Home/components/z-index.vue';
 import QuestionHome from '@/pages/Question/home.vue';
+import QIndex from '@/pages/Question/components/q-index.vue';
+import QuestionRecommend from '@/pages/Question/components/recommend.vue';
+import QuestionHot from '@/pages/Question/components/hot.vue';
+import QuestionInvite from '@/pages/Question/components/invite.vue';
 
 Vue.use(Router)
 
 export default new Router({
+  linkActiveClass: 'active',
   routes: [
    	{
    		path: '/',
@@ -19,13 +24,45 @@ export default new Router({
   		children: [
         {
           path: '',
+          redirect: 'zindex'
+        },
+        {
+          path: 'zindex',
           component: ZIndex
         }
       ]
    	},
     {
       path: '/question',
-      component: QuestionHome
+      component: QuestionHome,
+      children: [
+        {
+          path: '',
+          redirect: 'qindex'
+        },
+        {
+          path: 'qindex',
+          component: QIndex,
+          children: [
+            {
+              path: '',
+              redirect: 'recommend'
+            },
+            {
+              path: 'recommend',
+              component: QuestionRecommend
+            },
+            {
+              path: 'hot',
+              component: QuestionHot
+            },
+            {
+              path: 'invite',
+              component: QuestionInvite
+            }
+          ]
+        },  
+      ]
     } 
   ]
 })
