@@ -1,0 +1,95 @@
+@import url('../../../common/style/common.less');
+.invite-title {
+	display: block;
+	width: 632px;
+	margin-top: 26px;
+	border-bottom: 1px solid #ccc;
+	color: #666;
+	font-size: 15px;
+	line-height: 1.7;
+	.title-right {
+		color: #666;
+		float: right;
+        a {
+            font-size: 15px;
+            color: #698ebf;
+            font-weight: 400;
+            &:hover {
+                text-decoration:underline;
+            }
+        } 
+        .active {
+            color: #666 !important;
+            text-decoration: none;
+            &:hover {
+                text-decoration: none;
+            }
+        } 
+		.bull;
+	}
+	h4 {
+		font-size: 15px;
+		margin-bottom: 10px;
+		color: #666;
+	}
+}
+.invite-list {
+	display: block;
+	font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
+	width: 632px;
+    font-size: 15px;
+    line-height: 1.7;
+    word-wrap: break-word;
+    color: #222;
+    .invite-item {
+    	padding: 10px 0;
+    	.item-btn {
+    		color: #666 !important;
+    		text-shadow: 0 1px 0 #fff;
+    		background: linear-gradient(to bottom,#f8f8f9,#e6e6e8);
+    		border: 1px solid #bbb;
+    		box-shadow: 0 1px 0 #fff inset, 0 1px 0 rgba(0,0,0,.1);
+    		font-size: 14px;
+    		line-height: 1.7;
+    		vertical-align: middle;
+    		display: inline-block;
+    		text-align: center;
+    		padding: 4px 10px;
+    		cursor: pointer;
+    		border-radius: 3px;
+			white-space: nowrap;
+			float: right;
+			box-sizing: border-box;
+			font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
+    	}
+    	.item-info {
+    		margin-right: 60px;
+    		h3 {
+    			margin: 0 0 4px;
+    			font-size: 15px;
+    			font-weight: 700;
+    			.question-link {
+    				color: #259;
+    			}
+    		}
+    		.item-meta {
+    			color: #999;
+    			font-weight: 400;
+    		}
+    	}
+    }
+}
+.attention-list {
+    display: none;
+    padding: 10px 0;
+    h2 {
+        color: @gray;
+        text-align: center;
+        font-size: 15px;
+    }
+}
+.bull {
+	padding: 0 3px;
+	color: #BBB;
+	font-family: Arial;
+}

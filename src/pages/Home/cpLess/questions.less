@@ -17,34 +17,17 @@
 		position: relative;
 		padding-top: 20px;
 		padding-left: 20px;
-		&:hover .cls{
+		&:hover .cls-bubble{
 			opacity: 1;
+		}
+		.cls-bubble {
+			opacity: 0;
 		}
 		.question-type {
 			display: inline-block;
 			font-size: 15px;
 			white-space: 2px;
 			color: #8590A6;
-		}
-		.cls {
-			position: absolute;
-			display: inline-block;
-			right: 10px;
-			top: 10px;
-			text-align: right;
-			transition: all 0.5s;
-			opacity: 0;
-			&:hover .z-tag {  
-				opacity: 1;  
-			} 
-			button {
-				color: #8590A6;
-				font-size: 18px;
-				border-color: #fff;
-				width: 20px;
-				background: #fff;
-				cursor: pointer;
-			}
 		}
 		.z-tag {
 			opacity: 0;

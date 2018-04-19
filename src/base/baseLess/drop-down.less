@@ -1,0 +1,65 @@
+.dropdown {
+	position: absolute;
+	width: 100%;
+	top: 46px;
+	left: 0;
+	z-index: 10;
+	display: none;
+	a {
+		text-align: center;
+		border-top: 0;
+		width: 100%;
+		display: block;
+		height: 40px;
+		line-height: 40px;
+		color: #fff;
+		box-shadow: 0 1px 1px rgba(0,0,0,.4);
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		cursor: pointer;
+		background: #095fb3;
+		text-shadow: 0 1px 1px rgba(0,0,0,.12);
+		font-size: 14px;
+		font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
+		word-wrap: break-word;
+		position: relative;
+		&:hover {
+			background: #0267CC;
+		}
+		.drop-icon {
+			display: inline-block;
+			width: 40%;
+			height: 100%;
+			float: left;
+			position: relative;
+			left: 8px;
+		}
+		p {
+			width: 60%;
+			overflow: hidden;
+			display: inline-block;
+			text-align: left;
+		}
+		.num {
+			position: relative;
+			left: 10px;
+			top: -2px;
+			background: #bf1031;
+		    border: 1px solid #b11331;
+		    box-shadow: 0 1px 2px rgba(0,0,0,.1), inset 0 1px 0 rgba(255,255,255,.15);
+		    color: #fff;
+		    display: inline-block;
+		    font-size: 11px;
+		    font-weight: 700;
+		    -webkit-text-size-adjust: none;
+		    padding: 0 5px;
+		    height: 16px;
+		    line-height: 16px;
+		    border-radius: 16px;
+		    text-indent: 0;
+		    text-align: center;
+		    text-decoration: none;
+		}
+	}
+}

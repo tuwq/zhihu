@@ -19,10 +19,12 @@
 	 				</div>
  				</div>
  				<div class="userInfo">
- 					<span class="avatar"><img src="../../../common/image/header/avatar.png" width="27" height="27"><i class="num">2</i></span>
- 					<span class="name">炮塔向后转</span>
+ 					<div class="top">
+ 						<span class="avatar"><img src="../../../common/image/header/avatar.png" width="27	" height="27"><i class="num">2</i></span>
+ 						<span class="name">炮塔向后转</span>
+ 					</div>
+ 					<drop-down class="dropdown"></drop-down>
  				</div>
- 				<div class="user-setting"></div>
  			</div>
  		</div>
  	</div>
@@ -30,9 +32,11 @@
 
 <script type="text/ecmascript-6">
 	import searchBar from 'question_components/search-bar.vue';
+	import dropDown from 'base/drop-down.vue';
 	export default {
 		components: {
-			'search-bar': searchBar
+			'search-bar': searchBar,
+			'drop-down': dropDown
 		}
 	}
 </script>

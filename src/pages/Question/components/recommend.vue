@@ -18,8 +18,8 @@
 				<div class="question-suggest-title">
 					<h4>根据你的擅长话题，推荐以下问题</h4>
 					<div class="question-switcher">
-						<a href="javascript:void(0)" class="active">热门问题</a>
-						<a href="javascript:void(0)">全部问题</a>
+						<a href="javascript:void(0)" class="active" @click.stop="clickType($event,0)">热门问题</a>
+						<a href="javascript:void(0)" @click.stop="clickType($event,1)">全部问题</a>
 					</div>
 				</div>
 				<question-list></question-list>
@@ -29,10 +29,15 @@
 </template>
 
 <script type="text/ecmascript-6">
-	import questionList from 'question_base/question-list.vue';
+	import questionList from 'question_components/question-list.vue';
 	export default {
 		components: {
 			'question-list': questionList
+		},
+		methods: {
+			clickType(e,type) {
+				$(e.target).addClass('active').siblings('a').removeClass('active');
+			}
 		}
 	}
 </script>

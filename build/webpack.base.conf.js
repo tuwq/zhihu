@@ -29,11 +29,10 @@ module.exports = {
       '@': resolve('src'),
       'common': resolve('src/common'),
       'lib': resolve('src/lib'),
+      'base':  resolve('src/base'),
       'store': resolve('src/store'),
       'z_components': resolve('src/pages/Home/components'),
-      'z_base':  resolve('src/pages/Home/base'),
       'question_components': resolve('src/pages/Question/components'),
-      'question_base': resolve('src/pages/Question/base')
     }
   },
   module: {

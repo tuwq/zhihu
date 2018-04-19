@@ -24,7 +24,7 @@ body {
 		}
 		.nav-list {
 			display: inline-block;
-			width: 260px;
+			width: 240px;
 			height: 100%;
 			box-sizing: border-box;
 			vertical-align: top;
@@ -68,10 +68,27 @@ body {
 		}
 		.header-left {
 			float: left;
+			width: 80%;
 		}
 		.userInfo {
+			.clearfix;
+			display: block;
+			position: relative;
+			float: right;
+			width: 20%;
+			z-index: 10;
+			vertical-align: top;
+			box-sizing: border-box;
+			padding-left: 10px;
+			&:hover {
+				.dropdown {
+					display: block;
+				}
+			}
+		}
+		.userInfo .top {
 			display: inline-block;
-			width: 174px;
+			width: 100%;
 			height: 100%;
 			overflow: hidden;
 			.avatar {

@@ -5,10 +5,7 @@
 	 			<div class="question-type">
 	 				热门内容,来自:美食
 	 			</div>
-	 			<div class="cls">
-	 				<button>x</button>
-	 				<z-tag class="z-tag"><p slot="content">不感兴趣</p></z-tag>
-	 			</div>
+	 			<cls-bubble class="cls-bubble"></cls-bubble>
 	 			<div class="userinfo">
 	 				<span class="avatar" width="33" height="33"><img src="../../../common/image/index/avatar-mini.png"></span>
 	 				<span class="username">兔小淘,</span>
@@ -47,10 +44,10 @@
 </template>
 
 <script type="text/ecmascript-6">
-	import zTag from 'z_base/z-tag.vue';
+	import clsBubble from 'base/cls-bubble.vue';
 	export default {
 		components: {
-			'z-tag': zTag
+			'cls-bubble': clsBubble
 		}
 	}
 </script>

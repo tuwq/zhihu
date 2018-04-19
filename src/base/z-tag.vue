@@ -14,6 +14,6 @@
 	}
 </script>
 
-<style lang="less" rel="stylesheet/less" type="text/less">
-  @import url('../cpLess/z-tag.less');
+<style scoped lang="less" rel="stylesheet/less" type="text/less">
+  @import url('./baseLess/z-tag.less');
 </style>
