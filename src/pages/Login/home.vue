@@ -1,10 +1,10 @@
 <template>
 	<div id="login">
-		<router-link to="/login">login</router-link>
-		<router-link to="/login/regist">regist</router-link>
-		<keep-alive>
-			<router-view></router-view>
-		</keep-alive>
+		<div class="main">
+			<keep-alive>
+				<router-view></router-view>
+			</keep-alive>
+		</div>
 	</div>
 </template>
 
