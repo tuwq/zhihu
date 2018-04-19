@@ -11,10 +11,12 @@
 			closeMask() {
 				this.setIdeaDisplay(false);
 				this.setQuestionDisPlay(false);
+				this.setIndexDropDown(false);
 			},
 			...mapMutations({
 				setQuestionDisPlay: 'SET_PUT_QUESTION_MASK',
-				setIdeaDisplay: 'SET_WRITE_IDEA_MASK'	
+				setIdeaDisplay: 'SET_WRITE_IDEA_MASK',
+				setIndexDropDown: 'SET_INDEX_DROPDOWN'
 			})
 		},
 	}

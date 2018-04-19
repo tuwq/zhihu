@@ -13,7 +13,7 @@
         </div>
         <div class="idea-footer">
             <button class="upload-button">
-              <i><svg width="14" height="16"><path d="M18.094 2H15s-1-2-2-2H7C6 0 5 2 5 2H2C0 2 0 3.967 0 3.967V14c0 2 2.036 2 2.036 2H17c3 0 3-1.983 3-1.983V4c0-2-1.906-2-1.906-2zM10 12c-1.933 0-3.5-1.567-3.5-3.5S8.067 5 10 5s3.5 1.567 3.5 3.5S11.933 12 10 12zm0 1.5c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm7.5-8c-.552 0-1-.448-1-1s.448-1 1-1 1 .448 1 1-.448 1-1 1z"></path></svg></i>
+              <i><img src="../../../common/image/index/photo.svg" width="16" height="16"></i>
               上传照片或视频
             </button>
             <input type="submit" class="idea-commitBtn" value="发布"/>

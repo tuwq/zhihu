@@ -11,7 +11,7 @@
 	  	</nav>
 	  	<search-bar></search-bar>
 	  	<div class="userinfo">
-	  		<span class="avatar">
+	  		<span class="avatar" @click.stop="openDrop">
 	  			<img src="../../../common/image/header/avatar.png" width='45' height="45">
 	  		</span>
 	  		<span><i class="icon icon-comments"></i></span>
@@ -23,9 +23,18 @@
 
 <script type="text/ecmascript-6">
 import searchBar from 'z_components/search-bar.vue';
+	import {mapMutations} from 'vuex';
 	export default {
 		components: {
 			'search-bar' : searchBar
+		},
+		methods: {
+			openDrop() {
+				this.setIndexDropDown(true);
+			},
+			...mapMutations({
+				setIndexDropDown: 'SET_INDEX_DROPDOWN'
+			})
 		}
 	}
 </script>
