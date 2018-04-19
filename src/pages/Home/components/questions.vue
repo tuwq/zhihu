@@ -30,7 +30,7 @@
 	 					</span>
 	 				</div>
 	 				<div class="other">
-	 					<span><i class="icon-star"></i>分享</span>
+	 					<span><i class="icon-share"></i>分享</span>
 	 					<span><i class="icon-star"></i>收藏</span>
 	 					<span><i class="icon-heart"></i>感谢</span>
 	 				</div>

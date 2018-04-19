@@ -57,13 +57,28 @@ body {
 			vertical-align: top;
 			float: right;
 			.clearfix;
-			.avatar,.icon {
+			.avatar,.login,.icon {
 				float: right;
 				.clearfix;
 				display: inline-block;
 				margin-top: 5px;
 				cursor: pointer;
 				color: #8590A6;
+				&:hover {
+					color: #777;
+				}
+			}
+			.avatar {
+				display: inline-block;
+			}
+			.login {
+				display: none;
+				width: 50px;
+				line-height: 60px;
+				box-sizing: border-box;
+				color: #8590A6;
+				font-size: 17px;
+				margin-right: 20px;
 				&:hover {
 					color: #777;
 				}
