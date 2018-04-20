@@ -9,6 +9,9 @@ const mutations = {
 	},
 	[types.SET_INDEX_DROPDOWN](state,isDispaly) {
 		state.index_dropdown = isDispaly;
+	},
+	[types.SET_FORM_TYPE](state,type) {
+		state.form_type = type;
 	}
 }
 export default mutations

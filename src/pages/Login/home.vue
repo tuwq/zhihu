@@ -1,18 +1,19 @@
 <template>
-	<div id="login">
-		<div class="main">
-			<keep-alive>
-				<router-view></router-view>
-			</keep-alive>
-		</div>
-	</div>
+ 	<div id="loginHome">
+ 		<form-compont></form-compont>
+ 	</div>
 </template>
 
 <script type="text/ecmascript-6">
-	export default {
-		methods: {
-		}
+import formCompont from 'login_components/form-compont.vue';
+export default {
+	methods: {
+
+	},
+	components: {
+		'form-compont': formCompont
 	}
+}
 </script>
 
 <style scoped lang="less" rel="stylesheet/less" type="text/less">

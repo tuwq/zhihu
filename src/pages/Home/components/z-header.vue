@@ -24,10 +24,10 @@
 
 <script type="text/ecmascript-6">
 import searchBar from 'z_components/search-bar.vue';
-import {communicationMixin,MethodMixin} from 'common/js/mixin'
+import {communicationMixin} from 'common/js/mixin'
 	import {mapMutations} from 'vuex';
 	export default {
-		mixins: [communicationMixin],
+		mixins: [],
 		components: {
 			'search-bar' : searchBar
 		},

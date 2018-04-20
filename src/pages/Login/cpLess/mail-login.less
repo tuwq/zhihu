@@ -1,0 +1,49 @@
+@import url('../../../common/style/common.less');
+.login-form {
+	display: block;
+	margin-top: 10px;
+	.form-group {
+		width: 352px;
+		padding: 12px;
+		text-align: left;
+		justify-content: left;
+		border-bottom: 1px solid rgba(0,0,0,0.1) ;
+		input {
+			font-size: 17px;
+			.input-placeholder;
+		}
+		.visible {
+			float: right;
+			justify-content: right;	//flex布局下元素抱团
+			svg {
+				fill: @gray;
+				cursor: pointer;
+				&:hover {
+					fill: #777;
+				}
+			}
+		}
+		.error-msg {
+
+		}
+	}
+	.phone-verification-wrapper {
+		padding-top: 20px;
+		display: block;
+		a {
+			display: inline-block;
+			height: 100%;
+			font-size: 17px;
+			float: left;
+			color: #1751A5;
+			padding-bottom: 20px;
+			&:hover {
+				color: @gray;
+				cursor: pointer;
+			}
+			& + a {
+				float: right;
+			}
+		}
+	}
+}

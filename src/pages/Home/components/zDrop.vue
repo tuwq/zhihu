@@ -38,7 +38,6 @@
 	import {communicationMixin} from 'common/js/mixin'
 	//非父子组件之间的通信
 	export default {
-		mixins: [communicationMixin],
 		methods: {
 			quit(e) {
 				communicationMixin.$emit('user_quit',e);

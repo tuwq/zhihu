@@ -1,202 +1,66 @@
-body {
-	font-family: -apple-system,BlinkMacSystemFont,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif;
-    font-size: 15px;
-    color: #1a1a1a;
-    background: #f6f6f6;
-    -webkit-tap-highlight-color: rgba(26,26,26,0);
-}
-* {
-    transform-origin: 0px 0px 0px;
-}
-html|* > svg {
-    transform-origin: 50% 50% 0px;
-}
-.loading {
-	position: fixed;
-	top: 0;
-	right: 0;
-	left: 0;
-	z-index: 101;
-	display: none;
-	height: 2px;
-	pointer-events: none;
-	background: #0084ff;
-	transform: translateX(-100%);
-	font-family: -apple-system,BlinkMacSystemFont,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif;
-    font-size: 15px;
-    color: #1a1a1a;
-    background: #f6f6f6;
-    -webkit-tap-highlight-color: rgba(26,26,26,0);
-}
-.homePage {
-	background-image:url('../../../common/image/index/loginbc.png');
-	background-repeat: no-repeat;
-	background-color: #b8e5f8;
-	background-size: cover;
-	width: 100%;
-	height: 100vh;
-	overflow: auto;
-	padding-right: 15px;
-	.home-content {
-		-webkit-box-flex: 1;
-		flex: 1;
-		display: flex;
-		-webkit-box-orient: vertical;
-	    -webkit-box-direction: normal;
-	    -ms-flex-direction: column;
-	    flex-direction: column;
-	    align-items: center;
-	    justify-content: center;
-	    border-radius: 2px;
-	    min-height: 688px;
-	    height: calc(100%,-42px);
-	    box-sizing: border-box;
-	    .container-content {
-	    	overflow: visible;
-	    	width: 432px;
-	    	margin: 0 auto;
-	    	text-align: center;
-	    	background: #fff;
-	    	border-radius: 2px;
-	    	box-shadow: 0 1px 3px rgba(26,26,26,.1);
-	    	box-sizing: border-box;
-	    	.sign-header {
-	    		padding-bottom: 5px;
-	    		padding-top: 30px;
-	    		display: block;
-	    		text-align: center;
-	    		-webkit-box-direction: normal;
-	    		.header-logo {
-	    			height: 65.625px;
-	    			width: 140px;
-	    			fill: #0084ff;
-	    			vertical-align: text-bottom;
-	    			overflow: hidden;
-	    			transform-origin: 50% 50% 0px;
-	    			text-align: center;
-	    			-webkit-box-direction: normal;
-	    		}
-	    		.header-slogen {
-	    			margin-top: 15px;
-	    			color: #0084ff;
-	    			font-size: 22px;
-	    			text-align: center;
-	    			-webkit-box-direction: normal;
-	    		}
-	    	}
-	    	.sign-container-inner {
-	    		position: relative;
-	    		text-align: center;
-	    		-webkit-box-direction: normal;
-	    		.sign-container-switch {
-					display: flex;
-					-webkit-box-align: center;
-					align-items: center;
-					-webkit-box-pack: center;
-					justify-content: center;
-					width: 100%;
-					background: #f6f6f6;
-					height: 58px;
-					border-top: 1px solid #ebebeb;
-					font-size: 18px;
-					span {
-						color: #175199;
-						cursor: pointer;
-					}
-	    		}
-	    		.sign-flow-home-page {
-					opacity: 0;
-					height: 0;
-					bottom: 0;
-					position: absolute;
-					z-index: 0;
-					left: 0;
-					right: 0;
-					transition: opacity .3s,height .3s;
-					&:after, &:before {
-						display: none;
-						content: '';
-						position: absolute;
-						bottom: -7px;
-						transform: translate(-50%) rotate(45deg);
-						left: 50%;
-						width: 20px;
-						height: 20px;
-						background: #fff;
-						border-radius: 4px;
-					} 
-	    		}
-	    	}
-	    }
-	    .downloadBtn {
-	    	margin-top: 30px;
-	    	background: #8590a6;
-	    	border: none;
-	    	color: #fff;
-	    	width: 432px;
-	    	height: 42px;
-			display: inline-block;
-			padding: 0 16px;
-			font-size: 14px;
-			line-height: 32px;
-			text-align: center;
-			cursor: pointer;
-			border-radius: 3px;
-			box-sizing: border-box;
-			outline: none;
-			-webkit-appearance: none;
-			text-rendering: auto;
-			letter-spacing: normal;
-			word-spacing: normal;
-			text-transform: none;
-			text-indent: 0px;
-			text-shadow: none;
-			-webkit-writing-mode: horizontal-tb !important;
-
-	    }
-	}
-	.home-footer {
-		color: #fff;
-		text-shadow: 0 1px 2px #8f9bb3;
-		font-size: 12px;
-		line-height: 21px;
+@import url('../../../common/style/common.less');
+.login-wrapper {
+	.login {
+		.clearfix;
 		text-align: center;
-		a, span {
-			font-size: 15px;
-			color: #fff;
-    		text-shadow: 0 1px 2px #8f9bb3;
-		}
-		.license:hover {
-			text-decoration:underline;
-		}
-		& a:not(:last-child):after, 
-		& span:not(:last-child):after {
-		    content: " \B7 ";
-		    white-space: pre;
-		    display: inline-block;
-		}
-		.zhiu-integrity {
-		    border-top: 1px solid #ebebeb;
-		    width: 420px;
-		    margin: 10px auto;
-		    padding-top: 10px;
-		    & > div {
-		    	cursor: pointer;
-		    	display: inline-block;
-		    	position: relative;
-		    	line-height: 26px;
-		    	z-index: 0;
-		    }
-		    img {
-				position: absolute;
-				left: -34px;
-				z-index: -1;
-				width: 138px;
-				height: 26px;
-		    }
-		    a:hover {
-				text-decoration: underline;
-		    }
+		.content-wrapper {
+			padding: 0 40px 26px;
+			font-size: 16px;
+			.login-header {
+				display: block;
+				
+			}
+			.login-footer {
+				.login-info {
+					text-align: center;
+					color: @gray;
+					margin-top: 20px;
+					margin-bottom: -10px;
+					cursor: pointer;
+					span {
+						color: @gray;
+						&:hover {
+							color: #0085ff;
+						}
+					}	
+				}
+			}
 		}
 	}
+	.sign-container-switch {
+		display: flex;
+		-webkit-box-align: center;
+		align-items: center;		//文字与容器居中于top50%;前提是有flex
+		-webkit-box-pack: center;	
+		justify-content: center;	//位于父容器中心
+		width: 100%;
+		background: #f6f6f6;
+		height: 58px;
+		border-top: 1px solid #ebebeb;
+		font-size: 18px;
+		span {
+			color: #175199;
+			cursor: pointer;
+			&:hover {
+				color: @zhc;
+			}
+		}
+	}
+	.sign-flow-home-page {
+
+	}
+}
+
+.phone-login {
+	display: none;
+}
+.login-btn {
+	display: block;
+	width: 100%;
+	font-size: 18px;
+	height: 40px;
+	text-align: center;
+	line-height: 40px;
+	background: #0085ff;
+	color: #fff;
 }
