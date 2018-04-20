@@ -19,7 +19,7 @@
 							</svg>
 							设置
 						</a>
-						<a href="javascript:void(0)" type="button" @click.stop.prevent="quit($event)">
+						<a href="javascript:void(0)" type="button" @click.stop.prevent="quit">
 							<svg viewBox="0 0 20 20" width="14" height="16">
 								<title></title>
 								<g><path d="M0 10C0 7.242 1.154 4.58 3.167 2.697c.51-.477 1.31-.45 1.79.06.475.51.45 1.31-.06 1.787C3.37 5.975 2.53 7.91 2.53 10c0 4.118 3.35 7.468 7.47 7.468 4.12 0 7.47-3.35 7.47-7.47 0-2.04-.81-3.948-2.28-5.37-.5-.485-.514-1.286-.028-1.788.485-.5 1.286-.517 1.79-.03C18.915 4.712 20 7.265 20 10c0 5.512-4.486 9.998-10 9.998s-10-4.486-10-10zm8.7-.483V1.26C8.7.564 9.26 0 9.96 0c.695 0 1.26.564 1.26 1.26v8.257c0 .696-.565 1.26-1.26 1.26-.698 0-1.26-.564-1.26-1.26z"></path></g>
@@ -34,14 +34,18 @@
 </template>
 
 <script type="text/ecmascript-6">
-	import {mapGetters} from 'vuex';
-	import {communicationMixin} from 'common/js/mixin'
+	import {mapGetters,mapMutations} from 'vuex';
 	//非父子组件之间的通信
 	export default {
 		methods: {
 			quit(e) {
-				communicationMixin.$emit('user_quit',e);
-			}
+				this.setExistUser(0);
+				this.setIndexDropDown(false);
+			},
+			...mapMutations({
+				setExistUser: 'SET_EXIST_USER',
+				setIndexDropDown: 'SET_INDEX_DROPDOWN'
+			})
 		},
 		computed: {
 			...mapGetters([

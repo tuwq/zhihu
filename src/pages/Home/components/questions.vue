@@ -11,7 +11,7 @@
 	 				<span class="username">兔小淘,</span>
 	 				<span class="info">正负能量中和场</span>
 	 			</div>
-	 			<div class="title">一个人去吃海底捞最合算的吃法是什么样的?</div>
+	 			<div class="title" @click.stop.prevent="toDetail(100)">一个人去吃海底捞最合算的吃法是什么样的?</div>
 	 			<div class="content-inner">
 		 			<span class="content">我有一个好玩的吃法，并不是为了省钱，但这个吃法屡次让同行的人赞不绝口。
 		 				这个吃法就是：我会在等待上菜的时候先调一碗五香牛肉粒当零食吃，具体做法:五香牛肉
@@ -48,6 +48,11 @@
 	export default {
 		components: {
 			'cls-bubble': clsBubble
+		},
+		methods: {
+			toDetail(id) {
+				this.$router.push({ path: `/question/${id}` }) 
+			}
 		}
 	}
 </script>

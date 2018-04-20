@@ -12,6 +12,9 @@ const mutations = {
 	},
 	[types.SET_FORM_TYPE](state,type) {
 		state.form_type = type;
+	},
+	[types.SET_EXIST_USER](state,code) {
+		state.exist_user = code;
 	}
 }
 export default mutations

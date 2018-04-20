@@ -6,6 +6,7 @@ import ZIndex from '@/pages/Home/components/z-index.vue';
 import QuestionHome from '@/pages/Question/home.vue';
 import QIndex from '@/pages/Question/components/q-index.vue';
 import LoginHome from '@/pages/Login/home.vue';
+import Detail from '@/pages/Detail/detail.vue';
 
 
 Vue.use(Router)
@@ -23,10 +24,6 @@ export default new Router({
   		children: [
         {
           path: '',
-          redirect: 'zindex'
-        },
-        {
-          path: 'zindex',
           component: ZIndex
         }
       ]
@@ -37,19 +34,17 @@ export default new Router({
       children: [
         {
           path: '',
-          redirect: 'qindex'
-        },
-        {
-          path: 'qindex',
           component: QIndex,
-          children: [
-          ]
-        },  
+        }
       ]
     },
     {
       path: '/login',
       component: LoginHome
+    },
+    {
+      path: '/question/:question_id',
+      component: Detail
     }
   ]
 })

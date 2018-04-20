@@ -1,0 +1,104 @@
+body {
+    font-family: -apple-system,BlinkMacSystemFont,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif;
+    font-size: 15px;
+    color: #1a1a1a;
+    background: #f6f6f6;
+    -webkit-tap-highlight-color: rgba(26,26,26,0);
+}
+h1 {
+    display: block;
+    font-size: 2em;
+    -webkit-margin-before: 0.67em;
+    -webkit-margin-after: 0.67em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    font-weight: bold;
+}
+.scroll-header-wrapper {
+	position: relative;
+	min-width: 1032px;
+	padding: 16px 0;
+	overflow: hidden;
+	background: #fff;
+	box-shadow: 0 1px 3px rgba(26,26,26,.1);
+	margin-top: 60px;
+	.header-content {
+		display: flex;
+		-webkit-box-pack: justify;	//flex布局下，子元素居中对齐，类似浮动
+		justify-content: space-between; //flex布局下，内部子元素抱团，类似集体浮动	//space分行
+		width: 1000px;
+		height: 100%;
+		padding: 0 16px;
+		margin: 0 auto;
+		.left-main {
+			width: 694px;
+			padding-left: 20px;
+			box-sizing: border-box;
+			.main-tags {
+				display: flex;
+				.main-topics {
+					-webkit-box-orient: horizontal;	//水平排列子元素
+					-webkit-box-direction: normal;	//以正常方向显示 div 框的子元素：
+					flex-direction: row;	//设置 <div> 元素内弹性盒元素的方向为正常的顺序
+					flex-wrap: wrap;		//让弹性盒元素在必要的时候拆行：
+					-webkit-box-align: center; //通过使用 box-align and box-pack 属性，居中 div 框的子元素
+					align-items: center;	//居中对齐弹性盒的各项 <div> 元素：
+					margin-top: -5px;
+					padding: 1px 0;
+					display: flex;
+					.tag {
+						margin: 3px 5px 3px 0;
+						vertical-align: middle;
+						position: relative;
+						display: inline-block;
+						height: 30px;
+						padding: 0 12px;
+						font-size: 14px;
+						line-height: 30px;
+						color: #0085ff;
+						border-radius: 100px;
+						background: rgba(0,132,255,.1);
+						.tag-content {
+							font-size: 16px;
+							line-height: 30px;
+							color: #0084ff;
+							-webkit-box-direction: normal;
+							.topicLink {
+								color: inherit;
+								cursor: pointer;
+								font-size: 16px;
+								line-height: 30px;
+								.popover {
+									position: relative;
+									display: inline-block;
+									color: #1C86EE;
+								}
+							}						
+						}
+					}
+				}
+			}
+			.main-title {
+				margin-top: 12px;
+				margin-bottom: 4px;
+				font-size: 22px;
+				font-weight: 600;
+				line-height: 32px;
+				color: #1a1a1a;
+				margin: 0;
+				font: inherit;	
+			}
+		}
+		.right-side {
+			width: 296px;
+			padding-right: 20px;
+			text-align: right;
+		}
+	}
+	.header-footer {
+		padding-bottom: 12px;
+		margin-top: 4px;
+		margin-bottom: -12px;
+		background: #fff;
+	}
+}

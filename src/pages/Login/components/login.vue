@@ -1,5 +1,5 @@
 <template>
-	<div class="login-wrapper" v-show="form_type==0">
+	<div class="login-wrapper" v-show="form_type==1">
 		<div class="login">
 			<div class="content-wrapper">
 				<div class="login-header">
@@ -36,7 +36,7 @@ import mailLogin from 'login_components/mail-login.vue';
 		},
 		methods: {
 			toRegist() {
-				this.setFormType(1);
+				this.setFormType(0);
 			},
 			toPhoneLogin() {
 				this.login_type = 1;

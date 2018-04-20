@@ -3,7 +3,7 @@
  		<div class="header-wrapper">
  			<div class="center">
  				<div class="header-left">
-					<router-link class="logo" to="/question">
+					<router-link class="logo" to="/">
 	 					<img src="../../../common/image/header/logo2.png" height="45">
 	 				</router-link>
 	 				<search-bar></search-bar>

@@ -1,5 +1,5 @@
 <template>
-	<div class="regist-wrapper" v-show="form_type==1">
+	<div class="regist-wrapper" v-show="form_type==0">
 		<div class="register">
 			<div class="content-wrapper">
 				<div class="register-header">
@@ -48,7 +48,7 @@ import {mapGetters,mapMutations} from 'vuex';
 	export default {
 		methods: {
 			toLogin() {
-				this.setFormType(0);
+				this.setFormType(1);
 			},
 			...mapMutations({
 				setFormType: 'SET_FORM_TYPE'
