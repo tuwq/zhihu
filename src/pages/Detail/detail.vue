@@ -6,7 +6,7 @@
 	 		<scroll-header slot="scroll-header"></scroll-header>
  		</d-header>
  		<div class="main-content">
- 			
+ 			<question-main></question-main>
  		</div>
  	</div>
 </template>
@@ -15,13 +15,15 @@
 	import ZHeader from 'z_components/z-header.vue';
 	import detailHeader from 'detail_components/detail-header.vue';
 	import scrollHeader from 'detail_components/scroll-header.vue';
-	import dHeader from 'detail_components/d-header.vue'
+	import dHeader from 'detail_components/d-header.vue';
+	import questionMain from 'detail_components/question-main.vue';
 	export default {
 		components: {
 			'z-header': ZHeader,
 			'detail-header': detailHeader,
 			'scroll-header': scrollHeader,
-			'd-header': dHeader
+			'd-header': dHeader,
+			'question-main': questionMain
 		}
 	}
 </script>

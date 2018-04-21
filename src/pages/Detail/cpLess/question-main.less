@@ -1,0 +1,32 @@
+body {
+    font-family: -apple-system,BlinkMacSystemFont,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif;
+    font-size: 15px;
+    color: #1a1a1a;
+    background: #f6f6f6;
+    -webkit-tap-highlight-color: rgba(26,26,26,0);
+}
+a {
+    color: inherit;
+    text-decoration: none;
+}
+#question-main-wrapper {
+	background: #f6f6f6;
+}
+.question-main {
+	display: flex;
+	-webkit-box-pack: justify;
+	justify-content: space-between;
+	-webkit-box-align: start;
+	align-items: flex-start;
+	margin: 10px auto;
+	padding: 0 16px;
+	width: 1000px;
+	min-height: 100vh;	//相对剩余视图100%，顶部栏占了的高度没有被算入进去，撑大盒子
+	.main-left {
+		width: 694px;
+		padding-bottom: 20px;	
+	}
+	.main-right {
+		width: 296px;
+	}
+}

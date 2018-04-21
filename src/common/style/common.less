@@ -83,4 +83,42 @@ input[type="number"]{
 	-webkit-box-align: center; //通过使用 box-align and box-pack 属性，居中 div 框的子元素
 	align-items: center;	//居中对齐弹性盒的各项 <div> 元素：
 }
-
+.button--plain {
+	padding: 0;
+	height: auto;
+	line-height: inherit;
+	background: transparent;
+	border: none;
+	border-radius: 0;
+}
+.div-button {
+	padding: 0;
+	height: auto;
+	line-height: inherit;
+	background: transparent;
+	border: none;
+	border-radius: 0;
+	align-items: flex-start;
+	box-sizing: border-box;
+}
+.span-svg {
+	span {
+		display: inline-block;
+		align-items: center;
+		line-height: inherit;
+		svg {
+			margin-right: 4px;
+			fill: currentColor;
+			width: 1.2em;
+			height: 1.2em;
+		}
+	}
+}
+.svg {
+	svg {
+		margin-right: 4px;
+		fill: currentColor;
+		width: 1.2em;
+		height: 1.2em;
+	}
+}
