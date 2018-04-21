@@ -4,7 +4,7 @@
  			<div class="main-left">
  				<div>
  					<answers-add></answers-add>
- 					<div class="question-list"></div>
+ 					<question-list></question-list>
  				</div>
  			</div>
  			<div class="main-right"></div>
@@ -14,9 +14,11 @@
 
 <script type="text/ecmascript-6">
 	import answersAdd from 'detail_components/answers-add.vue';
+	import questionList from 'detail_components/question-list.vue';
 	export default {
 		components: {
-			'answers-add': answersAdd
+			'answers-add': answersAdd,
+			'question-list': questionList
 		}
 	}
 </script>

@@ -14,9 +14,6 @@
 	 						<li class="nav-item"><a>消息</a></li>
 	 					</ul>
 	 				</div>
-	 				<div class="putBtn-wrapper">
-	 					<button class="putBtn">提问</button>
-	 				</div>
  				</div>
  				<div class="userInfo">
  					<div class="top">

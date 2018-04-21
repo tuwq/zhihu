@@ -145,10 +145,8 @@
 <script type="text/ecmascript-6">
 	import {makeExpandingArea} from 'common/js/common.js';
 	export default {
-		created() {
-			$(function(){
-				makeExpandingArea(document.getElementById('textarea'));
-			})
+		mounted() {
+			makeExpandingArea(document.getElementById('textarea'));
 		}
 	}
 </script>
