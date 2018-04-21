@@ -1,48 +1,23 @@
 <template>
  	<div class="scroll-header-wrapper">
- 		<div class="header-content">
- 			<div class="left-main">
- 				<div class="main-tags">
- 					<div class="main-topics">
- 						<div class="tag">
- 							<span class="tag-content"><a class="topicLink" href="javascript:void(0)">
- 								<div class="popover">
- 									<div class="popover-item">思维</div>
- 								</div>
- 							</a></span>
- 						</div>
- 						<div class="tag">
- 							<span class="tag-content"><a class="topicLink" href="javascript:void(0)">
- 								<div class="popover">
- 									<div class="popover-item">思维</div>
- 								</div>
- 							</a></span>
- 						</div>
- 						<div class="tag">
- 							<span class="tag-content"><a class="topicLink" href="javascript:void(0)">
- 								<div class="popover">
- 									<div class="popover-item">思维</div>
- 								</div>
- 							</a></span>
- 						</div>
- 					</div>
- 				</div>
- 				<div class="main-title"></div>
- 				<div></div>
+ 		<div class="content">
+ 			<div class="content-left">
+ 				<h1 class="title">人脑的计算速度可以被量化吗？如果能，大概是多少 GHz？</h1>
  			</div>
- 			<div class="right-side"></div>
- 		</div>
- 		<div class="header-footer">
+ 			<div class="content-right">
+ 				<div class="group">
+ 					<button class="attention" type="button">关注问题</button>
+ 					<button class="invite" type="button"><svg viewBox="0 0 12 12" width="14" height="16">
+ 						<title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z"></path></g>	
+ 					</svg>写回答</button>
+ 				</div>
+ 			</div>
  		</div>
  	</div>
 </template>
 
 <script type="text/ecmascript-6">
-	export default {
-		components: {
-			
-		}
-	}
+	
 </script>
 
 <style scoped lang="less" rel="stylesheet/less" type="text/less">

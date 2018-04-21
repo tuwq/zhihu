@@ -75,5 +75,12 @@ input::-webkit-inner-spin-button {
 input[type="number"]{
     -moz-appearance: textfield;
 }
-
+.webkit-font {
+	-webkit-box-orient: horizontal;	//水平排列子元素
+	-webkit-box-direction: normal;	//以正常方向显示 div 框的子元素：
+	flex-direction: row;	//设置 <div> 元素内弹性盒元素的方向为正常的顺序
+	flex-wrap: wrap;		//让弹性盒元素在必要的时候拆行：
+	-webkit-box-align: center; //通过使用 box-align and box-pack 属性，居中 div 框的子元素
+	align-items: center;	//居中对齐弹性盒的各项 <div> 元素：
+}
 

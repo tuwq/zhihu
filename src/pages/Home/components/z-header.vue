@@ -14,7 +14,7 @@
 	  		<span class="avatar" @click.stop="openDrop" v-show="exist_user==1">
 	  			<img src="../../../common/image/header/avatar.png" width='45' height="45">
 	  		</span>
-	  		<router-link to="/login" class="login" v-show="exist_user==0">登录</router-link>
+	  		<router-link to="/login" class="login" v-show="exist_user==0" target="_blank">登录</router-link>
 	  		<span><i class="icon icon-comments"></i></span>
 	  		<span><i class="icon icon-bell"></i></span>
 	  	</div>

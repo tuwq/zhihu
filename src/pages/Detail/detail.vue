@@ -1,7 +1,10 @@
 <template>
  	<div id="Detail">
- 		<z-header></z-header>
- 		<scroll-header></scroll-header>
+ 		<d-header class="d-header">
+ 			<z-header slot="z-header"></z-header>
+	 		<detail-header slot="detail-header"></detail-header>
+	 		<scroll-header slot="scroll-header"></scroll-header>
+ 		</d-header>
  		<div class="main-content">
  			
  		</div>
@@ -10,11 +13,15 @@
 
 <script type="text/ecmascript-6">
 	import ZHeader from 'z_components/z-header.vue';
-	import ScrollHeader from 'detail_components/scroll-header.vue';
+	import detailHeader from 'detail_components/detail-header.vue';
+	import scrollHeader from 'detail_components/scroll-header.vue';
+	import dHeader from 'detail_components/d-header.vue'
 	export default {
 		components: {
-			ZHeader,
-			'scroll-header': ScrollHeader
+			'z-header': ZHeader,
+			'detail-header': detailHeader,
+			'scroll-header': scrollHeader,
+			'd-header': dHeader
 		}
 	}
 </script>
