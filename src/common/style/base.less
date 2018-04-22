@@ -4,19 +4,23 @@ html, body, ul, li, ol, dl, dd, dt, p, h1, h2, h3, h4, h5, h6, form, fieldset, l
     margin: 0;
     padding: 0;
 }
-fieldset, img, input, button { 			/*fieldset组合表单中的相关元素*/
+fieldset, img, input, button { 			
     border: none;
     padding: 0;
     margin: 0;
     outline-style: none;
 }
 ul, ol {
-    list-style: none;				/*清除列表风格*/
+    list-style: none;				
 }
 a {
     color: inherit;
     text-decoration: none;
     cursor: pointer;
+}
+form {
+    display: block;
+    margin-top: 0em;
 }
 * {
     padding: 0;
@@ -73,4 +77,10 @@ s, i, em {
     font-style: normal;
     text-decoration: none;
 }
-
+html|* > svg {
+    transform-origin: 50% 50% 0px;
+}
+user agent stylesheet
+* {
+    transform-origin: 0px 0px 0px;
+}

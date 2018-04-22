@@ -1,25 +1,19 @@
 .index-wrapper {
-	position: relative;
-	display: block;
-	width: 100%;
-	height: 100%;
-	background: #f6f6f6;
 	.center {
+		display: flex;
+		-webkit-box-align: start;
+		align-items: flex-start;
+		position: relative;
 		width: 1000px;
-		height: 100%;
-		padding: 0 4px;
-		margin: 0 auto;
+		padding: 0 16px;
+		margin: 10px auto;
 		.index-left {
-			vertical-align: top;
-			display: inline-block;
-			min-height: 100vh;
-			width: 70%;
+			flex: 0 0 70%;
+			margin-right: 10px;
 		}
 		.index-right {
-			vertical-align: top;	//顶部对齐
-			display: inline-block;
-			overflow: hidden;
-			width: 29%;
+			flex: 0 0 30%;
+			font-size: 14px;
 		}
 	}
 }

@@ -1,55 +1,24 @@
 @import url('../../../common/style/common.less');
 .myInfo {
-	margin-left: 10px;
-	margin-top: 10px;
-	background: #fff;
-	margin-bottom: 10px;
+	.Card;
 	.infos {
-		padding-top: 15px;
-		padding-bottom: 5px;
-		li {
-			position: relative;
-			display: block;
-			font-size: 18px;
-			padding-bottom: 20px;
-			padding-left: 20px;
-			cursor: pointer;
-			height: 44px;
-			box-sizing: border-box;
-			line-height: 44px;
-			vertical-align: baseline;
-			&:hover {
-				background: #f6f6f6;
-				.inum {
-					background: #fff;
+		width: 100%;
+		padding: 8px 0;
+		.item {
+			display: list-item;
+			text-align: -webkit-match-parent;
+			.nav-link {
+				display: flex;
+				align-items: center;
+				padding: 0 20px;
+				height: 40px;
+				border: none;
+				overflow: hidden;
+				.nav-text {
+					flex: 1;
+					margin: 0 10px;
+					text-align: left;
 				}
-			}
-			i {
-				position: relative;
-				left: -6px;
-				display: inline-block;
-				width: 30px;
-				margin-right: 10px;
-				text-align: center;
-			}
-			span {
-				display: inline-block;
-				width: 120px;
-			}
-			.inum {
-				position: relative;
-				display: inline-block;
-				width: 32px;
-				line-height: 32px;
-				height: 100%;
-				top: 8px;
-				float: right;
-				.clearfix;
-				font-size: 12px;
-				padding: 1px;
-				background: #F6F6F6;
-				text-align: center;
-				vertical-align: top;
 			}
 		}
 	}	

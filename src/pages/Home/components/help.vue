@@ -1,11 +1,36 @@
 <template>
- 	<div class="help">
+ 	<div class="help-wrapper">
  		<ul class="helps">
- 			<li class="help-item"><span class="bolt"><i class="icon-bolt"></i><br>Live</span></li>
- 			<li class="help-item"><span class="book"><i class="icon-book"></i><br>书店</span></li>
- 			<li class="help-item"><span class="circle"><i class="icon-circle"></i><br>圆桌</span></li>
- 			<li class="help-item"><span class="pencil"><i class="icon-pencil"></i><br>专栏</span></li>
- 			<li class="help-item"><span class="money"><i class="icon-money"></i><br>付费咨询</span></li>
+ 			<li class="item"><a href="Button button--plain" style="color: rgb(255,207,0)">
+ 				<span class="categoryIcon"><svg fill="currentColor" viewBox="0 0 24 24" width="24" height="24">
+ 					<path d="M13.693 10.354l1.634-7.542c.195-.901-.16-1.083-.798-.39l-9.18 9.97c-.638.693-.377 1.254.582 1.254h5.376l-1.634 7.542c-.195.901.16 1.083.798.39l9.18-9.97c.638-.693.377-1.254-.582-1.254h-5.376z"></path>
+ 				</svg></span>
+ 				<span class="categoryLabel">Live</span>
+ 			</a></li>
+ 			<li class="item"><a href="Button button--plain" style="color: rgb(255,207,0)">
+ 				<span class="categoryIcon"><svg fill="currentColor" viewBox="0 0 24 24" width="24" height="24">
+ 					<path d="M13.693 10.354l1.634-7.542c.195-.901-.16-1.083-.798-.39l-9.18 9.97c-.638.693-.377 1.254.582 1.254h5.376l-1.634 7.542c-.195.901.16 1.083.798.39l9.18-9.97c.638-.693.377-1.254-.582-1.254h-5.376z"></path>
+ 				</svg></span>
+ 				<span class="categoryLabel">Live</span>
+ 			</a></li>
+ 			<li class="item"><a href="Button button--plain" style="color: rgb(255,207,0)">
+ 				<span class="categoryIcon"><svg fill="currentColor" viewBox="0 0 24 24" width="24" height="24">
+ 					<path d="M13.693 10.354l1.634-7.542c.195-.901-.16-1.083-.798-.39l-9.18 9.97c-.638.693-.377 1.254.582 1.254h5.376l-1.634 7.542c-.195.901.16 1.083.798.39l9.18-9.97c.638-.693.377-1.254-.582-1.254h-5.376z"></path>
+ 				</svg></span>
+ 				<span class="categoryLabel">Live</span>
+ 			</a></li>
+ 			<li class="item"><a href="Button button--plain" style="color: rgb(255,207,0)">
+ 				<span class="categoryIcon"><svg fill="currentColor" viewBox="0 0 24 24" width="24" height="24">
+ 					<path d="M13.693 10.354l1.634-7.542c.195-.901-.16-1.083-.798-.39l-9.18 9.97c-.638.693-.377 1.254.582 1.254h5.376l-1.634 7.542c-.195.901.16 1.083.798.39l9.18-9.97c.638-.693.377-1.254-.582-1.254h-5.376z"></path>
+ 				</svg></span>
+ 				<span class="categoryLabel">Live</span>
+ 			</a></li>
+ 			<li class="item"><a href="Button button--plain" style="color: rgb(255,207,0)">
+ 				<span class="categoryIcon"><svg fill="currentColor" viewBox="0 0 24 24" width="24" height="24">
+ 					<path d="M13.693 10.354l1.634-7.542c.195-.901-.16-1.083-.798-.39l-9.18 9.97c-.638.693-.377 1.254.582 1.254h5.376l-1.634 7.542c-.195.901.16 1.083.798.39l9.18-9.97c.638-.693.377-1.254-.582-1.254h-5.376z"></path>
+ 				</svg></span>
+ 				<span class="categoryLabel">Live</span>
+ 			</a></li>
  		</ul>
  	</div>
 </template>

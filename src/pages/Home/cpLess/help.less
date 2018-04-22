@@ -1,56 +1,36 @@
-.help {
-	position: relative;
-	margin-top: 10px;	
-	width: 100%;
+@import url('../../../common/style/common.less');
+.help-wrapper {
+	margin-bottom: 10px;
 	background: #fff;
-	margin-left: 10px;
-	padding-left: 10px;
-	.help-item {
-		display: inline-block;
-		width: 30%;
-		font-size: 16px;
-		text-align: center;
-		margin-top: 40px;
-		cursor: pointer;
-		.bolt:hover {
-			color: #FFCF00;
-		}
-		.book:hover {
-			color: #43D480;
-		}
-		.circle:hover {
-			color: #0084FF;
-		}
-		.pencil:hover {
-			color: #0F88EB;
-		}
-		.money:hover {
-			color: #5478F0;
-		}
-		&:last-child {
-			margin-bottom: 30px;
-		}
-		i {	
-			display: inline-block;
-			font-size: 30px;
-			margin-bottom: 6px;
-			&.icon-bolt {
-				color: #FFCF00;
+	overflow: hidden;
+	border-radius: 2px;
+	box-shadow: 0 1px 3px rgba(26,26,26,.1);
+	box-sizing: border-box;
+	.helps {
+		display: flex;
+		flex-wrap: wrap;
+		margin: 20px 0 -5px;
+		box-sizing: border-box;
+		padding: 0 10px;
+		padding-left: 40px;
+		justify-content: flex-start;
+		.item {
+			width: 33%;
+			display: flex;
+			margin-bottom: 25px;
+			.categoryIcon {
+				display: flex;
+				justify-content: center;
+				align-items: flex-end;
+				width: 25px;
+				height: 25px;
+				margin-bottom: 10px;
 			}
-			&.icon-book {
-				color: #43D480;
-			}
-			&.icon-circle {
-				color: #0084FF;
-			}
-			&.icon-pencil {
-				color: #0F88EB;
-			}
-			&.icon-money {
-				color: #5478F0;
+			.categoryLabel {
+				font-size: 15px;
+				color: #8590a6;
 			}
 		}
-
 	}
 }
 

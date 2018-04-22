@@ -1,63 +1,47 @@
 @import url('../../../common/style/common.less');
 .sends {
-	display: block;
-	width: 100%;
-	height: 60px;
-	background-color: #fff;
-	margin-top: 10px;
-	border-radius: 5px;
-	.send-inner {
-		margin-left: 30px;
-	}
-	li {
-		position: relative;
-		float: left;
-		cursor: pointer;
-		.clearfix;
-		i {
-			position: absolute;
-			left: 5px;
-			top: 18px;
-			font-size: 20px;
-			color: #8590A6;
-		}
-		.icon-question-sign {
-			position: absolute;
-			left: 10px;
-			top: 18px;
-			font-size: 18px;
-		}
-		.icon-editr {
-			position: absolute;
-			left: 15px;
-			top: 18px;
-			font-size: 18px;
-		}
-		a {
+	margin-bottom: 10px;
+	background: #fff;
+	overflow: hidden;
+	border-radius: 2px;
+	box-shadow: 0 1px 3px rgba(26,26,26,.1);
+	box-sizing: border-box;
+	.sends-inner {
+		display: flex;
+		justify-content: space-between;
+		line-height: 58px;
+		padding: 0 20px;
+		.nav-item-btn {
+			.button;
+			.Button;
+			.button--plain;
 			display: inline-block;
-			font-size: 18px;
-			text-align: center;
-			width: 70px;
-			height: 20px;
-			box-sizing: border-box;
-			margin-top: 20px;
-			margin-left: 20px;
-			color: @gray;
-			&:hover {
-				color: #777;
+			transition: color .2s ease-in;
+			font-size: 17px;
+			color: #1a1a1a;
+			line-height: 1.2;
+			svg {
+				margin-right: 8px;
 			}
 		}
-	}
-	.caogao {
-		float: right;
-		.clearfix;
-		font-size: 18px;
-		margin-top: 21px;
-		margin-right: 12px;
-		color: #777;
-		cursor: pointer;
-		&:hover {
-			color: #777;
+		.nav-item {
+			margin-left: 40px;
+			text-decoration: none;
+			display: inline-block;
+			transition: color .2s ease-in;
+			font-size: 17px;
+			color: #1a1a1a;
+			line-height: 1.2;
+			svg {
+				margin-right: 8px;
+			}
+		}
+		.right-item {
+			text-decoration: none;
+			color: #8590a6;
+			transition: color .2s ease-in;
+			cursor: pointer;
+			.btn-hover;
 		}
 	}
 }

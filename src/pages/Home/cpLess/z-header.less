@@ -10,96 +10,102 @@ body {
 	height: 60px;
 	max-height: 60px;
 	line-height: 52px;
+	line-height: 30px;
 	overflow: hidden;
 	top: 0; // 必须要添加
 	left: 0;
 	z-index: 100;
 	background: #fff;
+	box-shadow: 0 1px 3px rgba(26,26,26,.1);
+	background-clip: content-box;
 	.center {
+		position: relative;
+		display: flex;
 		width: 1000px;
 		height: 52px;
-		padding: 0 4px;
+		padding: 0 16px;
 		margin: 0 auto;
+		-webkit-box-align: center;
+		align-items: center;
 		.logo-link {
-			display: inline-block;
-			float: left;
-			.clearfix;
-			img {
-				width: 85px;
-				height: 52px;
+			color: inherit;
+			line-height: 20px;
+			svg {
+				height: 30px;
+				width: 64px;
+				fill: #0084ff;
+				text-align: bottom;
+				overflow: hidden;
 			}
 		}
 		.nav-list {
-			display: inline-block;
-			margin-left: 20px;
-			width: 230px;
-			height: 100%;
-			margin-top: 0;
+			display: flex;
+			-webkit-box-pack: justify;
+			justify-content: space-between;
+			height: 30px;
+			margin-right: 18px;
+			margin-left: 27px;
+			color: #999;
 			.nav-item {
-				display: inline-block;
-				float: left;
-				.clearfix;
-				width: 60px;
-				height: 52px;
-				font-size: 18px;
-				line-height: 72px;
-				padding: 0 5px;
-				text-align: center;
+				padding: 0 15px;
+				font-size: 16px;
+				line-height: 30px;
+				padding-left: 0;
+				color: #444;
 				&:hover {
 					color: #777;
 				}
 			}
 		}
 		.userinfo {
-			position: relative;
-			display: inline-block;
-			width: 230px;
-			vertical-align: top;
-			float: right;
-			.clearfix;
-			.avatar,.login,.icon {
-				float: right;
-				.clearfix;
-				display: inline-block;
-				margin-top: 5px;
-				cursor: pointer;
-				color: #8590A6;
-				&:hover {
-					color: #777;
+			flex: 1;
+			justify-content: flex-end;
+			display: flex;
+			-webkit-box-align: center;
+			align-items: center;
+			line-height: 30px;
+			.notifications {
+				margin-right: 40px;
+				.notifications-btn {
+					.button;
+					.Button;
+					.Button--plain;
+					.notifications-count {
+						position: absolute;
+						bottom: 10px;
+						left: 10px;
+						height: 20px;
+						text-align: center;
+						line-height: 20px;
+						padding: 0 4px;
+						font-size: 11px;
+						color: #fff;
+						background: #f1403c;
+						border: 2px solid #fff;
+						border-radius: 20px;
+					}
 				}
 			}
-			.avatar {
-				display: inline-block;
-			}
-			.login {
-				display: block;
-				width: 50px;
-				line-height: 60px;
-				box-sizing: border-box;
-				color: #8590A6;
-				font-size: 17px;
-				margin-right: 20px;
-				&:hover {
-					color: #777;
+			.messages {
+				margin-right: 40px;
+				.message-icon {
+					.button;
+					.Button;
+					.button--plain;
 				}
 			}
-			.icon-comments {
-				position: absolute;
-				right: 80px;
-				top: 0px;
-				font-size: 25px;
-				padding: 10px;
-				margin-top: 10px;
-				cursor: pointer;
-			}
-			.icon-bell {
-				position: absolute;
-				left: 45px;
-				top: 0px;
-				font-size: 25px;
-				padding: 10px;
-				margin-top: 10px;
-				cursor: pointer;
+			.profile {
+				.header-avatar {
+					vertical-align: top;
+				}
+				.login-btn {
+					font-size: 15px;
+					width: 34px;
+					height: 34px;
+					color: #444;
+					line-height: 40px;
+					.btn-hover;
+				}
 			}
 		}
 	}
