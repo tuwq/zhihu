@@ -16,14 +16,68 @@
  							<div class="ContentItem AnswerItem">
  								<div class="ContentItem-meta">
  									<div class="AuthorInfo">
- 										
+ 										<span class="avatar-wrapper">
+ 											<span class="popover"><div><a class="user-link" target="_blank">
+ 												<img class="info-avatar" src="../../../common/image/index/question_user_avatar.png" width="38" height="38">
+ 											</a></div></span>
+ 										</span>
+ 										<div class="info-content">
+ 											<div class="info-header">
+ 												<div class="author-name">
+ 													<div class="popover">
+ 														<div><a target="_blank">RenaultPrime</a></div>
+ 													</div>
+ 												</div>
+ 											</div>
+ 											<div class="info-detail">
+ 												<div class="info-badge"><div class="badge-text">
+ 												B站：CitedTech/PCDIY爱好者 咸鱼LLer 交流群465226164</div>
+ 												</div>
+ 											</div>
+ 										</div>
  									</div>
  									<div class="AnswerItem-extraInfo">
- 										
+ 										<span class="voters">
+ 											<button class="voterBtn" type="button">291 人赞同了该回答</button>
+ 										</span>
  									</div>
  								</div>
 								<meta itemprop="url" content="https">
- 								<div class="RichContent RichContent--unescapable"></div>
+ 								<div class="RichContent RichContent--unescapable">
+ 									<div class="richContent-inner">
+ 										<span class="rich-text" id="rich-text">
+ 											人脑的工作原理人类目前还只是略知皮毛，计算能力不能量化。
+ 											逻辑运算和算数运算是计算机最主要的两类运算。
+ 											算术运算，计算机毫无疑问的胜利了，但目前人类也不能确定，这究竟是计算机算法的胜利，还是是“计算速度”或者说计算机机能的胜利。
+ 										</span>
+ 									</div>
+									<div><div class="item-time"><a target="_blank"><span data-tooltip="发布于 2018-04-09 20:04">编辑于 2018-04-19</span></a></div></div>
+									<div class="content-item-actions">
+										<span class="votes">
+											<button class="vote-up"><i class="icon-double-angle-up"></i>183</button>
+											<button class="vote-down"><i class="icon-double-angle-down"></i></button>
+										</span>
+										<button class="item-action">
+											<span class="">&#8203;<svg viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M10.241 19.313a.97.97 0 0 0-.77.2 7.908 7.908 0 0 1-3.772 1.482.409.409 0 0 1-.38-.637 5.825 5.825 0 0 0 1.11-2.237.605.605 0 0 0-.227-.59A7.935 7.935 0 0 1 3 11.25C3 6.7 7.03 3 12 3s9 3.7 9 8.25-4.373 9.108-10.759 8.063z"></path></svg>22 条评论</span>
+										</button>
+										<button class="item-action">
+											<span class="">&#8203;<svg viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M2.931 7.89c-1.067.24-1.275 1.669-.318 2.207l5.277 2.908 8.168-4.776c.25-.127.477.198.273.39L9.05 14.66l.927 5.953c.18 1.084 1.593 1.376 2.182.456l9.644-15.242c.584-.892-.212-2.029-1.234-1.796L2.93 7.89z"></path></svg>分享</span>
+										</button>
+										<button class="item-action">
+											<span class="">&#8203;<svg viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M5.515 19.64l.918-5.355-3.89-3.792c-.926-.902-.639-1.784.64-1.97L8.56 7.74l2.404-4.871c.572-1.16 1.5-1.16 2.072 0L15.44 7.74l5.377.782c1.28.186 1.566 1.068.64 1.97l-3.89 3.793.918 5.354c.219 1.274-.532 1.82-1.676 1.218L12 18.33l-4.808 2.528c-1.145.602-1.896.056-1.677-1.218z"></path></svg>收藏</span>
+										</button>
+										<button class="item-action">
+											<span class="">&#8203;<svg viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M2 8.437C2 5.505 4.294 3.094 7.207 3 9.243 3 11.092 4.19 12 6c.823-1.758 2.649-3 4.651-3C19.545 3 22 5.507 22 8.432 22 16.24 13.842 21 12 21 10.158 21 2 16.24 2 8.437z"></path></svg>感谢</span>
+										</button>
+										<button class="item-action">
+											<span class="">&#8203;<svg viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M5 14a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm7 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm7 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"></path></svg></span>
+										</button>
+										<button class="item-action right-button">
+											<span class="">收起<svg viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></svg></span>
+										</button>
+									</div>
+ 								</div>
+								<comments></comments>
  							</div>
  						</div>	
  					</div>
@@ -34,8 +88,15 @@
 </template>
 
 <script type="text/ecmascript-6">
+import {periodWrap} from 'common/js/common.js';
+import comments from 'base/comments.vue';
 	export default {
-		
+		mounted() {
+			periodWrap($('#rich-text'));
+		},
+		components: {
+			comments
+		}
 	}
 </script>
 

@@ -54,3 +54,36 @@ export function scroll() {  // 开始封装自己的scrollTop
         top: document.body.scrollTop
     }
 }
+export function periodWrap(el) {
+    var pArray = [];
+    var text = el.text();
+    var flag = true;
+    var index,nt,p;
+     while(flag) {
+        index = getPeriod(text); 
+        if ( index === -1) {
+            flag = false
+            nt = text.substr(0);
+            p = $('<p>').text(nt);      
+            pArray.push(p);
+        }else{
+            nt =  text.substr(0,index+1);
+            p = $('<p>').text(nt);      
+            pArray.push(p);
+            text = text.substr(index+1,text.length); 
+        }
+    }
+    appendToRichText(pArray,el);
+}
+
+function getPeriod(text) {
+    return text.indexOf('。');
+}
+
+function appendToRichText(pArray,target) {
+    var target = target;
+    target.text('');
+    pArray.forEach((el,index) => {
+        target.append(el);
+    })
+}
