@@ -195,9 +195,15 @@ h4 {
 						margin-bottom: -4px;
 						overflow: hidden;
 						.rich-text {
+							display: box !important;
+							display: -webkit-box;
 							word-break: break-word;
 							white-space: wrap;
 							line-height: 1.67;
+							overflow: hidden;
+							text-overflow: ellipsis;
+							-webkit-line-clamp: 0;
+							-webkit-box-orient: vertical;
 							p {
 								margin-top: 0;
 								margin-bottom: .72em;
