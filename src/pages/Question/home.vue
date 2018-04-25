@@ -1,6 +1,6 @@
 <template>
- 	<div id="questionHome">
- 		<q-header></q-header>
+ 	<div id="questionHome" @click.stop.prevent="clsMask">
+ 		<q-header ref="q_header"></q-header>
  		<br>
  		<div class="main">
 			<keep-alive>
@@ -15,6 +15,11 @@
 	export default {
 		components: {
 			QHeader,
+		},
+		methods: {
+			clsMask() {
+				this.$refs.q_header.dropDownStatus === true ? this.$refs.q_header.clsMask():'';
+			}
 		}
 	}
 </script>

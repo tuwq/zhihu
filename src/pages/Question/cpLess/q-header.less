@@ -2,121 +2,95 @@
 .q-header {
 	position: fixed;
 	width: 100%;
-	height: 48px;
+	height: 54px;
 	vertical-align: top;
 	background: #0561BD;
 	z-index: 50;
 	.center {
 		position: relative;
-		width: 960px;
-		height: 46px;
+		display: flex;
+		width: 1000px;
+		height: 52px;
+		padding: 0 16px;
 		margin: 0 auto;
-		.logo {
-			display: inline-block;
-			width: 83px;
-			height: 100%;
-			vertical-align: top;
-			cursor: pointer;
+		-webkit-box-align: center;
+		align-items: center;
+		.logo-link {
+			color: inherit;
+			line-height: 20px;
 		}
 		.nav-list {
-			display: inline-block;
-			width: 240px;
-			height: 100%;
-			box-sizing: border-box;
-			vertical-align: top;
-			ul {
-				width: 260px;
-				box-sizing: border-box;
-				padding-left: 20px;
-			}
-			li {
-				margin-left: 10px;
-				display: inline-block;
-				a {
-					display: inline-block;
-					width: 54px;
-					line-height: 45px;
-					box-sizing: border-box;
-					font-size: 16px;
-					text-align: center;
-					color: #eee;
-					cursor: pointer;
-					vertical-align: bottom;
-				}
-			}
-		}
-		.putBtn-wrapper {
-			display: inline-block;
-			vertical-align: top;
-			button {
-				margin-top: 6px;
-				display: inline-block;
-				width: 66px;
-				height: 32px;
-				text-align: center;
-				background: #0D76E3;
-				box-sizing: border-box;
-				font-size: 17px;
-				line-height: 25px;
-				color: #fff;
-				cursor: pointer;
-			}
-		}
-		.header-left {
-			float: left;
-			width: 80%;
-		}
-		.userInfo {
-			.clearfix;
-			display: block;
-			position: relative;
-			float: right;
-			width: 20%;
-			z-index: 10;
-			vertical-align: top;
-			box-sizing: border-box;
-			padding-left: 10px;
-			&:hover {
-				.dropdown {
-					display: block;
-				}
-			}
-		}
-		.userInfo .top {
-			display: inline-block;
-			width: 100%;
-			height: 100%;
-			overflow: hidden;
-			.avatar {
-				position: relative;
-				height: 100%;
-				margin-left: 25px;
-				line-height: 46px;
-				cursor: pointer;
-				.num {
-					position: absolute;
-					display: block;
-					text-align: center;
-					line-height: 18px;
-					width: 17px;
-					height: 17px;
-					border-radius: 10px;
-					right: -8px;
-					top: -10px;
-					color: #fff;
-					background: #BF1031;
-					z-index: 10;
-					cursor: pointer;
-				}
-			}
-			.name {
-				color: #fff;
+			display: flex;
+			-webkit-box-pack: justify;
+			justify-content: space-between;
+			height: 30px;
+			margin-right: 18px;
+			margin-left: 27px;
+			color: #fff;
+			align-items: center;
+			.nav-item {
+				padding: 0 15px;
 				font-size: 16px;
-				margin-left: 10px;
 				text-align: center;
-				vertical-align: bottom;
-				line-height: 46px;
-				cursor: pointer;
+				line-height: 70px;
+			}
+		}
+		.submit {
+			display: inline-block;
+			color: #fff;
+			width: 66px;
+			height: 35px;
+			margin-top: 7px;
+			border: 1px solid #045bb2;
+			border-radius: 4px;
+			box-shadow: 0 1px 2px rgba(0,0,0,.05), inset 0 1px 1px rgba(255,255,255,.15);
+			font-size: 15px;
+			text-align: center;
+		    text-shadow: 0 1px 1px rgba(0,0,0,.12);
+		    outline: 0;
+		    cursor: pointer;
+			box-sizing: border-box;
+			padding: 5px;
+			background: #0084ff;
+			align-self: stretch;
+			margin-right: 20px;
+			margin-bottom: 10px;
+		}
+		.userinfo {
+			position: relative;
+			flex: 1;
+			justify-content: flex-end;
+			display: flex;
+			-webkit-box-align: center;
+			align-items: center;
+			line-height: 30px;
+			.avatar-link {
+				position: relative;
+				.tag {
+					position: absolute;
+					top: -5px;
+					right: -5px;
+					background: #bf1031;
+					box-shadow: 0 1px 2px rgba(0,0,0,.1), inset 0 1px 0 rgba(255,255,255,.15);
+					color: #fff;
+					display: inline-block;
+					font-weight: 400;
+					padding: 0 5px;
+					line-height: 16px;
+					height: 16px;
+					font-size: 13px;
+					border-radius: 16px;
+					text-align: center;
+					text-decoration: none;
+					text-indent: 0;
+				}
+			}
+			.username {
+				display: inline-block;
+				margin-left: 8px;
+				color: #fff;
+				line-height: 50px;
+				font-size: 17px;
 			}
 		}
 	}

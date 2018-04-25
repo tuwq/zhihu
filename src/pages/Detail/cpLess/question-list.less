@@ -228,56 +228,43 @@ h4 {
 						clear: both;
 						align-items: flex-start;
 						box-sizing: border-box;
-						.votes {
-							.vote-hover {
-								&:hover {
-									background: #D9EDFF;
-								}
+						.up {
+							.button;
+							.Button;
+							line-height: 30px;
+							padding: 0 12px;
+							color: #0084ff;
+							background: rgba(0,132,255,.1);
+							border-color: transparent;
+							&:hover {
+								background: #D9EDFF;
 							}
-							.vote-up {
-								padding: 0 10px;
-								color: #0084ff;
-								background: rgba(0,132,255,.1);
-								border-color: transparent;
-								line-height: 32px;
-								display: inline-block;
-								font-size: 14px;
-								text-align: center;
-								cursor: pointer;
-								border-radius: 3px;
-								font-size: inherit;
-								align-items: flex-start;
-								box-sizing: border-box;
-								.vote-hover;
-								svg {
-									height: 16px;
-									width: 9px;
-									margin-right: 8px;
-									fill: currentColor;
-								}
+							svg {
+								position: relative;
+								bottom: 6px;
+								margin-right: 8px;
+								fill: #0084ff;
+								vertical-align: bottom;
 							}
-							.vote-down {
-								margin-left: 4px;
-								padding: 0 10px;
-								color: #0084ff;
-								background: rgba(0,132,255,.1);
-								border-color: transparent;
-								line-height: 32px;
-								display: inline-block;
-								font-size: 14px;
-								text-align: center;
-								cursor: pointer;
-								border-radius: 3px;
-								font-size: inherit;
-								align-items: flex-start;
-								box-sizing: border-box;
-								.vote-hover;
-								svg {
-									height: 16px;
-									width: 9px;
-									margin-right: 8px;
-									fill: currentColor;
-								}
+						}
+						.down {
+							.button;
+							.Button;
+							line-height: 30px;
+							padding: 0 12px;
+							color: #0084ff;
+							background: rgba(0,132,255,.1);
+							border-color: transparent;
+							&:hover {
+								background: #D9EDFF;
+							}
+							svg {
+								position: relative;
+								bottom: 6px;
+								transform: rotate(180deg);
+								margin-right: 8px;
+								fill: #0084ff;
+								vertical-align: bottom;
 							}
 						}
 						.item-action {

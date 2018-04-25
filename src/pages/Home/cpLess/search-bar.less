@@ -12,15 +12,21 @@
 			& .Popover {
 				display: block;
 			}
+			.extended {
+				background: #fff !important;
+				width: 400px !important;
+				.search-btn {
+					svg {
+						fill: #0084ff !important;
+					}
+				}
+			}
 			.search-inner {
 				.Input-wrapper;
 				background: #f6f6f6;
 				width: 326px;
 				transition: width .2s ease,background .3s ease;
-				& .extended {
-					background: #fff !important;
-					width: 400px !important;
-				}
+				
 				.search-input {
 					.Input;
 				}
@@ -47,13 +53,14 @@
 						border: none !important;
 						padding: 0 12px;
 						border-bottom-left-radius: 0;
-						transition: fill .3s ease; 
+						transition: fill .3s ease,opacity .2s; 
 						svg {
 							.Icon;
 							height: 16px;
 							width: 16px;
 						}
-					}
+						
+					}	
 				}
 			}
 		}

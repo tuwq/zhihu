@@ -23,9 +23,11 @@
 		methods: {
 			blur(event) {
 				$('.search-inner').removeClass('extended');
+				$('.search-btn').removeClass('zom');
 			},
 			focus(event) {
 				$('.search-inner').addClass('extended');
+				$('.search-btn').addClass('zom');
 			}
 		}
 	}

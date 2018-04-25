@@ -1,167 +1,181 @@
 @import url('../../../common/style/common.less');
+html|* > svg {
+    transform-origin: 50% 50% 0px;
+}
+user agent stylesheet
+* {
+    transform-origin: 0px 0px 0px;
+}
 .questions {
 	position: relative;
+	width: 700px;
+	padding-bottom: 20px;
 	.question {
-		display: block;
 		position: relative;
-		width: 100%;
-		background-color: #fff;
-		margin-top: 13px;
-		height: 260px;
-		border-radius: 5px;
-		&:last-child {
-			margin-bottom: 13px;
-		}
-	}
-	.question-inner {
-		position: relative;
-		padding-top: 20px;
-		padding-left: 20px;
-		&:hover .cls-bubble{
-			opacity: 1;
-		}
-		.cls-bubble {
-			opacity: 0;
-		}
-		.question-type {
-			display: inline-block;
-			font-size: 13px;
-			white-space: 2px;
-			color: #8590A6;
-		}
-		.z-tag {
-			opacity: 0;
-		}
-		.userinfo {
-			margin-top: 5px;
-			.avatar {
-				padding-right: 10px;
-			}
-			.username {
-				display: inline-block;
-				padding-top: 10px;
-				height: 33px;
-				line-height: 33px;
-				font-size: 16px;
-				font-weight: 700;
-				vertical-align: bottom;
-			}
-			.info {
-				display: inline-block;
-				font-size: 13px;
-				height: 33px;
-				line-height: 33px;
-				vertical-align: bottom;
-			}
-		}
-		.title {
-			display: block;
-			font-size: 20px;
-			font-weight: 700;
-			padding-top: 13px;
-			color: #1a1a1a;
-			cursor: pointer;
-			font-family: -apple-system;
-			&:hover {
-				color: #777;
-			}
-		}
-		.content-inner {
-			display: inline-block;
-			padding-top: 13px;
-			font-size: 16px;
-			white-space: 2;
-			font-style: normal;
-			.content {
-				overflow: hidden;
-				text-overflow: ellipsis;
-				display: box;
-				display: -webkit-box;
-				-webkit-line-clamp: 2;
-				-webkit-box-orient: vertical;
-			}
-		}
-		.readQuestion {
-			a {
-				display: inline-block;
-				font-size: 16px;
-				color: #175199;
-			}
-		}
-		.msg {
-			padding-top: 10px;
-			padding-bottom: 10px;
-			height: 43px;
-			width: 100%;
-			div {
-				display: inline-block;
-			}
-			.vote {
-				margin-right: 15px;
-				height: 100%;
-				.up,.down {
-					display: inline-block;
-					height: 30px;
-					text-align: center;
-					vertical-align: baseline;
-					background: #E5F2FF;
-					color: #0084FF;
-					padding: 6px;
-					font-size: 15px;
-					cursor: pointer;
-					&:hover {
-						background: #D9EDFF;
+		padding: 16px 20px;
+		.question-inner {
+			.header {
+				.oneLine {
+					margin-bottom: 8px;
+					color: #8590a6;
+				}
+				.twoLine {
+					margin-bottom: 14px;
+					display: flex;
+					-webkit-box-align: center;
+					align-items: center;
+					.user-avatar {
+						.avatar-img {
+							vertical-align: top;
+							background: #fff;
+							border-radius: 2px;
+						}
 					}
-					i {
-						padding-right: 4px;
+					.user-signature {
+						display: flex;
+						-webkit-box-align: center;
+						align-items: center;
+						margin-left: 10px;
+						-webkit-box-flex: 1;
+						flex: 1;
+						overflow: hidden;
+						.name {
+							display: flex;
+							-webkit-box-align: center;
+							align-items: center;
+							font-size: 15px;
+							line-height: 1.1;
+							flex-shrink: 0;
+							.info-name {
+								font-weight: 600;
+								color: #444;
+							}
+						}
+						.detail {
+							overflow: hidden;
+							.info-badge {
+								display: flex;
+								-webkit-box-align: center;
+								align-items: center;
+								margin-top: 2px;
+								font-size: 14px;
+								.text {
+									overflow: hidden;
+									text-overflow: ellipsis;
+									white-space: nowrap;
+									color: #646464;
+									word-break: break-word;
+								}	
+							}
+						}	
 					}
 				}
 			}
-			.comment {
-				margin-left: 20px;
-				color: #8590A6;
-				font-size: 14px;
-				margin-right: 30px;
-				cursor: pointer;
-				&:hover {
-					color: #777;
-				}
-				span {
-					i {
-						margin-right: 2px;
-					}
-				}
-			}
-			.other {
-				span {
-					vertical-align: baseline;
-					display: inline-block;
-					margin-right: 30px;
-					font-size: 15px;
-					cursor: pointer;
+			.footer {
+				.title {
+					font-size: 18px;
+					font-weight: 600;
+					line-height: 1.6;
+					color: #1a1a1a;
+					margin-top: -4px;
+					margin-bottom: -4px;
 					&:hover {
 						color: #777;
 					}
 				}
-				i {
+				.line {
+					margin-top: 6px;
 					font-size: 15px;
-					color: #8590A6;
-					margin-right: 4px;
-					line-height: 25px;
+					color: #646464;
 				}
-			}
-			.more {
-				button {
-					background-color: #fff;
+				.content {
 					cursor: pointer;
-					&:hover {
-						color: #777;
+					transition: color .14s ease-out;
+					line-height: 1.67;
+					.content-inner {
+						max-height: 100px;
+						margin-top: 9px;
+						margin-bottom: -4px;
+						overflow: hidden;
+						cursor: pointer;
+						.content-text {
+							overflow: hidden;
+							text-overflow: ellipsis;
+							display: box;
+							display: -webkit-box;
+							-webkit-line-clamp: 2;
+							-webkit-box-orient: vertical;
+						}
+						.content-more {
+							.button;
+							.Button;
+							.button--plain;
+							font-weight: 400;
+							font-style: inherit;
+							padding: 0;
+							margin-left: 4px;
+							color: #175199;svg {fill: currentColor;}
+						}
 					}
-					i {
-						font-size: 20px;
+					.up {
+						.button;
+						.Button;
+						line-height: 30px;
+						padding: 0 12px;
+						color: #0084ff;
+						background: rgba(0,132,255,.1);
+						border-color: transparent;
+						&:hover {
+							background: #D9EDFF;
+						}
+						svg {
+							position: relative;
+							bottom: 6px;
+							margin-right: 8px;
+							fill: #0084ff;
+							vertical-align: bottom;
+						}
+					}
+					.down {
+						.button;
+						.Button;
+						line-height: 30px;
+						padding: 0 12px;
+						color: #0084ff;
+						background: rgba(0,132,255,.1);
+						border-color: transparent;
+						&:hover {
+							background: #D9EDFF;
+						}
+						svg {
+							position: relative;
+							bottom: 6px;
+							transform: rotate(180deg);
+							margin-right: 8px;
+							fill: #0084ff;
+							vertical-align: bottom;
+						}
+					}
+					.content-actions {
+						display: flex;
+						-webkit-box-align: center;
+						align-items: center;
+						padding: 10px 20px;
+						margin: 0 -20px -10px;
+						color: #646464;
+						background: #fff;
+						clear: both;
+						.item-action {
+							.button;
+							.Button;
+							.button--plain;
+							margin-left: 24px;
+							font-size: 14px;
+							svg {margin-right: 4px;overflow: hidden;}
+						}
 					}
 				}
 			}
-		}
-	}
+		} 
+	}	
 }

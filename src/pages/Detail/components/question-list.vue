@@ -53,10 +53,14 @@
  									</div>
 									<div><div class="item-time"><a target="_blank"><span data-tooltip="发布于 2018-04-09 20:04">编辑于 2018-04-19</span></a></div></div>
 									<div class="content-item-actions">
-										<span class="votes">
-											<button class="vote-up"><i class="icon-double-angle-up"></i>183</button>
-											<button class="vote-down"><i class="icon-double-angle-down"></i></button>
-										</span>
+										<span>
+											<button class="up"><svg viewBox="0 0 20 18" width="9" height="16">
+												<title></title><g><path d="M0 15.243c0-.326.088-.533.236-.896l7.98-13.204C8.57.57 9.086 0 10 0s1.43.57 1.784 1.143l7.98 13.204c.15.363.236.57.236.896 0 1.386-.875 1.9-1.955 1.9H1.955c-1.08 0-1.955-.517-1.955-1.9z"></path></g>
+											</svg>73</button>
+											<button class="down"><svg viewBox="0 0 20 18" width="9" height="16">
+												<title></title><g><path d="M0 15.243c0-.326.088-.533.236-.896l7.98-13.204C8.57.57 9.086 0 10 0s1.43.57 1.784 1.143l7.98 13.204c.15.363.236.57.236.896 0 1.386-.875 1.9-1.955 1.9H1.955c-1.08 0-1.955-.517-1.955-1.9z"></path></g>
+											</svg>73</button>
+			 							</span>
 										<button class="item-action" @click.stop.prevent="switchCommentStatus">
 											<span class="">&#8203;<svg viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M10.241 19.313a.97.97 0 0 0-.77.2 7.908 7.908 0 0 1-3.772 1.482.409.409 0 0 1-.38-.637 5.825 5.825 0 0 0 1.11-2.237.605.605 0 0 0-.227-.59A7.935 7.935 0 0 1 3 11.25C3 6.7 7.03 3 12 3s9 3.7 9 8.25-4.373 9.108-10.759 8.063z"></path></svg>
 											{{commentStatusText}}</span>

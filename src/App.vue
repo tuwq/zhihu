@@ -14,7 +14,6 @@
 </script>
 
 <style lang="less" rel="stylesheet/less" type="text/less">
-  @import url('lib/awesome/css/font-awesome.min.css');
   @import url('common/style/base.less');
   @import url('common/style/common.less');
 </style>
