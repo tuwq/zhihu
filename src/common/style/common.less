@@ -245,3 +245,18 @@ user agent stylesheet
 * {
     transform-origin: 0px 0px 0px;
 }
+.Modal {
+	position: relative;
+	z-index: 1;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	flex-direction: column;
+	max-height: calc(100vh-24px*2);
+	margin-right: auto;
+	margin-left: auto;
+	outline: 0;
+	box-shadow: 0 5px 20px rgba(26,26,26,.1);
+	box-sizing: border-box;
+	transition: max-height .8s ease;
+}

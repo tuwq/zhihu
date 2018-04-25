@@ -1,0 +1,154 @@
+@import url('../../../common/style/common.less');
+
+.mask {
+	position: fixed;
+	display: block;
+	left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+	z-index: 100;
+	vertical-align: top;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	flex-direction: column;
+	-webkit-box-pack: center;
+	overflow-x: hidden;
+	overflow-y: auto;
+	transition: opacity .3 ease-out;
+	.backdrop {
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		z-index: 0;
+		background: rgba(26,26,26,.65);
+		transition: background-color .3s ease-out;
+	}
+	.modal-fullPage {
+		.Modal;
+		width: 688px;
+		height: calc(100vh - 24px * 2);
+		.Modal-inner {
+			height: 100%;
+			overflow: auto;
+			background: #fff;
+			border-radius: 2px;
+			.Modal-content {
+				height: 100%;
+				margin-top: 0;
+				padding: 0;
+				-webkit-box-flex: 1;
+				line-height: 1.7;
+				opacity: 1;
+				.comments {
+					display: flex;
+					-webkit-box-orient: vertical;
+					-webkit-box-direction: normal;
+					flex-direction: column;
+					overflow: hidden;
+					box-sizing: border-box;
+					height: 100%;
+					.topBar {
+						border-radius: 2px;
+						background: #fff;
+						border-bottom: 1px solid #f6f6f6;
+						display: flex;
+						-webkit-box-pack: justify;
+						justify-content: space-between;
+						-webkit-box-align: center;
+						align-items: center;
+						height: 50px;
+						padding: 0 20px;
+						.topBar-title-box {
+							flex: 1;
+							-webkit-box-flex: 1;
+							.commentTopBar-title {
+								display: inline-block;
+								font-size: 15px;
+								font-weight: 600;
+								color: #1a1a1a;
+							}
+						}
+						.topBar-options {
+
+						}
+					}
+					.commentList {
+						-webkit-box-flex: 1;
+						flex: 1;
+						overflow-x: hidden;
+						overflow-y: auto;
+						.CommentItem {
+							outline: none;
+							position: relative;
+							flex-shrink: 0;
+							padding: 12px 20px 10px;
+							font-size: 15px;
+							.item-meta {
+								position: relative;
+								height: 27px;
+								padding-right: 3px;
+								padding-left: 1px;
+								margin-bottom: 5px;
+								line-height: 24px;
+								.user-avatar-box {
+									margin-right: 8px;
+								}
+								.user-name-box {
+									line-height: 24px;
+								}
+								.user-comment-time {
+									float: right;
+									font-size: 14px;
+									color: #8590a6;
+								}
+							}
+							.item-content {
+								margin-bottom: 6px;
+								line-height: 25px;
+								word-break: break-word;
+								white-space: pre-wrap;
+							}
+							.item-footer {
+								display: flex;
+								-webkit-box-align: center;
+								align-items: center;
+								height: 24px;
+								font-size: 14px;
+								line-height: 24px;
+								&:hover {
+									& .hover-btn {
+										opacity: 1 !important;
+									}
+								}
+								.comment-item-btn {
+									.button;
+									.Button;
+									.button--plain;
+									svg {margin-right: 6px;}
+									&.hover-btn {
+										margin-left: 20px;
+										opacity: 0;
+										transition: opacity .2s ease;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		.Modal-closeButton {
+			.button;
+			.Button;
+			.button--plain;
+			position: absolute;
+			top: 8px;
+			right: -60px;
+			padding: 12px;
+		}
+	}
+}

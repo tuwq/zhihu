@@ -8,6 +8,9 @@
  		<div class="main-content">
  			<question-main></question-main>
  		</div>
+ 		<div class="special">
+	      <view-conversation></view-conversation>
+	    </div>
  	</div>
 </template>
 
@@ -17,13 +20,15 @@
 	import scrollHeader from 'detail_components/scroll-header.vue';
 	import dHeader from 'detail_components/d-header.vue';
 	import questionMain from 'detail_components/question-main.vue';
+	import viewConversation from 'detail_components/view-conversation.vue'; 
 	export default {
 		components: {
 			'z-header': ZHeader,
 			'detail-header': detailHeader,
 			'scroll-header': scrollHeader,
 			'd-header': dHeader,
-			'question-main': questionMain
+			'question-main': questionMain,
+			'view-conversation': viewConversation
 		}
 	}
 </script>

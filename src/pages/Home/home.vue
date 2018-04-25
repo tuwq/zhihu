@@ -1,5 +1,5 @@
 <template>
-  <div id="home" @click.stop="clsMask">
+  <div id="home">
     <z-header></z-header>
     <br>
     <div class="main">
@@ -29,9 +29,6 @@ import zDrop from 'z_components/zDrop.vue';
       zDrop
     },
     methods: {
-      clsMask() {
-          this.setIndexDropDown(false);
-      },
       ...mapMutations({
         setIndexDropDown: 'SET_INDEX_DROPDOWN'
       })
