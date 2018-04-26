@@ -42,13 +42,21 @@
 				</div>
 			</div>
 		</div>
-		<div class="main-content"></div>
+		<div class="main-content">
+			<main-column></main-column>
+			<side-column></side-column>
+		</div>
 	</div>
 </template>
 
 <script type="text/ecmascript-6">
- 	export default {
-
+import mainColumn from 'p_components/main-column.vue';
+import sideColumn from 'p_components/side-column.vue';
+  	export default {
+  		components: {
+  			'main-column': mainColumn,
+  			'side-column': sideColumn
+  		}
 	}
 </script>
 
