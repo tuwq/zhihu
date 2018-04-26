@@ -54,7 +54,7 @@ export function scroll() {  // 开始封装自己的scrollTop
         top: document.body.scrollTop
     }
 }
-export function periodWrap(el) {
+export function periodWrap(el,target) {
     var pArray = [];
     var text = el.text();
     var flag = true;
@@ -73,7 +73,8 @@ export function periodWrap(el) {
             text = text.substr(index+1,text.length); 
         }
     }
-    appendToRichText(pArray,el);
+    el.text('');
+    appendToRichText(pArray,target);
 }
 
 function getPeriod(text) {
@@ -81,8 +82,6 @@ function getPeriod(text) {
 }
 
 function appendToRichText(pArray,target) {
-    var target = target;
-    target.text('');
     pArray.forEach((el,index) => {
         target.append(el);
     })

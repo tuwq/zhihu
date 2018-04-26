@@ -50,6 +50,7 @@
  											逻辑运算和算数运算是计算机最主要的两类运算。
  											算术运算，计算机毫无疑问的胜利了，但目前人类也不能确定，这究竟是计算机算法的胜利，还是是“计算速度”或者说计算机机能的胜利。
  										</span>
+ 										<span class="overflow-text" id="overflow-text"></span>
  									</div>
 									<div><div class="item-time"><a target="_blank"><span data-tooltip="发布于 2018-04-09 20:04">编辑于 2018-04-19</span></a></div></div>
 									<div class="content-item-actions">
@@ -78,7 +79,8 @@
 											<span class="">&#8203;<svg viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M5 14a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm7 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm7 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"></path></svg></span>
 										</button>
 										<button class="item-action right-button" @click.stop.prevent="switchOverflowStatus">
-											<span class="">{{commentsStausScroll}}<svg viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></svg></span>
+											<span class="" v-show="overflowStatus">{{commentsStausScroll}}<svg viewBox="0 0 24 24" width="1.2em" height="1.2em" style="transform: rotate(180deg);"><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></svg></span>
+											<span class="" v-show="!overflowStatus">{{commentsStausScroll}}<svg viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></svg></span>
 										</button>
 									</div>
  								</div>
@@ -102,15 +104,14 @@ import comments from 'base/comments.vue';
 				overflowStatus: false
 			}
 		},
-		mounted() {	
-			periodWrap($('#rich-text'));
-		},
 		methods: {
 			switchOverflowStatus() {
-				if (this.overflowStatus) {
-					$('#rich-text').css('-webkit-line-clamp','0 !important')
+				if (!this.overflowStatus) {
+					periodWrap($('#rich-text'),$('#overflow-text'));
 				}else{
-					$('#rich-text').css('-webkit-line-clamp','1 !important')
+					var text = $('#overflow-text').children().text();
+					$('#rich-text').text(text);
+					$('#overflow-text').empty();
 				}
 				this.overflowStatus = !this.overflowStatus
 			},
@@ -123,10 +124,10 @@ import comments from 'base/comments.vue';
 		},
 		computed: {
 			commentStatusText() {
-				return this.commentStatus===true?'收起评论':'22 条评论';
+				return this.commentStatus?'收起评论':'22 条评论';
 			},
 			commentsStausScroll() {
-				return this.overflowStatus===true?'收起':'展开';
+				return this.overflowStatus?'收起':'展开';
 			}
 		}
 	}

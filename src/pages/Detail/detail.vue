@@ -10,6 +10,7 @@
  		</div>
  		<div class="special">
 	      <view-conversation></view-conversation>
+		  <suggest></suggest>
 	    </div>
  	</div>
 </template>
@@ -21,6 +22,7 @@
 	import dHeader from 'detail_components/d-header.vue';
 	import questionMain from 'detail_components/question-main.vue';
 	import viewConversation from 'detail_components/view-conversation.vue'; 
+	import Suggest from 'base/suggest.vue';
 	export default {
 		components: {
 			'z-header': ZHeader,
@@ -28,7 +30,8 @@
 			'scroll-header': scrollHeader,
 			'd-header': dHeader,
 			'question-main': questionMain,
-			'view-conversation': viewConversation
+			'view-conversation': viewConversation,
+			'suggest': Suggest
 		}
 	}
 </script>

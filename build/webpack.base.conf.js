@@ -34,7 +34,8 @@ module.exports = {
       'z_components': resolve('src/pages/Home/components'),
       'question_components': resolve('src/pages/Question/components'),
       'login_components': resolve('src/pages/Login/components'),
-      'detail_components': resolve('src/pages/Detail/components')
+      'detail_components': resolve('src/pages/Detail/components'),
+      'p_components': resolve('src/pages/People/components')
     }
   },
   module: {

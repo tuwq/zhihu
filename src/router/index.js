@@ -7,7 +7,7 @@ import QuestionHome from '@/pages/Question/home.vue';
 import QIndex from '@/pages/Question/components/q-index.vue';
 import LoginHome from '@/pages/Login/home.vue';
 import Detail from '@/pages/Detail/detail.vue';
-
+import People from '@/pages/People/people.vue';
 
 Vue.use(Router)
 
@@ -45,6 +45,10 @@ export default new Router({
     {
       path: '/question/:question_id',
       component: Detail
+    },
+    {
+      path: '/people/:user_id',
+      component: People
     }
   ]
 })
