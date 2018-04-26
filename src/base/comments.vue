@@ -26,7 +26,7 @@
  							</div>
  							<div class="comment-editor" v-show="openStatus">
  								<div class="editor-top">
- 									<textarea class="editor-input" v-model="comment_text" id="editor-input" placeholder="回复如此耕耘"></textarea>
+ 									<textarea class="editor-input" v-model="comment_text" id="editInput" placeholder="回复如此耕耘"></textarea>
  								</div>
  								<div class="editor-bottom">
  									<button type="button" class="cancel" @click.stop.prevent="clsComment">取消</button>
@@ -67,7 +67,7 @@ import {makeExpandingArea} from 'common/js/common.js';
 			}
 		},
 		mounted() {
-			makeExpandingArea(document.getElementById('editor-input'));
+			makeExpandingArea(document.getElementById('editInput'));
 		},
 		watch: {
 			comment_text(newval,oldval){

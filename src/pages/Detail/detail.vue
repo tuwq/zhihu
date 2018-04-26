@@ -9,8 +9,8 @@
  			<question-main></question-main>
  		</div>
  		<div class="special">
-	      <view-conversation></view-conversation>
-		  <suggest></suggest>
+		<view-conversation></view-conversation>
+		<remind-list reminds="['suggest','toTop']"></remind-list>
 	    </div>
  	</div>
 </template>
@@ -22,7 +22,7 @@
 	import dHeader from 'detail_components/d-header.vue';
 	import questionMain from 'detail_components/question-main.vue';
 	import viewConversation from 'detail_components/view-conversation.vue'; 
-	import Suggest from 'base/suggest.vue';
+	import remindList from 'base/remind-list.vue';
 	export default {
 		components: {
 			'z-header': ZHeader,
@@ -31,7 +31,7 @@
 			'd-header': dHeader,
 			'question-main': questionMain,
 			'view-conversation': viewConversation,
-			'suggest': Suggest
+			'remind-list': remindList
 		}
 	}
 </script>

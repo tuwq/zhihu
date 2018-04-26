@@ -48,7 +48,6 @@
  										<span class="rich-text" id="rich-text">
  											人脑的工作原理人类目前还只是略知皮毛，计算能力不能量化。
  											逻辑运算和算数运算是计算机最主要的两类运算。
- 											算术运算，计算机毫无疑问的胜利了，但目前人类也不能确定，这究竟是计算机算法的胜利，还是是“计算速度”或者说计算机机能的胜利。
  										</span>
  										<span class="overflow-text" id="overflow-text"></span>
  									</div>

@@ -1,6 +1,8 @@
+// 线程睡眠
 export function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
+// 文本框自适应高度
 export function makeExpandingArea(el) {  
     var setStyle = function(el) {  
         el.style.height = 'auto';  
@@ -35,7 +37,8 @@ export function makeExpandingArea(el) {
         }); //处理粘贴  
     }  
 }  
-export function scroll() {  // 开始封装自己的scrollTop
+// 获取浏览器各相距位置
+export function scroll() {  
     if(window.pageYOffset !== undefined) {  // ie9+ 高版本浏览器
         // 因为 window.pageYOffset 默认的是  0  所以这里需要判断
         return {
@@ -54,6 +57,7 @@ export function scroll() {  // 开始封装自己的scrollTop
         top: document.body.scrollTop
     }
 }
+// 取出句号分隔的段落
 export function periodWrap(el,target) {
     var pArray = [];
     var text = el.text();
@@ -84,5 +88,35 @@ function getPeriod(text) {
 function appendToRichText(pArray,target) {
     pArray.forEach((el,index) => {
         target.append(el);
+    })
+}
+
+// 返回顶部
+export function toTop(btn) {
+    // 当前值
+    var leader = 0;
+    window.onscroll = function () {
+        //每次移动滚动条的时候都给leader赋值，模拟leader获取距离顶部的距离
+        leader = scroll().top;
+        if(scroll().top>100){
+            btn.show()
+        }else{
+            btn.hide()
+        }
+        //每次移动滚动条的时候都给leader赋值，模拟leader获取距离顶部的距离
+    }
+    var timer = null;
+    var target = 0;
+    btn.on('click',(e) => {
+         clearInterval(timer);
+          timer = setInterval(function () {
+            var step = (target-leader)/10;
+            step = step>0?Math.ceil(step):Math.floor(step);
+            leader = leader +step;
+            window.scrollTo(0,leader);
+            if(leader === 0){
+                clearInterval(timer);
+            }
+        },25);
     })
 }

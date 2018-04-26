@@ -24,8 +24,8 @@
  					<div class="line"></div>
  					<div class="content">
  						<div class="content-inner">
- 							<span class="content-text">几个月前为了让志同道合的程序员们有一个交流的平台，于是创建了一个叫做“Java学习交流群”的qq群，我以为同行没那么多应该没多少人加入进来，然而截止到今天已经进来了快1800余人：</span>
- 							<span class="overflow-text"></span>
+ 							<span class="rich-text" id="rich-text">几个月前为了让志同道合的程序员们有一个交流的平台，于是创建了一个叫做“Java学习交流群”的qq群，我以为同行没那么多应该没多少人加入进来，然而截止到今天已经进来了快1800余人：</span>
+ 							<span class="overflow-text" id="overflow-text"></span>
  							<button class="content-more" @click.stop.prevent="more">{{commentsStausScroll}}<svg viewBox="0 0 10 6" width="10" height="16" v-show="!overflowStatus"><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>
 							<svg v-show="overflowStatus" viewBox="0 0 10 6" width="10" height="16" style="transform: rotate(180deg);"><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>
  							</button>
@@ -85,14 +85,14 @@
 				this.$router.push({ path: `/question/${id}` }) 
 			},
 			more() {
-				if(!this.overflowStatus) {
-					periodWrap($('.content-text'),$('.overflow-text'));
+				if (!this.overflowStatus) {
+					periodWrap($('#rich-text'),$('#overflow-text'));
 				}else{
-					var text = $('.overflow-text').children().text();
-					$('.content-text').text(text);
-					$('.overflow-text').empty();
+					var text = $('#overflow-text').children().text();
+					$('#rich-text').text(text);
+					$('#overflow-text').empty();
 				}
-				this.overflowStatus = !this.overflowStatus;
+				this.overflowStatus = !this.overflowStatus
 				
 			},
 			switchCommentStatus() {
@@ -101,7 +101,7 @@
 		},
 		computed: {
 			commentsStausScroll() {
-				return this.overflowStatus?'收起全文':'阅读全文'
+				return this.overflowStatus?'收起':'阅读全文'
 			}
 		}
 	}
