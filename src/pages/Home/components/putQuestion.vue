@@ -7,8 +7,10 @@
 				<form action="">
 					<div class="question-main">
 						<textarea class="question-title" placeholder="问题标题"></textarea>
-						<textarea class="question-topic" placeholder="添加话题"></textarea>
-						<i class="search-icon"><svg width="24" height="24"><path d="M17.068 15.58a8.377 8.377 0 0 0 1.774-5.159 8.421 8.421 0 1 0-8.42 8.421 8.38 8.38 0 0 0 5.158-1.774l3.879 3.88c.957.573 2.131-.464 1.488-1.49l-3.879-3.878zm-6.647 1.157a6.323 6.323 0 0 1-6.316-6.316 6.323 6.323 0 0 1 6.316-6.316 6.323 6.323 0 0 1 6.316 6.316 6.323 6.323 0 0 1-6.316 6.316z"></path></svg></i>
+						<div class="question-topic-box">
+							<textarea class="question-topic" placeholder="添加话题"></textarea>
+							<i class="search-icon"><svg width="24" height="24"><path d="M17.068 15.58a8.377 8.377 0 0 0 1.774-5.159 8.421 8.421 0 1 0-8.42 8.421 8.38 8.38 0 0 0 5.158-1.774l3.879 3.88c.957.573 2.131-.464 1.488-1.49l-3.879-3.878zm-6.647 1.157a6.323 6.323 0 0 1-6.316-6.316 6.323 6.323 0 0 1 6.316-6.316 6.323 6.323 0 0 1 6.316 6.316 6.323 6.323 0 0 1-6.316 6.316z"></path></svg></i>
+						</div>
 					</div>
 					<div class="tool-inner">
 						<ul class="tools">
@@ -41,6 +43,7 @@
 
 <script type="text/ecmascript-6">
 	import {mapGetters,mapMutations} from 'vuex';
+	import {makeExpandingArea} from 'common/js/common.js';
 	export default {
 		methods: {
 			cls_mask() {
@@ -52,6 +55,11 @@
 			...mapMutations({
 				setQuestionDisPlay: 'SET_PUT_QUESTION_MASK'
 			}),
+		},
+		mounted() {
+			makeExpandingArea(document.getElementsByClassName('question-title')[0]);
+			makeExpandingArea(document.getElementsByClassName('question-topic')[0]);
+			makeExpandingArea(document.getElementsByClassName('question-desc')[0]);
 		},
 		computed: {
 			...mapGetters([

@@ -98,7 +98,7 @@ export function toTop(btn) {
     window.onscroll = function () {
         //每次移动滚动条的时候都给leader赋值，模拟leader获取距离顶部的距离
         leader = scroll().top;
-        if(scroll().top>200){
+        if(scroll().top>300){
             btn.show()
         }else{
             btn.hide()

@@ -25,6 +25,7 @@
 
 <script type="text/ecmascript-6">
   import {mapGetters,mapMutations} from 'vuex';
+  import {makeExpandingArea} from 'common/js/common.js';
   export default {
     methods: {
       cls_mask() {
@@ -33,6 +34,9 @@
       ...mapMutations({
         setIdeaDisplay: 'SET_WRITE_IDEA_MASK' 
       })
+    },
+    mounted() {
+      makeExpandingArea(document.getElementsByClassName('idea-content')[0]);
     },
     computed: {
       ...mapGetters([

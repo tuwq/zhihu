@@ -16,6 +16,7 @@
 		left: 400px;
 		width: 700px;
 		height: 600px;
+		min-height: 600px;
 		background: #fff;
 		z-index: 120;
 		.mask-left {
@@ -73,12 +74,13 @@
 			padding: 0px 10px;
 			margin: 20px auto;
 			width: 90%;
-			height: 78px;
+			min-height: 78px;
 			font-size: 16px;
 			line-height: 40px;
 			border-radius: 2px;
 			border-style: "solid";
 			border-color: #EBEBEB;
+			overflow: hidden;
 			&::-webkit-input-placeholder{
 	            color: #999;
 	            font-size: 16px;
@@ -86,32 +88,36 @@
 	            line-height: 40px;
 	    	}
 		}
-		.question-topic {
+		.question-topic-box {
+			position: relative;
+			.question-topic {
 			display: block;
 			box-sizing: border-box;
 			padding: 0px 10px;
 			margin: 20px auto;
 			width: 90%;
-			height: 50px;
+			overflow: hidden;
+			min-height: 50px;
 			font-size: 16px;
 			line-height: 40px;
 			border-radius: 2px;
 			border-style: "solid";
 			border-color: #EBEBEB;
 			&::-webkit-input-placeholder{
-	            color: #999;
-	            font-size: 16px;
-	            font-weight: 400;
-	            line-height: 40px;
-	    	}
-		}
-		.search-icon {
-			position: absolute;
-			right: 38px;
-			top: 112px;
-			cursor: pointer;
-			svg {
-				fill: #8590A6;
+		            color: #999;
+		            font-size: 16px;
+		            font-weight: 400;
+		            line-height: 40px;
+		    	}
+			}
+			.search-icon {
+				position: absolute;
+				right: 38px;
+				top: 10px;
+				cursor: pointer;
+				svg {
+					fill: #8590A6;
+				}
 			}
 		}
 	}
@@ -140,12 +146,13 @@
 	.question-desc {
 		display: block;
 		width: 90%;
-		height: 50px;
+		min-height: 50px;
 		box-sizing: border-box;
 		padding: 0 10px;
 		font-size: 16px;
 		line-height: 40px;
 		margin: 20px auto;
+		overflow: hidden;
 		border-radius: 2px;
 		border-style: "solid";
 		border-color: #EBEBEB;
