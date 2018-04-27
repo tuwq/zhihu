@@ -98,19 +98,18 @@ export function toTop(btn) {
     window.onscroll = function () {
         //每次移动滚动条的时候都给leader赋值，模拟leader获取距离顶部的距离
         leader = scroll().top;
-        if(scroll().top>100){
+        if(scroll().top>200){
             btn.show()
         }else{
             btn.hide()
         }
-        //每次移动滚动条的时候都给leader赋值，模拟leader获取距离顶部的距离
     }
     var timer = null;
     var target = 0;
     btn.on('click',(e) => {
          clearInterval(timer);
           timer = setInterval(function () {
-            var step = (target-leader)/10;
+            var step = (target-leader)/5;
             step = step>0?Math.ceil(step):Math.floor(step);
             leader = leader +step;
             window.scrollTo(0,leader);

@@ -15,6 +15,9 @@ const mutations = {
 	},
 	[types.SET_EXIST_USER](state,code) {
 		state.exist_user = code;
+	},
+	[types.SET_PEOPLE_DROPUP](state,isDispaly) {
+		state.people_dropup = isDispaly
 	}
 }
 export default mutations

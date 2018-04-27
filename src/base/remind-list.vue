@@ -20,11 +20,11 @@
 <script type="text/ecmascript-6">
 	import remind from 'base/remind.vue';
 	export default {
-		prop: {
-			reminds:{
-				type: Array,
-				default: []
-			}
+		props: {
+			 reminds: {
+		        type: Array,
+		        default: []
+		      }
 		},
 		components: {
 			'remind': remind

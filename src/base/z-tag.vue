@@ -2,7 +2,7 @@
  	<div class="tag">
 		<div class="arrow">
 			<em></em>
-			<span></span>
+			<!--  <span></span>  -->
 		</div>
 		<slot name="content"></slot>
 	</div>

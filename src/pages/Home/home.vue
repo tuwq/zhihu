@@ -11,6 +11,7 @@
       <put-question></put-question>
       <writeIdea></writeIdea>
       <z-drop></z-drop>
+      <remind-list :reminds="['suggest','toTop']"></remind-list>
     </div>
   </div>
 </template>
@@ -20,13 +21,15 @@ import ZHeader from 'z_components/z-header.vue';
 import PutQuestion from 'z_components/putQuestion.vue';
 import writeIdea from 'z_components/writeIdea.vue';
 import zDrop from 'z_components/zDrop.vue';
- import {mapMutations} from 'vuex'; 
+import {mapMutations} from 'vuex'; 
+import remindList from 'base/remind-list.vue';
   export default {
     components: {
       ZHeader,
       PutQuestion,
       writeIdea,
-      zDrop
+      zDrop,
+      remindList
     },
     methods: {
       ...mapMutations({

@@ -18,7 +18,7 @@ import {scroll} from 'common/js/common.js';
 				// 元素距body顶部的距离，不包括被卷去的部分
 				var h2 = $('.detail-header-wrapper')[0].offsetTop;
 				const sumHeight = h + h2;
-				window.onscroll=function() {
+				window.addEventListener('scroll',()=>{
 					// 浏览器被卷去的部分
 					// 元素的距离等于元素距可见顶部的距离 + 浏览器被卷去的距离
 					if(scroll().top>sumHeight){
@@ -30,10 +30,11 @@ import {scroll} from 'common/js/common.js';
 						$('.scroll-header-wrapper').css('position','absolute');
 						$('.scroll-header-wrapper').css('z-index','0');
 					}
-				}
+				})
 			}
 		},
 		mounted () {
+			$('#content-arrow').addClass('content-arrow').removeClass('content-arrow-top');
 			this.switchHeader();
 		}
 	}

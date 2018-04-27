@@ -1,9 +1,9 @@
 <template>
 	<div class="selection-wrapper">
 		<div class="selection-bar">
-	 		<button class="bar-item active" @click.stop.prevent="to_recommend($event)">为你推荐</button>
-	 		<button class="bar-item" @click.stop.prevent="to_hot($event)">全站热门</button>
-	 		<button class="bar-item" @click.stop.prevent="to_invite($event)">邀请回答</button>
+	 		<button class="bar-item is-active" @click.stop.prevent;>为你推荐</button>
+	 		<button class="bar-item" @click.stop.prevent;>全站热门</button>
+	 		<button class="bar-item" @click.stop.prevent;>邀请回答</button>
 	 	</div>
 	 	<div class="main-content">
 	 		<recommend v-show="content_type==0"></recommend>
@@ -28,21 +28,18 @@ import invite from 'question_components/invite.vue';
 			hot,
 			invite
 		},
+		mounted() {
+			this.initLink();
+		},
 		methods: {
-			to_recommend(e) {
-				this.content_type = 0;
-				this.isActive(e);
-			},
-			to_hot(e) {
-				this.content_type = 1;
-				this.isActive(e);
-			},
-			to_invite(e) {
-				this.content_type = 2;
-				this.isActive(e);
-			},
-			isActive(e) {
-				$(e.target).addClass('active').siblings('button').removeClass('active');
+			initLink() {
+				$('.bar-item').each((index,el) => {
+					var me = $(el)
+					me.on('click',(e) => {
+						me.addClass('is-active').siblings('.bar-item').removeClass('is-active')
+						this.content_type = index;
+					})
+				});	
 			}
 		}
 	}

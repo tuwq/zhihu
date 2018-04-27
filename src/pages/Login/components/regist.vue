@@ -21,11 +21,11 @@
 							</span>
 							<a class="getCode">获取短信验证码</a>
 						</div>
-						<div class="phone-verification-wrapper">
+						<div class="phone-verification-wrapper" style="border: none;">
 							<span class="verification-input-wrapper">
-								<input type="eamil" class="input-verification" placeholder="输入正确的邮箱格式">
+								
 							</span>
-							<a class="getCode">获取邮箱验证码</a>
+							<a class="getCode">接收语音验证码</a>
 						</div>
 						<div class="registBtn-wrapper">
 							<button class="register-btn">注册</button>

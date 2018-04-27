@@ -35,7 +35,6 @@
 
 <script type="text/ecmascript-6">
 	import {mapGetters,mapMutations} from 'vuex';
-	//非父子组件之间的通信
 	export default {
 		methods: {
 			quit(e) {

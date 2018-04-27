@@ -10,7 +10,7 @@
  		</div>
  		<div class="special">
 		<view-conversation></view-conversation>
-		<remind-list reminds="['suggest','toTop']"></remind-list>
+		<remind-list :reminds="['suggest','toTop']"></remind-list>
 	    </div>
  	</div>
 </template>
