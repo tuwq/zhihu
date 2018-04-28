@@ -3,11 +3,11 @@ const bcrypt = require('bcrypt')
 const Schema = mongoose.Schema;
 const { ObjectId, Mixed } = Schema.Types
 
-var UserSchema = new mongoose.Schema({
+var UserSchema = new Schema({
 	username: {
 		unique: false,
 	    required: true,
-	    type: String,
+	    type: String
 	},
 	emial: {
 		unique: true,
@@ -24,17 +24,22 @@ var UserSchema = new mongoose.Schema({
 	password: {
 		unique: false,
 		required: true,
-		type: String,
-		default: ''
+		type: String
 	},
 	intro: String,
 	info: String,
-	avatar_url: String,
+	avatar_url: [String],
 	vcode: String,
-	hobby: [String],
-	sex: Number,
-	registStatus: Number,
-	attention_users: [{
+	hobby: [String],	
+	sex: {				
+		type: Number,
+		default: 0 
+	},			
+	registStatus: {
+		type: Number,
+		default: 0
+	},
+	attentions: [{
 	    type: ObjectId,
 	    ref: 'User'
 	}],
@@ -50,7 +55,10 @@ var UserSchema = new mongoose.Schema({
 		type: ObjectId,
 		ref: 'Comment'
 	}],
-	approve: Number,
+	approve: {
+		type: Number,
+		default: 0
+	},	
 	meta: {
 	    createdAt: {
 	      type: Date,
@@ -62,5 +70,4 @@ var UserSchema = new mongoose.Schema({
 	    }
   	}
 })
-mongoose.model('User', UserSchema)
 module.exports = UserSchema

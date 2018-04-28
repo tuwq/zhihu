@@ -2,6 +2,42 @@
 .side-column {
 	width: 296px;
 	color: #646464;
+	.achievement-box {
+		letter-spacing: 1.4px;
+		.header-title {
+			display: flex;
+			-webkit-box-pack: justify;
+			justify-content: space-between;
+			-webkit-box-align: center;
+			align-items: center;
+			height: 50px;
+			padding: 0 20px;
+			border-bottom: 1px solid #f6f6f6;
+			box-sizing: border-box;
+			.text {
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				font-weight: 600;
+			}
+		}
+		.side-items {
+			padding: 12px 0;
+			.side-item {
+				padding: 6px 20px;
+				.approve {
+					margin-bottom: 12px;
+					.text {width: 28px;display: inline-block;}
+				}
+				.collection {
+					margin-top: 6px;
+					margin-left: 29px;
+					font-size: 14px;
+					color: #8590a6;
+				}
+			}
+		}
+	}
 	.shipCard-box {
 		font-size: 14px;
 		.shipCard-inner {
