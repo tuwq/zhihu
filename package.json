@@ -10,18 +10,24 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "babel-polyfill": "^6.26.0",
     "bcrypt": "^2.0.1",
+    "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
     "express": "^4.16.3",
+    "express-session": "^1.15.6",
     "fastclick": "^1.0.6",
     "glob": "^7.1.2",
     "jquery": "^3.3.1",
     "less": "^3.0.1",
     "less-loader": "^4.1.0",
     "mongoose": "^5.0.16",
+    "vee-validate": "^2.0.8",
     "vue": "^2.5.2",
     "vue-lazyload": "^1.2.3",
     "vue-router": "^3.0.1",
+    "vue-validator": "^3.0.0-alpha.2",
     "vuex": "^3.0.1"
   },
   "devDependencies": {

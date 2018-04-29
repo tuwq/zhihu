@@ -37,8 +37,47 @@ exports.walk = function(path) {
     })
 } 
 
+exports.getPhoneCode = function(num) {
+     var result = "";
+     for( i = 0 ; i < parseInt(num); i++ ){
+        result += (parseInt(Math.random()*10)).toString();
+     } 
+     return  result;
+}
+
+exports.Result = function(obj,errCode) {
+  if (arguments.length === 1) {
+    if(typeof(obj) == 'number') {
+      console.log(obj)
+      return {
+        status: obj
+      }
+    }else {
+      return {
+        status: 0,
+        result: obj
+      } 
+    } 
+  }else{
+    return {
+      status: errCode,
+      result: {msg:obj} 
+    }
+  }
+}
+exports.isEmpty = function(str){
+    if(str == null || str.length === 0){
+        return true;
+    }else{
+        return false;
+    }
+} 
+
 module.exports = {
-  walk: this.walk
+  walk: this.walk,
+  getPhoneCode: this.getPhoneCode,
+  Result: this.Result,
+  isEmpty: this.isEmpty
 };
 
 

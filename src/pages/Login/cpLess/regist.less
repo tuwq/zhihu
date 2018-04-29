@@ -9,6 +9,7 @@
 			font-size: 16px;
 			.register-header {
 				.phone-input-wrapper {
+					position: relative;
 					text-align: left;
 					border-bottom: 1px solid rgba(0,0,0,.1);
 					.select-country {
@@ -44,14 +45,26 @@
 						color: #777;
 						.input-placeholder;
 					}
-					.error-msg {
-						display: none;
-						overflow: hidden;
-						width: 228px;
-						line-height: 40px;
+					.tip-msg {
+						position: absolute;
+						top: 0;
+						right: 0;
+						z-index: 5;
 						height: 40px;
-						font-size: 16px;
+						width: 150px;
+						line-height: 40px;
+						background: red;
 						color: red;
+						display: inline-block;
+						overflow: hidden;
+						box-sizing: border-box;
+						text-align: left;
+						cursor: text;
+						color: #f1403c;
+						background: #fff;
+						opacity: 1;
+						transition: opacity .25s ease;
+						font-size: 16px;
 					}
 				}
 				.phone-verification-wrapper {
@@ -93,6 +106,9 @@
 						box-sizing: border-box;
 						width: 100%;
 						cursor: pointer;
+						&:hover {
+							background: #0077e6;
+						}
 					}
 				}
 			}

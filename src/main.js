@@ -10,6 +10,7 @@ import VueLazyload from 'vue-lazyload'
 // Vuex
 import store from 'store/main.js'
 
+
 fastclick.attach(document.body)
 
 Vue.use(VueLazyload, {
