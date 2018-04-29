@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const question_user = require('../schema/question_user.js')
-var Question_user = mongoose.model('Question_user', question_user,'question_user')
+const questionUser = require('../schema/question_user.js')
+var QuestionUser = mongoose.model('QuestionUser', questionUser,'questionUser')
 
-module.exports = Question_user
+module.exports = QuestionUser

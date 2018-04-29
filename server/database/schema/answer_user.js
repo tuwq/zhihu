@@ -2,10 +2,10 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 const { ObjectId, Mixed } = Schema.Types
 
-var QuestionUser = new Schema({
-	question_id: {
+var AnswerUserSchema = new Schema({
+	answer_id: {
 		type: ObjectId,
-		ref: 'Question'
+		ref: 'Answer'
 	},
 	user_id: {
 		type: ObjectId,
@@ -17,15 +17,12 @@ var QuestionUser = new Schema({
 		type: Number,
 		default: 0
 	},
-	meta: {
-	    createdAt: {
-	      type: Date,
-	      default: Date.now()
-	    },
-	    updatedAt: {
-	      type: Date,
-	      default: Date.now()
-	    }
-  	}
+	bad: {
+		unique: false,
+	    required: true,
+		type: Number,
+		default: 0
+	}
 })
-module.exports = QuestionUser
+
+module.exports = AnswerUserSchema
