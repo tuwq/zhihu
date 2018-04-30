@@ -9,14 +9,17 @@
 					</svg></span>
 				</button>
 				<span>&nbsp;</span>
-				<input type="tel" class="input-phone" placeholder="手机号">
-				<span class="error-msg">手机格式错误</span>
+				<input type="tel" class="input-phone" :placeholder="placeholderText" @focus="tipMsg=''" 
+				@blur="placeholderText='请输入正确的手机格式'" v-model="telphone">
+				<span class="error-msg" v-show="tipMsg!=''">{{tipMsg}}</span>
 			</div>
 			<div class="phone-verification-wrapper">
 				<span class="verification-input-wrapper">
-					<input type="number" class="input-verification" placeholder="输入6位短信验证码">
+					<input type="number" 
+					@focus="tipMsg=''"
+					class="input-verification" :placeholder="placeholderVcode" v-model="vCode">
 				</span>
-				<a class="getCode">获取短信验证码</a>
+				<a class="getCode" @click.stop.prevent="getCode">获取短信验证码</a>
 			</div>
 		</div>
 		<div class="phone-verification-wrapper">
@@ -27,8 +30,50 @@
 </template>
 
 <script type="text/ecmascript-6">	
+import axios from 'axios'
 	export default {
+		data() {
+			return {
+				telphone: '',
+				vCode: '',
+				tipMsg: '',
+				placeholderText: '手机号',
+				placeholderVcode: '输入6位短信验证码'
+			}
+		},
+		computed: {
+			formData: {
+				get() {
+					return {
+						telphone: this.telphone,
+						vCode: this.vCode
+					};
+				},
+				set({telphone,vCode}) {
+					this.telphone = telphone,
+					this.vCode = vCode
+				}
+			}
+		},
+		watch: {
+			formData(newval) {
+				this.$emit('changeData',newval)
+			}
+		},
 		methods: {
+			getCode() {
+				axios.post('/user/getCode',{
+					telphone: this.telphone,
+					action: 'login'
+				}).then((res)=> {
+					if(res.data.status) {
+						this.tipMsg = res.data.result.msg
+						return;
+					}else{
+						this.vCode = res.data.result.phoneCode
+					}
+				});
+			},
 			toMailLogin() {
 				this.$emit('toMailLogin');
 			}

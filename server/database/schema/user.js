@@ -16,7 +16,7 @@ var UserSchema = new Schema({
 		  unique: false,
 	    required: true,
 	    type: String,
-      default: '无名'
+      default: '匿名用户'
 	},
 	email: {
 		unique: false,
@@ -31,14 +31,18 @@ var UserSchema = new Schema({
 		default: ''
 	},
 	password: {
-		unique: false,
-		required: false,
-		type: String
+  	unique: false,
+    required: true,
+    type: String,
+    default: ''
 	},
 	intro: String,
 	info: String,
 	avatar_url: [String],
-	vcode: String,
+	status: {
+    type: Number,
+    default: 0
+  },
 	hobby: [String],	
 	sex: {				
 		type: Number,

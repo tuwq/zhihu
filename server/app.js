@@ -3,17 +3,22 @@ const path = require('path')
 const port = process.env.PORT || 3000	
 const db = require('./database/init.js')
 const app = express()
-var session = require("express-session");
 const cookieParase = require('cookie-parser');
+var session = require("express-session");
 var bodyParser = require('body-parser');
+var mongoStore = require('connect-mongo')(session);
 app.use(bodyParser.json());
 //post处理需要body-parser
 app.use(bodyParser.urlencoded({extended: false}));
-app.use(cookieParase());
+app.use(cookieParase('tuwq'));
 app.use(session({
-    secret : 'keyboard cat',
+    secret : 'tuwq',
     resave : false,
-    saveUninitialized : true
+    saveUninitialized : true,
+    store: new mongoStore({
+	    url: 'mongodb://localhost:27017/zhihu',
+	    collection: 'sessions'
+	})
     //这里中间件不能加cookie
 }));
 

@@ -30,7 +30,9 @@
 							</div>
 							<div class="phone-verification-wrapper" style="border: none;">
 								<span class="verification-input-wrapper">
-									
+									<input type="number" v-model="password" 
+									class="input-password" 
+									placeholder="请设置您的密码">
 								</span>
 								<a class="getCode" @click.stop.prevent="testClick">获取语音验证码</a>
 							</div>
@@ -60,7 +62,8 @@ import axios from 'axios'
 				vCode: '',
 				placeholderVcode: '请输入6位短信验证码',
 				placeholderText: '手机号',
-				tipMsg: ''
+				tipMsg: '',
+				password: ''
 			}
 		},
 		methods: {
@@ -75,7 +78,9 @@ import axios from 'axios'
 				}
 				axios.post('/user/regist',{
 					telphone: this.telphone,
-					vCode: this.vCode
+					vCode: this.vCode,
+					password: this.password,
+					action: 'regist'
 				}).then((res) => {
 					if(res.data.status){
 						this.tipMsg = res.data.result.msg

@@ -1,9 +1,29 @@
 var mongoose = require('mongoose')
 var User = mongoose.model('User')
 const util = require('../../common/util.js');
+const checkUtil = require('../../common/checkUtil.js')
 
-exports.toLogin = function (req,res) {
-	
+exports.pwLogin = function (req,res) {
+	var fields = req.body;
+	User.findOne({telphone: fields.telphone})
+		.select('_id telphone password')
+		.exec((err,dbUser) => {
+			if(err) {
+				console.log(err)
+			} 
+			if(!dbUser) {
+				res.json(util.Result('该手机未注册',1))
+				return
+			}
+			dbUser.comparePassword(fields.password,dbUser.password).then((isMath) => {
+				if(!isMath){
+					res.json(util.Result('密码错误',1))
+					return
+				}
+				req.session.user = dbUser
+				return res.json(util.Result(0))
+			})
+		});
 }
 
 exports.getCode = function (req,res) {
@@ -17,42 +37,76 @@ exports.getCode = function (req,res) {
 		if (err) {
 			console.log(err)
 		}
-		if (user) {
+		if (user&&fields.action=='regist') {
 			// 存在，给予错误信息
 			res.json(util.Result('该手机号已注册',1))
 			return;
 		}
 		// 不存在返回验证码,将验证码存储在cookie中
 		var result = util.getPhoneCode(6)	
-		res.cookie('phoneCode', result, {maxAge: 3600})
-		res.json(util.Result({phoneCode:result}))
+		res.cookie('phoneCode', result, {maxAge: 3600,signed: true,httpOnly: true})
+		return res.json(util.Result({phoneCode:result}))
 	})
 }
 
-exports.test = function (req,res) {
-	var result = util.getPhoneCode(6)	
-	res.json(util.Result('信息错误',1));
+exports.phoneLogin = function (req,res) {
+	var fields = req.body;	
+	if(checkUtil.isEmtry([fields.telphone,fields.vCode])) {
+		res.json(util.Result('信息不完整',1))
+		return;
+	}
+	// TODO 手机号验证
+	var vCode = req.signedCookies.phoneCode
+	if(!checkUtil.isSame(fields.vCode,vCode)){
+		res.json(util.Result('手机验证码错误',1))
+		return
+	}
+	User.findOne({telphone: fields.telphone})
+		.select('_id telphone')
+		.exec((err,dbUser)=> {
+			if(!dbUser) {
+				res.json(util.Result('该手机未注册',1))
+				return
+			}
+			req.session.user = dbUser
+			return res.json(util.Result(0))
+		})
+}
+
+exports.test = function (req,res) {	
+	return res.json(util.Result({user: req.session.user}));
+}
+
+exports.test2 = function (req,res) {
+	return res.json(util.Result('信息不完整',1))
 }
 
 exports.toRegist = function (req,res) {
+
 	var fields = req.body;
-	if (util.isEmpty(fields.telphone)||util.isEmpty(fields.vCode)) {
+	if(checkUtil.isEmtry([fields.telphone,fields.vCode,fields.password])) {
+		res.json(util.Result('信息不完整',1))
 		return;
 	}
+	// TODO 手机号验证
+	//console.log(req.cookies);  //获取未加密的cookie  
+    var vCode = req.signedCookies.phoneCode;   //获取加密的cookie  
+	if(!checkUtil.isSame(fields.vCode,vCode)) {
+		res.json(util.Result('手机验证码错误',1))
+		return
+	}
+	// TODO 密码强度验证
 	User.findOne({telphone: fields.telphone},(err,dbUser) => {
-		if(err) {
-			console.log(err)
-		}
 		if (dbUser) {
-			// 存在，给予错误信息
 			res.json(util.Result('该手机号已注册',1))
-			return;
+			return
 		}
-		// 不存在则填充信息
 		const user = new User({
-			telphone: fields.telphone
+			telphone: fields.telphone,
+			vCode: vCode,
+			password: fields.password
 		})
-		user.save();
-		res.json(util.Result(0));
+		user.save()
+		return res.json(util.Result(0))
 	})
 }
