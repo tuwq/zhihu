@@ -5,6 +5,7 @@
 			<p-index></p-index>
 		</div>
 		<remind-list :reminds="['suggest','toTop']"></remind-list>
+		 <z-drop></z-drop>
 	</div>
 </template>
 
@@ -14,19 +15,24 @@
 	import remindList from 'base/remind-list.vue';
 	import {mapMutations} from 'vuex'; 
 	import PHeader from 'p_components/p-header.vue'
+	import zDrop from 'z_components/zDrop.vue';
+	import axios from 'axios'
  	export default {
 		components: {
 			'remind': remind,
 			'p-index': PIndex,
 			'remind-list' : remindList,
-			'p-header': PHeader
+			'p-header': PHeader,
+			'z-drop': zDrop
 		},
 		methods: {
 			clsDrop() {
 				this.setPeopleDropUp(false)
+				this.setIndexDropDown(false)
 			},
 			...mapMutations({
-				setPeopleDropUp: 'SET_PEOPLE_DROPUP'
+				setPeopleDropUp: 'SET_PEOPLE_DROPUP',
+				setIndexDropDown: 'SET_INDEX_DROPDOWN',
 			})
 		}
 	}

@@ -30,10 +30,10 @@
 	  		</button></div></div>
 	  		<div class="profile">
 	  			<div class="Popover header-menu">
-	  				<button v-show="exist_user==1" @click.stop.prevent="openDrop" class="Button button profileEntry button--plain" type="button">
-	  					<img src="../../../common/image/index/avatar_user_header.jpg" class="Avatar header-avatar">
+	  				<button v-if="loginStatus==1" v-cloak @click.stop.prevent="openDrop" class="Button button profileEntry button--plain" type="button">
+	  					<img v-lazy="base+avatar" width="34" height="34" class="Avatar header-avatar">
 	  				</button>
-	  				<router-link to="/login" v-show="exist_user==0" class="Button button button--plain login-btn" type="button">登录</router-link>
+	  				<router-link to="/login" v-cloak v-if="loginStatus==0" class="Button button button--plain login-btn" type="button">登录</router-link>
 	  			</div>
 	  		</div>
 	  	</div>
@@ -43,27 +43,47 @@
 
 <script type="text/ecmascript-6">
 import searchBar from 'z_components/search-bar.vue';
-	import {mapMutations,mapGetters} from 'vuex';
+import {mapMutations,mapGetters} from 'vuex';
+import axios from 'axios'
 	export default {
-		components: {
-			'search-bar' : searchBar
-		},
-		computed: {
-			...mapGetters([
-				'exist_user'
-			])
+		data() {
+			return {
+				loginStatus: 1,
+				base: '../../../../static/avatar/34/',
+				avatar: 'avatar.png'
+			}
 		},
 		methods: {
+			checkLoginStaus() {
+				axios.get('/index/checkLoginStaus').then( (res) => {
+					if (res.data.status) {
+						// 未登录
+						this.loginStatus = 0
+						return
+					}
+					this.avatar = res.data.result.avatar
+					this.loginStatus = 1
+				})
+			},
 			openDrop() {
 				this.setIndexDropDown(true);
 			},
 			...mapMutations({
 				setIndexDropDown: 'SET_INDEX_DROPDOWN',
 			})
+		},
+		components: {
+			'search-bar' : searchBar
+		},
+		created() {
+			this.checkLoginStaus();
 		}
 	}
 </script>
 
 <style scoped lang="less" rel="stylesheet/less" type="text/less">
   @import url('../cpLess/z-header.less');
+  [v-cloak] {
+  	display: none !important;
+  }
 </style>

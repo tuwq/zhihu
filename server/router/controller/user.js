@@ -2,11 +2,12 @@ var mongoose = require('mongoose')
 var User = mongoose.model('User')
 const util = require('../../common/util.js');
 const checkUtil = require('../../common/checkUtil.js')
+const tokenUtil = require('../../common/token.js')
+const redis = require('../../common/redis.js')
 
 exports.pwLogin = function (req,res) {
 	var fields = req.body;
 	User.findOne({telphone: fields.telphone})
-		.select('_id telphone password')
 		.exec((err,dbUser) => {
 			if(err) {
 				console.log(err)
@@ -17,11 +18,14 @@ exports.pwLogin = function (req,res) {
 			}
 			dbUser.comparePassword(fields.password,dbUser.password).then((isMath) => {
 				if(!isMath){
+					dbUser.incLoginAttepts(dbUser);
 					res.json(util.Result('密码错误',1))
 					return
 				}
 				req.session.user = dbUser
-				return res.json(util.Result(0))
+				// 生成token,将token和用户信息放入redis
+				const token = tokenUtil.setToken(dbUser.telphone)
+				return res.json(util.Result({token: token}))
 			})
 		});
 }
@@ -62,22 +66,28 @@ exports.phoneLogin = function (req,res) {
 		return
 	}
 	User.findOne({telphone: fields.telphone})
-		.select('_id telphone')
 		.exec((err,dbUser)=> {
 			if(!dbUser) {
 				res.json(util.Result('该手机未注册',1))
 				return
 			}
 			req.session.user = dbUser
-			return res.json(util.Result(0))
+			// 生成token,将token和用户信息放入redis
+			const token = tokenUtil.setToken(dbUser.telphone)
+			return res.json(util.Result({token: token}))
 		})
 }
 
+exports.logout = function (req,res) {
+	delete req.session.user
+	return res.json(util.Result(0))
+}
 exports.test = function (req,res) {	
 	return res.json(util.Result({user: req.session.user}));
 }
 
 exports.test2 = function (req,res) {
+	delete req.session.user
 	return res.json(util.Result('信息不完整',1))
 }
 
@@ -109,4 +119,17 @@ exports.toRegist = function (req,res) {
 		user.save()
 		return res.json(util.Result(0))
 	})
+}
+
+exports.getInfoByToken = function (req,res) {
+	var user = req.session.user;
+	// 验证token
+	tokenUtil.verifyToken(req.body.token,user.telphone)
+	.then((token)=> {
+		res.json(util.Result({_id: user._id,username: user.username}))
+	})
+	.catch((err)=> {
+		res.json(util.Result(1))
+	})
+	return
 }

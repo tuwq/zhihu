@@ -7,10 +7,17 @@
 	</ul>
 </template>
 <script type="text/ecmascript-6">
+import axios from 'axios'
+import {mapMutations} from 'vuex';
 	export default {
 		methods: {
 			quit() {
-				this.$router.push({path: '/login'});
+				axios.get('/user/logout').then((res)=> {
+					if (!res.data.result.status) {
+						this.setExistUser(0)
+						this.$router.push('/');
+					}
+				})
 			}
 		}
 	}

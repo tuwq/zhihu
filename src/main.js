@@ -14,7 +14,7 @@ import store from 'store/main.js'
 fastclick.attach(document.body)
 
 Vue.use(VueLazyload, {
-  loading: require('common/image/header/avatar.png')
+  loading: '/static/avatar/34/avatar.png'
 })
 
 Vue.config.productionTip = false

@@ -27,7 +27,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-import {mapGetters,mapMutations} from 'vuex';
+import {mapGetters,mapMutations,mapActions} from 'vuex';
 import phoneLogin from 'login_components/phone-login.vue';
 import mailLogin from 'login_components/mail-login.vue';
 import axios from 'axios'
@@ -55,8 +55,7 @@ import axios from 'axios'
 								this.tipMsg = res.data.result.msg;
 								return
 							}
-							alert('登录成功')
-							return
+							this.toIndex(res)
 						})
 					}else{
 						this.tipMsg = '验证码有误'
@@ -67,24 +66,31 @@ import axios from 'axios'
 					if ( this.formData.telphone.length===0||this.formData.vCode.length===0) {
 						this.$refs.phoneForm.placeholderText =  '请输入正确的手机格式'
 						this.$refs.phoneForm.placeholderVcode = '请输入短信验证码'
-						return false
+						return
 					}
-					console.log(this.formData)
 					axios.post('/user/phoneLogin',this.formData).then( (res) => {
 						if(res.data.status){
 							this.$refs.phoneForm.tipMsg = res.data.result.msg
 							return;
 						}
-						alert('登录成功')
+						this.toIndex(res)
 					})
 				}
+			},
+			toIndex(res) {
+				// 去首页之前，存储token放入本地
+				this.saveToken(res.data.result.token)
+				this.$router.push('/')
 			},
 			changeData(formData) {
 				this.formData = formData
 			},
 			...mapMutations({
-				setFormType: 'SET_FORM_TYPE'
+				setFormType: 'SET_FORM_TYPE',
 			}),
+			...mapActions([
+	        	'saveToken'
+	    	])
 		},
 		computed: {
 			...mapGetters([

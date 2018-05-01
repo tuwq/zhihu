@@ -1,5 +1,5 @@
 <template>
-  <div id="home">
+  <div id="home" @click.stop.prevent="clsModal">
     <z-header></z-header>
     <br>
     <div class="main">
@@ -23,18 +23,31 @@ import writeIdea from 'z_components/writeIdea.vue';
 import zDrop from 'z_components/zDrop.vue';
 import {mapMutations} from 'vuex'; 
 import remindList from 'base/remind-list.vue';
+import axios from 'axios'
   export default {
-    components: {
-      ZHeader,
-      PutQuestion,
-      writeIdea,
-      zDrop,
-      remindList
-    },
     methods: {
-      ...mapMutations({
-        setIndexDropDown: 'SET_INDEX_DROPDOWN'
-      })
+        clsModal() {
+          this.setIndexDropDown(false)
+        },
+        ...mapMutations({
+          setIndexDropDown: 'SET_INDEX_DROPDOWN',
+        })
+      },
+      components: {
+        ZHeader,
+        PutQuestion,
+        writeIdea,
+        zDrop,
+        remindList
+      },
+     watch: {
+      '$route' (to, from) {
+        const toDepth = to.path
+        const fromDepth = from.path
+        if(toDepth == '/home') {
+           this.$router.go(0)
+        }
+      }
     }
   }
 </script>

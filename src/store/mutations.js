@@ -13,11 +13,11 @@ const mutations = {
 	[types.SET_FORM_TYPE](state,type) {
 		state.form_type = type;
 	},
-	[types.SET_EXIST_USER](state,code) {
-		state.exist_user = code;
-	},
 	[types.SET_PEOPLE_DROPUP](state,isDispaly) {
 		state.people_dropup = isDispaly
+	},
+	[types.SET_TOKEN](state,token) {
+		state.token = token
 	}
 }
 export default mutations

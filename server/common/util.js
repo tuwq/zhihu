@@ -1,5 +1,6 @@
 const fs = require('fs');
 
+
  // 日期格式化
 Date.prototype.Format = function (fmt) {
   var o = {
@@ -81,7 +82,7 @@ const util = {
     } else {
         return true
     }
-  }
+  }  
 } 
 
 module.exports = util

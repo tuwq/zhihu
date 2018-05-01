@@ -38,7 +38,10 @@ var UserSchema = new Schema({
 	},
 	intro: String,
 	info: String,
-	avatar_url: [String],
+	avatar: {
+    type: String,
+    default: 'avatar.png'
+  },
 	status: {
     type: Number,
     default: 0

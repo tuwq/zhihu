@@ -5,7 +5,7 @@
 				<div class="content">
 					<span class="arrow"></span>
 					<div class="menu">
-						<a href="javascript:void(0)" type="button">
+						<a href="javascript:void(0)" type="button" @click.stop.prevent="toUserDetail"> 
 							<svg viewBox="0 0 20 20" width="14" height="16">
 								<title></title>
 								<g><path d="M13.4170937,10.9231839 C13.0412306,11.5757324 12.5795351,12.204074 12.6542924,12.7864225 C12.9457074,15.059449 18.2164534,14.5560766 19.4340179,15.8344151 C20,16.4286478 20,16.4978969 20,19.9978966 C13.3887136,19.9271077 6.63736785,19.9978966 0,19.9978966 C0.0272309069,16.4978969 0,16.5202878 0.620443914,15.8344151 C1.92305664,14.3944356 7.20116276,15.1185829 7.40016946,12.7013525 C7.44516228,12.1563518 7.02015319,11.5871442 6.63736814,10.9228381 C4.51128441,7.2323256 3.69679769,4.67956187e-11 10,9.32587341e-14 C16.3032023,-4.66091013e-11 15.4216968,7.4429255 13.4170937,10.9231839 Z"></path></g>
@@ -34,22 +34,50 @@
 </template>
 
 <script type="text/ecmascript-6">
-	import {mapGetters,mapMutations} from 'vuex';
+	import {mapGetters,mapMutations,mapActions} from 'vuex';
+	import axios from 'axios'
 	export default {
 		methods: {
-			quit(e) {
-				this.setExistUser(0);
+			toUserDetail() {
+				if (!this.token) {
+					this.$router.push('/')
+					return
+				}
+				axios.post('/user/getInfoByToken',{token: this.token})
+				.then( (res) => {
+					if (!res.data.status) {
+						const username = res.data.result.username
+						const id = res.data.result._id
+						this.$router.push('/people/'+username+id.substr(0,3))
+					}
+				}) 
+				this.setIndexDropDown(false);
+			},
+			quit() {
+				// TODO token没有消失
+				axios.get('/user/logout').then((res)=> {
+					if (!res.data.status) {
+						this.saveToken('')		
+					}
+				})
+				this.$router.go(0)
 				this.setIndexDropDown(false);
 			},
 			...mapMutations({
-				setExistUser: 'SET_EXIST_USER',
-				setIndexDropDown: 'SET_INDEX_DROPDOWN'
-			})
+				setIndexDropDown: 'SET_INDEX_DROPDOWN',
+			}),
+			...mapActions([
+	        	'saveToken'
+	    	])
 		},
 		computed: {
 			...mapGetters([
-				'index_dropdown'
+				'index_dropdown',
+				'token'
 			])
+		},
+		created() {
+
 		}
 	}
 </script>
