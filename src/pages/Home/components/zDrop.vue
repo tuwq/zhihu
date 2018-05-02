@@ -39,15 +39,10 @@
 	export default {
 		methods: {
 			toUserDetail() {
-				if (!this.token) {
-					this.$router.push('/')
-					return
+				var params = {
+					user_url: this.user.username+this.user._id.substr(0,5)
 				}
-				axios.post('/user/getUserInfoByToken',{token: this.token})
-				.then( (res) => {
-					var result = res.data.result
-					this.$router.push('/people/'+result.username+result._id.substr(0,5))
-				}) 
+				this.$router.push({name: 'people',params:params}) 
 				this.setIndexDropDown(false);
 			},
 			quit() {
@@ -63,11 +58,9 @@
 		computed: {
 			...mapGetters([
 				'index_dropdown',
-				'token'
+				'token',
+				'user'
 			])
-		},
-		created() {
-
 		}
 	}
 </script>

@@ -114,21 +114,48 @@ exports.toRegist = function (req,res) {
 	})
 }
 
-exports.getUserInfoByToken = function (req,res) {
+exports.getNowUserInfo = function (req,res) {
 	// 客户端每次在请求头中携带token
 	var token = req.headers.token
 	tokenUtil.verifyToken(token)
 	.then((_id)=>{
-		// 得到id
-		User.findOne({_id: _id},(err,dbUser)=> {
-			if (err) {
-				console.log(err)
-			}
-			return res.json(util.Result(dbUser))
-		})
+		// 得到用户信息
+		User.findOne({_id: _id})
+			.select('_id username avatar hobby info')
+			.exec( (err,dbUser) => {
+				if (err) {
+					console.log(err)
+				}
+				return res.json(util.Result(dbUser))
+			})
 	}).catch((err)=> {
 		// token到期或伪造
 		return res.json(util.Result(401))
 		// return res.status(401)
 	})
+}
+
+exports.getIdByToken = function (req,res) {
+	// 客户端每次在请求头中携带token
+	var token = req.headers.token
+	tokenUtil.verifyToken(token)
+	.then((_id)=>{
+		return res.json(util.Result({_id: _id}))
+	}).catch((err)=> {
+		// token到期或伪造
+		return res.json(util.Result(401))
+	})
+}
+exports.getInfoById = function (req,res) {
+	User.findOne({_id: req.body._id})
+		.select('_id username avatar hobby info')
+		.exec((err,dbUser)=> {
+			if(err){
+				console.log(err)
+			}
+			if(!dbUser) {
+				return res.json(util.Result(1))
+			}
+			return res.json(util.Result(dbUser))
+		})
 }

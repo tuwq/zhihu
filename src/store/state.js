@@ -8,6 +8,7 @@ const state = {
 	index_dropdown: false,
 	form_type: 0,					//0: 注册 1:登录
 	people_dropup: false,
+	user: {},
 	token: _getToken()||'',
 }
 

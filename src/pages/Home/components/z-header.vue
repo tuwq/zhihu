@@ -55,9 +55,9 @@ import axios from 'axios'
 		},
 		methods: {
 			init() {
-				axios.post('/user/getUserInfoByToken')
+				axios.post('/user/getNowUserInfo')
 					 .then((res) => {
-												
+						this.setUser(res.data.result)			
 					 })
 			},
 			openDrop() {
@@ -65,12 +65,13 @@ import axios from 'axios'
 			},
 			...mapMutations({
 				setIndexDropDown: 'SET_INDEX_DROPDOWN',
+				'setUser': 'SET_USER'
 			})
 		},
 		computed: {
 			...mapGetters([
 				'index_dropdown',
-				'token',
+				'token'
 			])
 		},
 		components: {

@@ -5,3 +5,4 @@ export const SET_FORM_TYPE = 'SET_FORM_TYPE';
 export const SET_PEOPLE_DROPUP = 'SET_PEOPLE_DROPUP'
 export const SET_TOKEN = 'SET_TOKEN'
 export const REMOVE_TOKEN = 'REMOVE_TOKEN'
+export const SET_USER = 'SET_USER'

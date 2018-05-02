@@ -23,13 +23,15 @@
 					</div>
 					<div class="info">
 						<div class="info-header"><h1 class="header-title">
-							<span class="name">炮塔向后转</span>
-							<span class="signature">回翻旧账的欠债人</span>
+							<span class="name">{{user.username}}</span>
+							<span class="signature">{{user.intro}}</span>
 						</h1></div>
 						<div class="info-body">
 							<div class="related-info">
 								<span class="related-icon"><svg viewBox="0 0 20 18" width="13" height="16"><title></title><g><path d="M15 3.998v-2C14.86.89 13.98 0 13 0H7C5.822 0 5.016.89 5 2v2l-3.02-.002c-1.098 0-1.97.89-1.97 2L0 16c0 1.11.882 2 1.98 2h16.033c1.1 0 1.98-.89 1.987-2V6c-.007-1.113-.884-2.002-1.982-2.002H15zM7 4V2.5s-.004-.5.5-.5h5c.5 0 .5.5.5.5V4H7z"></path></g></svg></span>
-								<span>计算机软件</span>
+								<span></span>
+								<span class="related-icon"><svg viewBox="0 0 20 18" width="13" height="16"><title></title><g><path d="M15 3.998v-2C14.86.89 13.98 0 13 0H7C5.822 0 5.016.89 5 2v2l-3.02-.002c-1.098 0-1.97.89-1.97 2L0 16c0 1.11.882 2 1.98 2h16.033c1.1 0 1.98-.89 1.987-2V6c-.007-1.113-.884-2.002-1.982-2.002H15zM7 4V2.5s-.004-.5.5-.5h5c.5 0 .5.5.5.5V4H7z"></path></g></svg></span>
+								<span></span>
 							</div>
 						</div>
 						<div class="info-footer">
@@ -45,12 +47,19 @@
 
 <script type="text/ecmascript-6">
  	export default {
-		methods: {
-			clsDrop() {
-
-			}
-
-		}
+ 		props: {
+ 			user: {
+ 				type: Object,
+ 				default() {
+ 					return {
+ 						info:{id: '1'}
+ 					}
+ 				}
+ 			}
+ 		},
+ 		created() {
+ 			console.log(this.user)
+ 		}
 	}
 </script>
 

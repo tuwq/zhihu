@@ -34,7 +34,14 @@
 
 <script type="text/ecmascript-6">
  	export default {
-
+ 		props: {
+ 			userInfo: {
+ 				type: Object,
+ 				default() {
+ 					return {}
+ 				}
+ 			}
+ 		},
 	}
 </script>
 

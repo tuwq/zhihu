@@ -13,6 +13,9 @@ Vue.use(Router)
 
 var router = new Router({
   linkActiveClass: 'active',
+  canReuse: function (transition) {
+    return false
+  },
   routes: [
    	{
    		path: '/',
@@ -27,7 +30,7 @@ var router = new Router({
           component: ZIndex,
           meta: {
               requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的,有子路由时需要写在子路由中
-          },
+          }
         }
       ]
    	},
@@ -50,8 +53,9 @@ var router = new Router({
       component: Detail
     },
     {
-      path: '/people/:user_id',
+      path: '/people/:user_url',
       component: People,
+      name: 'people',
       meta: {
             requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
       }
@@ -76,6 +80,7 @@ router.beforeEach((to, from, next) => {
         next();
     }
 })
+  
 import axios from 'axios'
 import * as types from '../store/mutation-types'
 axios.interceptors.request.use(

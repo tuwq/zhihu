@@ -36,8 +36,24 @@ var UserSchema = new Schema({
     type: String,
     default: ''
 	},
-	intro: String,
-	info: String,
+	info: {
+    sex: {
+      type: String,
+      default: ''
+    },
+    industry: {
+      type: String,
+      default: ''
+    },
+    intro: {
+      type: String,
+      default: ''
+    },  
+    signature: {
+      type: String,
+      default: ''
+    }, 
+  },
 	avatar: {
     type: String,
     default: 'avatar.png'
@@ -46,11 +62,7 @@ var UserSchema = new Schema({
     type: Number,
     default: 0
   },
-	hobby: [String],	
-	sex: {				
-		type: Number,
-		default: 0 
-	},			
+	hobby: [String],			
 	registStatus: {
 		type: Number,
 		default: 0
