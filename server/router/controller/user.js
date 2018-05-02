@@ -22,9 +22,8 @@ exports.pwLogin = function (req,res) {
 					res.json(util.Result('密码错误',1))
 					return
 				}
-				req.session.user = dbUser
-				// 生成token,将token和用户信息放入redis
-				const token = tokenUtil.setToken(dbUser.telphone)
+				// 生成token,内部包含了用户id
+				const token = tokenUtil.setToken({_id: dbUser._id})
 				return res.json(util.Result({token: token}))
 			})
 		});
@@ -71,23 +70,17 @@ exports.phoneLogin = function (req,res) {
 				res.json(util.Result('该手机未注册',1))
 				return
 			}
-			req.session.user = dbUser
-			// 生成token,将token和用户信息放入redis
-			const token = tokenUtil.setToken(dbUser.telphone)
+			// token
+			const token = tokenUtil.setToken({_id: dbUser._id})
 			return res.json(util.Result({token: token}))
 		})
 }
 
-exports.logout = function (req,res) {
-	delete req.session.user
-	return res.json(util.Result(0))
-}
 exports.test = function (req,res) {	
-	return res.json(util.Result({user: req.session.user}));
+	return res.status(401)
 }
 
 exports.test2 = function (req,res) {
-	delete req.session.user
 	return res.json(util.Result('信息不完整',1))
 }
 
@@ -121,15 +114,21 @@ exports.toRegist = function (req,res) {
 	})
 }
 
-exports.getInfoByToken = function (req,res) {
-	var user = req.session.user;
-	// 验证token
-	tokenUtil.verifyToken(req.body.token,user.telphone)
-	.then((token)=> {
-		res.json(util.Result({_id: user._id,username: user.username}))
+exports.getUserInfoByToken = function (req,res) {
+	// 客户端每次在请求头中携带token
+	var token = req.headers.token
+	tokenUtil.verifyToken(token)
+	.then((_id)=>{
+		// 得到id
+		User.findOne({_id: _id},(err,dbUser)=> {
+			if (err) {
+				console.log(err)
+			}
+			return res.json(util.Result(dbUser))
+		})
+	}).catch((err)=> {
+		// token到期或伪造
+		return res.json(util.Result(401))
+		// return res.status(401)
 	})
-	.catch((err)=> {
-		res.json(util.Result(1))
-	})
-	return
 }

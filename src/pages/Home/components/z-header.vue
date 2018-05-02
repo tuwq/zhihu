@@ -31,7 +31,7 @@
 	  		<div class="profile">
 	  			<div class="Popover header-menu">
 	  				<button v-if="loginStatus==1" v-cloak @click.stop.prevent="openDrop" class="Button button profileEntry button--plain" type="button">
-	  					<img v-lazy="base+avatar" width="34" height="34" class="Avatar header-avatar">
+	  					<img :src="base+avatar" width="34" height="34" class="Avatar header-avatar">
 	  				</button>
 	  				<router-link to="/login" v-cloak v-if="loginStatus==0" class="Button button button--plain login-btn" type="button">登录</router-link>
 	  			</div>
@@ -54,16 +54,11 @@ import axios from 'axios'
 			}
 		},
 		methods: {
-			checkLoginStaus() {
-				axios.get('/index/checkLoginStaus').then( (res) => {
-					if (res.data.status) {
-						// 未登录
-						this.loginStatus = 0
-						return
-					}
-					this.avatar = res.data.result.avatar
-					this.loginStatus = 1
-				})
+			init() {
+				axios.post('/user/getUserInfoByToken')
+					 .then((res) => {
+												
+					 })
 			},
 			openDrop() {
 				this.setIndexDropDown(true);
@@ -72,11 +67,17 @@ import axios from 'axios'
 				setIndexDropDown: 'SET_INDEX_DROPDOWN',
 			})
 		},
+		computed: {
+			...mapGetters([
+				'index_dropdown',
+				'token',
+			])
+		},
 		components: {
 			'search-bar' : searchBar
 		},
 		created() {
-			this.checkLoginStaus();
+			this.init();
 		}
 	}
 </script>

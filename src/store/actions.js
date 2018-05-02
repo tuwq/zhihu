@@ -1,6 +1,6 @@
 import * as types from './mutation-types'
 import {shuffle} from 'common/js/util'
-import { _saveToken } from 'common/js/cache'
+
 
 function findIndex(list, target) {
   return list.findIndex((item) => {
@@ -8,9 +8,6 @@ function findIndex(list, target) {
   })
 }
 
-export const saveToken = function ({commit}, token) {
-  commit(types.SET_TOKEN, _saveToken(token))
-}
 
 
 

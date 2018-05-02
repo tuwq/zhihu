@@ -1,4 +1,5 @@
 import * as types from './mutation-types'
+import { _setToken,_removeToken } from 'common/js/cookie'
 
 const mutations = {
 	[types.SET_PUT_QUESTION_MASK](state,isDispaly) {
@@ -17,7 +18,10 @@ const mutations = {
 		state.people_dropup = isDispaly
 	},
 	[types.SET_TOKEN](state,token) {
-		state.token = token
+		state.token = _setToken(token)
+	},
+	[types.REMOVE_TOKEN](state) {
+		state.token = _removeToken()
 	}
 }
 export default mutations

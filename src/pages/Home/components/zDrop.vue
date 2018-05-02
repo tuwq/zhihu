@@ -43,32 +43,22 @@
 					this.$router.push('/')
 					return
 				}
-				axios.post('/user/getInfoByToken',{token: this.token})
+				axios.post('/user/getUserInfoByToken',{token: this.token})
 				.then( (res) => {
-					if (!res.data.status) {
-						const username = res.data.result.username
-						const id = res.data.result._id
-						this.$router.push('/people/'+username+id.substr(0,3))
-					}
+					var result = res.data.result
+					this.$router.push('/people/'+result.username+result._id.substr(0,5))
 				}) 
 				this.setIndexDropDown(false);
 			},
 			quit() {
-				// TODO token没有消失
-				axios.get('/user/logout').then((res)=> {
-					if (!res.data.status) {
-						this.saveToken('')		
-					}
-				})
+				this.removeToken()	
 				this.$router.go(0)
 				this.setIndexDropDown(false);
 			},
 			...mapMutations({
 				setIndexDropDown: 'SET_INDEX_DROPDOWN',
+				removeToken: 'REMOVE_TOKEN'
 			}),
-			...mapActions([
-	        	'saveToken'
-	    	])
 		},
 		computed: {
 			...mapGetters([

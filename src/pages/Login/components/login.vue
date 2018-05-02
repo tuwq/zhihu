@@ -79,25 +79,23 @@ import axios from 'axios'
 			},
 			toIndex(res) {
 				// 去首页之前，存储token放入本地
-				this.saveToken(res.data.result.token)
-				this.$router.push('/')
+				this.setToken(res.data.result.token,{ expires: 365 })
+				// 去之前的页面或者去首页
+				this.$router.push(this.$route.query.redirect || '/')
 			},
 			changeData(formData) {
 				this.formData = formData
 			},
 			...mapMutations({
 				setFormType: 'SET_FORM_TYPE',
+				setToken: 'SET_TOKEN'
 			}),
-			...mapActions([
-	        	'saveToken'
-	    	])
 		},
 		computed: {
 			...mapGetters([
 				'form_type'
 			]),
-			
-		},
+		}
 	}
 </script>
 

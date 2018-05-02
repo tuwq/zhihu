@@ -11,7 +11,7 @@ import People from '@/pages/People/people.vue';
 
 Vue.use(Router)
 
-export default new Router({
+var router = new Router({
   linkActiveClass: 'active',
   routes: [
    	{
@@ -24,7 +24,10 @@ export default new Router({
   		children: [
         {
           path: '',
-          component: ZIndex
+          component: ZIndex,
+          meta: {
+              requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的,有子路由时需要写在子路由中
+          },
         }
       ]
    	},
@@ -48,7 +51,72 @@ export default new Router({
     },
     {
       path: '/people/:user_id',
-      component: People
+      component: People,
+      meta: {
+            requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
+      }
     }
   ]
 })
+
+import store from 'store/main.js'
+router.beforeEach((to, from, next) => {
+    if (to.meta.requireAuth) {  // 判断该路由是否需要登录权限
+        if (store.state.token) {  // 通过vuex state获取当前的token是否存在
+            next();
+        }
+        else {
+            next({
+                path: '/login',
+                query: {redirect: to.fullPath}  // 将跳转的路由path作为参数，登录成功后跳转到该路由
+            })
+        }
+    }
+    else {
+        next();
+    }
+})
+import axios from 'axios'
+import * as types from '../store/mutation-types'
+axios.interceptors.request.use(
+    config => {
+        if (store.state.token) {  // 判断是否存在token，如果存在的话，则每个http header都加上token
+            config.headers.token  = `${store.state.token}`;
+        }
+        return config;
+    },
+    err => {
+        return Promise.reject(err);
+    }
+);
+
+// http response 拦截器
+axios.interceptors.response.use(
+  response => {
+      if (response.data.status==401) {
+          store.commit(types.REMOVE_TOKEN);
+          router.replace({
+              path: '/login',
+              query: {redirect: router.currentRoute.fullPath}
+          })
+      }
+      return response;
+  },
+  error => {
+      console.log(err.res)
+      if (error.res) {
+          switch (error.response.status) {
+              case 401:
+                  // 返回 401 清除token信息并跳转到登录页面
+              store.commit(types.REMOVE_TOKEN);
+              router.replace({
+                  path: '/login',
+                  query: {redirect: router.currentRoute.fullPath}
+              })
+          }
+      }
+      return Promise.reject(error.response.data)   // 返回接口返回的错误信息
+  }
+);
+
+export default router

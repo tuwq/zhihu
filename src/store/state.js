@@ -1,5 +1,5 @@
 
-import { _loadToken } from 'common/js/cache'
+import { _getToken } from 'common/js/cookie'
 
 // vuex的数据刷新页面后会丢失
 const state = {
@@ -8,7 +8,7 @@ const state = {
 	index_dropdown: false,
 	form_type: 0,					//0: 注册 1:登录
 	people_dropup: false,
-	token: _loadToken(),
+	token: _getToken()||'',
 }
 
 export default state;
