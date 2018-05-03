@@ -28,9 +28,9 @@
 						</h1></div>
 						<div class="info-body">
 							<div class="related-info" v-if="user.info"> 
-								<div v-if="user.info.sex">
+								<div v-if="user.info.gender">
 									<span class="related-icon"><svg viewBox="0 0 20 18" width="13" height="16"><title></title><g><path d="M15 3.998v-2C14.86.89 13.98 0 13 0H7C5.822 0 5.016.89 5 2v2l-3.02-.002c-1.098 0-1.97.89-1.97 2L0 16c0 1.11.882 2 1.98 2h16.033c1.1 0 1.98-.89 1.987-2V6c-.007-1.113-.884-2.002-1.982-2.002H15zM7 4V2.5s-.004-.5.5-.5h5c.5 0 .5.5.5.5V4H7z"></path></g></svg></span>
-									<span>{{user.info.sex}}</span>
+									<span>{{user.info.gender}}</span>
 								</div>
 								<div v-if="user.info.industry">
 									<span class="related-icon"><svg viewBox="0 0 20 18" width="13" height="16"><title></title><g><path d="M15 3.998v-2C14.86.89 13.98 0 13 0H7C5.822 0 5.016.89 5 2v2l-3.02-.002c-1.098 0-1.97.89-1.97 2L0 16c0 1.11.882 2 1.98 2h16.033c1.1 0 1.98-.89 1.987-2V6c-.007-1.113-.884-2.002-1.982-2.002H15zM7 4V2.5s-.004-.5.5-.5h5c.5 0 .5.5.5.5V4H7z"></path></g></svg></span>

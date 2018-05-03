@@ -37,22 +37,34 @@ var UserSchema = new Schema({
     default: ''
 	},
 	info: {
-    sex: {
-      type: String,
-      default: ''
-    },
-    industry: {
+    gender: {
       type: String,
       default: ''
     },
     intro: {
       type: String,
       default: ''
-    },  
-    signature: {
+    }, 
+    place: {
       type: String,
       default: ''
     }, 
+    industry: {
+      type: String,
+      default: ''
+    }, 
+    c_experience: {
+      type: String,
+      default: ''
+    },
+    e_experience: {
+      type: String,
+      default: ''
+    }, 
+    introduction: {
+      type: String,
+      default: ''
+    }
   },
 	avatar: {
     type: String,

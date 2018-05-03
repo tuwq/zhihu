@@ -1,52 +1,188 @@
 @import url('../../../common/style/common.less');
 .Edit-wrapper {
+	min-height: 100vh;
+}
+.Edit-center {
 	width: 1000px;
 	padding: 0 16px;
 	margin: 14px auto;
 	font-size: 15px;
-	color: #1a1a1a;
 	.edit-header {
-		.editor {
+		height: 240px;
+		background: #F6F6F6;
+		z-index: 2;
+		.right-box {
 			position: relative;
-			.Guide {
-				position: absolute;
-				z-index: 2;
+			float: right;
+			padding: 24px;
+			width: 286px;
+			.upload-inner {
 				width: 100%;
-				height: 100%;
-				overflow: hidden;
-				border-top-right-radius: 1px;
-				border-top-left-radius: 1px;
-				.guide-inner {
-					position: relative;
-					z-index: 2;
-					float: right;
-					padding: 24px;
-					.buttonContainer {
-						margin-bottom: 14px;
-						text-align: right;
-						.uploadBtn {
-							svg {
-								fill: currentColor;
-								margin-right: 6px;
-							}
-						}
-					}
-					.dialog {
-						position: relative;
-						width: 286px;
-						padding: 22px 16px;
-						border-color: #fff;
-						border-radius: 4px;
-						opacity: 0;
-						transform: translateY(-10px);
+				text-align: right;
+				margin-bottom: 14px;
+				.upload-btn {
+					display: inline-block;
+					color: #d3d3d3;
+					transition: color,border-color .3s;
+					display: inline-block;
+					padding: 0 16px;
+					font-size: 14px;
+					line-height: 32px;
+					text-align: center;
+					cursor: pointer;
+					background: none;
+					border: 1px solid;
+					border-radius: 3px;
+					box-sizing: border-box;
+					align-items: flex-start;
+					svg {
+						margin-right: 6px;
+						fill: currentColor;
 					}
 				}
 			}
-			.cover {}
 		}
 	}
 	.edit-main {
 		position: relative;
 		margin: 0 20px 24px;
+		height: 500px;
+		.userAvatarEditor {
+			position: absolute;
+			top: -25px;
+			left: 0;
+			z-index: 1;
+			cursor: pointer;
+			.userAvatar {
+				display: inline-block;
+				overflow: hidden;
+				vertical-align: top;
+				background: #fff;
+				border: 4px solid #fff;
+				border-radius: 8px;
+			}
+			.userAvatarMask {
+				position: absolute;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				z-index: 1;
+				transition: opacity .2s ease-in;
+				.Mask-mask {
+					z-index: 4;
+					border: 4px solid #fff;
+					border-radius: 8px;
+					background: #1a1a1a;
+					position: absolute;
+					width: 100%;
+					height: 100%;opacity: .4;
+					box-sizing: border-box;
+				}
+				.Mask-content {
+					position: absolute;
+					top: 50%;
+					left: 50%;
+					z-index: 5;
+					color: #fff;
+					text-align: center;
+					transform: translate(-50%,-50%);
+				}
+			}
+		}
+		.header-content {
+			padding-top: 16px;
+			padding-left: 32px;
+			border-left: 164px solid transparent;
+			.contentHeader {
+				position: relative;
+				padding-right: 106px;
+				margin-bottom: 16px;
+				.title {
+					-webkit-box-flex: 1;
+					flex: 1;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+					.header-name {
+						font-size: 26px;
+						font-weight: 600;
+						line-height: 30px;
+					}
+				}
+				.actions {
+					bottom: auto;
+					.headerBtn {
+						position: absolute;
+						top: 50%;
+						right: 0;
+						transform: translateY(-50%);
+						display: inline-block;
+						font-size: 14px;
+						color: #8590a6;
+						text-align: center;
+						cursor: pointer;
+						background: none;
+					}
+				}
+			}
+			.fields {
+				padding-bottom: 100px;
+				margin-top: 10px;
+				.Field {
+					padding: 30px 0;
+					border-bottom: 1px solid #ebebeb;
+					.Field-label {
+						// 浮起，脱离文档流，便于Field-content计算
+						position: absolute;
+						font-size: 15px;
+						font-weight: 600;
+						line-height: 36px;
+						color: #444;
+					}
+					.Field-content {
+						padding: 0 64px 0 140px;
+						line-height: 36px;
+						&:hover {
+							.Field-modify {opacity: 1 !important;}
+						}
+						.Field-text {
+							line-height: 36px;
+							font-size: 15px;
+							color: #1a1a1a;
+						}
+						.Field-modify {
+							position: absolute;
+							margin-left: 16px;
+							line-height: inherit;
+							transition: opacity .1s;
+							opacity: 0;
+							font-size: 15px;
+							color: #175199;
+							display: inline-block;
+							text-align: center;
+							cursor: pointer;
+							align-items: flex-start;
+							box-sizing: border-box;
+							background: transparent;	
+						}
+						input[type="radio"] {
+							margin: 0px 3px 0 5px;
+							-webkit-appearance: radio;
+							box-sizing: border-box;
+							display: inline-block;
+							font-size: 12px;
+							vertical-align: middle;
+							text-align: start;
+						}
+						.ButtonGroup {
+							margin-top: 24px;
+							vertical-align: top;
+						}
+					}
+					
+				}
+			}
+		}
 	}
 }
