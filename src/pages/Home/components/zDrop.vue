@@ -37,12 +37,17 @@
 	import {mapGetters,mapMutations,mapActions} from 'vuex';
 	import axios from 'axios'
 	export default {
+		data() {
+			return {
+				flag: true
+			}
+		},
 		methods: {
 			toUserDetail() {
 				var params = {
 					user_url: this.user.username+this.user._id.substr(0,5)
 				}
-				this.$router.push({name: 'people',params:params}) 
+				this.$router.push({name: 'people_url',params:params}) 
 				this.setIndexDropDown(false);
 			},
 			quit() {

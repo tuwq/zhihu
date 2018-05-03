@@ -2,7 +2,7 @@
 	<div id="people" @click.stop.prevent="clsDrop">
 		<p-header></p-header>
 		<div class="main">
-			<p-index></p-index>
+			<router-view></router-view>
 		</div>
 		<remind-list :reminds="['suggest','toTop']"></remind-list>
 		 <z-drop></z-drop>
@@ -11,7 +11,6 @@
 
 <script type="text/ecmascript-6">
 	import remind from 'base/remind.vue';
-	import PIndex from 'p_components/p-index.vue';
 	import remindList from 'base/remind-list.vue';
 	import {mapMutations} from 'vuex'; 
 	import PHeader from 'p_components/p-header.vue'
@@ -20,7 +19,6 @@
  	export default {
 		components: {
 			'remind': remind,
-			'p-index': PIndex,
 			'remind-list' : remindList,
 			'p-header': PHeader,
 			'z-drop': zDrop

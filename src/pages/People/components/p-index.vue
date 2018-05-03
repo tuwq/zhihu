@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div class="header">
+		<div class="header" v-show="user">
 			<my-profile v-if="index_type == 1 " :user="user"></my-profile>
 			<other-profile v-if="index_type == 2" :user="user"></other-profile>
 		</div>
@@ -18,14 +18,12 @@ import myproFile from 'p_components/myProfile.vue';
 import otherProfile from 'p_components/otherProfile.vue';
 import {mapMutations,mapGetters} from 'vuex';
 import { set, get } from '../../../common/js/cookie.js'
-import { userMixin } from '../../../common/js/mixin'
 import axios from 'axios'
   	export default {
-  		mixins: [userMixin],
   		data() {
   			return {
   				index_type: 0,
-  				user: {}
+  				user: {},
   			}	
   		},
   		components: {
@@ -48,7 +46,7 @@ import axios from 'axios'
 						callback(res.data.result._id)
 					}else{
 						//不是本人主页，需要他人id	
-						this.index_type = 2;
+						this.index_type = 2
 						// this.$route.params.uid;
 						callback(res.data.result._id)
 					}
@@ -63,6 +61,17 @@ import axios from 'axios'
 		},
 		created() {
 			this.init(this.getUserInfo)
+		},
+		watch: {
+			// 解决组件内部修改地址栏同路由不更新页面数据的BUG
+			'$route' (to, from) {
+		        const toDepth = to.path
+		        const fromDepth = from.path
+		        // 如果是在/peopel内部更改且不是由主页点击而来，那么就重新加载
+		        if (toDepth.indexOf('/people')!=-1 && fromDepth!='/home' ) {
+		        	this.$router.go(0)
+		        }
+		     }
 		}
 	}
 </script>

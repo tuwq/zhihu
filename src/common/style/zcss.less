@@ -97,6 +97,30 @@ input, textarea, select, button {
 input, textarea, select, button, meter, progress {
     -webkit-writing-mode: horizontal-tb !important;
 }
+input[type="file" i] {
+    align-items: baseline;
+    color: inherit;
+    text-align: start !important;
+}
+user agent stylesheet
+input[type="hidden" i], input[type="image" i], input[type="file" i] {
+    -webkit-appearance: initial;
+    background-color: initial;
+    cursor: default;
+    padding: initial;
+    border: initial;
+}
+input {
+    -webkit-appearance: textfield;
+    background-color: white;
+    -webkit-rtl-ordering: logical;
+    cursor: text;
+    padding: 1px;
+    border-width: 2px;
+    border-style: inset;
+    border-color: initial;
+    border-image: initial;
+}
 p {
     display: block;
     -webkit-margin-before: 1em;

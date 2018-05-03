@@ -8,7 +8,7 @@
   			</svg>
   		</router-link>
 	  	<nav class="nav-list">
-	  		<a href="#" class="nav-item">首页</a>
+	  		<router-link to="/" class="nav-item">首页</router-link>
 	  		<a class="nav-item">发现</a>
 	  		<a href="#" class="nav-item">话题</a>
 	  	</nav>

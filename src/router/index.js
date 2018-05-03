@@ -8,6 +8,8 @@ import QIndex from '@/pages/Question/components/q-index.vue';
 import LoginHome from '@/pages/Login/home.vue';
 import Detail from '@/pages/Detail/detail.vue';
 import People from '@/pages/People/people.vue';
+import PIndex from 'p_components/p-index.vue';
+import Edit from 'p_components/edit.vue'
 
 Vue.use(Router)
 
@@ -53,12 +55,23 @@ var router = new Router({
       component: Detail
     },
     {
-      path: '/people/:user_url',
-      component: People,
-      name: 'people',
-      meta: {
+      path: '/people',
+      component: People,  //拥有子路由的父路由无法取name
+      children: [{
+        path: 'edit',     // 详细路由写前面
+        component: Edit,
+        meta: {
             requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
-      }
+        }
+      },
+      {
+        path: ':user_url',
+        component: PIndex,
+        name: 'people_url', 
+        meta: {
+            requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
+        }
+      }]
     }
   ]
 })
@@ -80,7 +93,7 @@ router.beforeEach((to, from, next) => {
         next();
     }
 })
-  
+
 import axios from 'axios'
 import * as types from '../store/mutation-types'
 axios.interceptors.request.use(

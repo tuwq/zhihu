@@ -39,16 +39,7 @@ import axios from 'axios'
         writeIdea,
         zDrop,
         remindList
-      },
-     watch: {
-      '$route' (to, from) {
-        const toDepth = to.path
-        const fromDepth = from.path
-        if(toDepth == '/home') {
-           this.$router.go(0)
-        }
       }
-    }
   }
 </script>
 

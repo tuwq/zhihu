@@ -13,7 +13,7 @@
 					<li class="top-tab-item" @click.stop.prevent="getMore"><a href="javascript:void(0)" class="tab-link">更多<svg fill="currentColor" viewBox="0 0 10 6" width="10" height="16" style="margin-left: 4px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></a></li>
 				</ul>
 				<div class="buttonGroup">
-					<button>编辑个人资料</button>
+					<router-link to="/people/edit">编辑个人资料</router-link>
 				</div>
 			</div>
 		</div>

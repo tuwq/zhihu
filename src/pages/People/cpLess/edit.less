@@ -1,0 +1,52 @@
+@import url('../../../common/style/common.less');
+.Edit-wrapper {
+	width: 1000px;
+	padding: 0 16px;
+	margin: 14px auto;
+	font-size: 15px;
+	color: #1a1a1a;
+	.edit-header {
+		.editor {
+			position: relative;
+			.Guide {
+				position: absolute;
+				z-index: 2;
+				width: 100%;
+				height: 100%;
+				overflow: hidden;
+				border-top-right-radius: 1px;
+				border-top-left-radius: 1px;
+				.guide-inner {
+					position: relative;
+					z-index: 2;
+					float: right;
+					padding: 24px;
+					.buttonContainer {
+						margin-bottom: 14px;
+						text-align: right;
+						.uploadBtn {
+							svg {
+								fill: currentColor;
+								margin-right: 6px;
+							}
+						}
+					}
+					.dialog {
+						position: relative;
+						width: 286px;
+						padding: 22px 16px;
+						border-color: #fff;
+						border-radius: 4px;
+						opacity: 0;
+						transform: translateY(-10px);
+					}
+				}
+			}
+			.cover {}
+		}
+	}
+	.edit-main {
+		position: relative;
+		margin: 0 20px 24px;
+	}
+}

@@ -27,16 +27,20 @@
 							<span class="signature">{{user.intro}}</span>
 						</h1></div>
 						<div class="info-body">
-							<div class="related-info">
-								<span class="related-icon"><svg viewBox="0 0 20 18" width="13" height="16"><title></title><g><path d="M15 3.998v-2C14.86.89 13.98 0 13 0H7C5.822 0 5.016.89 5 2v2l-3.02-.002c-1.098 0-1.97.89-1.97 2L0 16c0 1.11.882 2 1.98 2h16.033c1.1 0 1.98-.89 1.987-2V6c-.007-1.113-.884-2.002-1.982-2.002H15zM7 4V2.5s-.004-.5.5-.5h5c.5 0 .5.5.5.5V4H7z"></path></g></svg></span>
-								<span></span>
-								<span class="related-icon"><svg viewBox="0 0 20 18" width="13" height="16"><title></title><g><path d="M15 3.998v-2C14.86.89 13.98 0 13 0H7C5.822 0 5.016.89 5 2v2l-3.02-.002c-1.098 0-1.97.89-1.97 2L0 16c0 1.11.882 2 1.98 2h16.033c1.1 0 1.98-.89 1.987-2V6c-.007-1.113-.884-2.002-1.982-2.002H15zM7 4V2.5s-.004-.5.5-.5h5c.5 0 .5.5.5.5V4H7z"></path></g></svg></span>
-								<span></span>
+							<div class="related-info" v-if="user.info"> 
+								<div v-if="user.info.sex">
+									<span class="related-icon"><svg viewBox="0 0 20 18" width="13" height="16"><title></title><g><path d="M15 3.998v-2C14.86.89 13.98 0 13 0H7C5.822 0 5.016.89 5 2v2l-3.02-.002c-1.098 0-1.97.89-1.97 2L0 16c0 1.11.882 2 1.98 2h16.033c1.1 0 1.98-.89 1.987-2V6c-.007-1.113-.884-2.002-1.982-2.002H15zM7 4V2.5s-.004-.5.5-.5h5c.5 0 .5.5.5.5V4H7z"></path></g></svg></span>
+									<span>{{user.info.sex}}</span>
+								</div>
+								<div v-if="user.info.industry">
+									<span class="related-icon"><svg viewBox="0 0 20 18" width="13" height="16"><title></title><g><path d="M15 3.998v-2C14.86.89 13.98 0 13 0H7C5.822 0 5.016.89 5 2v2l-3.02-.002c-1.098 0-1.97.89-1.97 2L0 16c0 1.11.882 2 1.98 2h16.033c1.1 0 1.98-.89 1.987-2V6c-.007-1.113-.884-2.002-1.982-2.002H15zM7 4V2.5s-.004-.5.5-.5h5c.5 0 .5.5.5.5V4H7z"></path></g></svg></span>
+									<span>{{user.info.industry}}</span>
+								</div>
 							</div>
 						</div>
 						<div class="info-footer">
 							<button class="getDetail"><svg viewBox="0 0 10 6" width="10" height="16"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>查看详细资料</button>
-							<div class="buttons"><button>编辑个人资料</button></div>
+							<div class="buttons"><router-link to="/people/edit">编辑个人资料</router-link></div>
 						</div>
 					</div>
 				</div>
@@ -52,13 +56,13 @@
  				type: Object,
  				default() {
  					return {
- 						info:{id: '1'}
+ 						info:{}
  					}
  				}
  			}
  		},
  		created() {
- 			console.log(this.user)
+ 			
  		}
 	}
 </script>
