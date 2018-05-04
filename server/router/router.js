@@ -8,6 +8,7 @@ module.exports = function (app) {
 	app.post('/user/regist',User.toRegist)
 	app.post('/user/getIdByToken',User.getIdByToken)
 	app.post('/user/getNowUserInfo',User.getNowUserInfo)
+	app.post('/user/saveInfo',User.saveInfo)
 	app.get('/user/test',User.test)
 	app.post('/user/getInfoById',User.getInfoById)
 	app.post('/user/test2',User.test2)

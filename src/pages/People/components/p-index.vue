@@ -24,6 +24,8 @@ import axios from 'axios'
   			return {
   				index_type: 0,
   				user: {},
+  				preFrom: '',
+  				preNext: ''
   			}	
   		},
   		components: {
@@ -56,6 +58,7 @@ import axios from 'axios'
 				axios.post('/user/getInfoById',{_id: id})
 				.then((res)=> {
 					this.user = res.data.result
+					
 				})
 			}
 		},
@@ -67,9 +70,13 @@ import axios from 'axios'
 			'$route' (to, from) {
 		        const toDepth = to.path
 		        const fromDepth = from.path
-		        // 如果是在/peopel内部更改且不是由主页点击而来，那么就重新加载
-		        if (toDepth.indexOf('/people')!=-1 && fromDepth!='/home' ) {
+		        if (this.preFrom != toDepth && this.preTo == fromDepth) {
+		        	this.$router.go(0);
+		        } else if (toDepth.indexOf('/people')!=-1 && fromDepth!='/home') {
 		        	this.$router.go(0)
+		        }else {
+		        	 this.preFrom = fromDepth  		
+		         	 this.preTo = toDepth	
 		        }
 		     }
 		}

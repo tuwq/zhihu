@@ -3,7 +3,9 @@ var User = mongoose.model('User')
 const util = require('../../common/util.js');
 const checkUtil = require('../../common/checkUtil.js')
 const tokenUtil = require('../../common/token.js')
-const redis = require('../../common/redis.js')
+var formidable = require('formidable');
+var path = require('path')
+
 
 exports.pwLogin = function (req,res) {
 	var fields = req.body;
@@ -158,4 +160,25 @@ exports.getInfoById = function (req,res) {
 			}
 			return res.json(util.Result(dbUser))
 		})
+}
+
+exports.saveInfo = function (req,res) {
+	 var token = req.headers.token;
+	 tokenUtil.verifyToken(token)
+	 .then((_id)=> {
+      	var user = req.body.user;
+      	User.findById(user._id,(err,dbUser)=> {
+      		if(err){
+      			console.log(err)
+      		}
+      		if (!dbUser) {
+      			return res.json(util.Result(1))
+      		}
+      		dbUser.info = user.info;
+      		dbUser.save();
+      		return res.json(util.Result(0))
+      	})
+	 }).catch((err)=> {
+	 	return res.json(util.Result(401))
+	 })
 }

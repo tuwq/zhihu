@@ -10,28 +10,25 @@
 			<div class="bottom-userinfo">
 				<div class="userinfo-box">
 					<div>
-						<div class="avatar-box">
+						<div class="avatar-box" >
 							<div class="avatar-inner">
 								<img src="../../../common/image/index/user_avatar_people.jpg" class="avatar-img">
 							</div>	
-							<div class="avatar-edit-mask">
+							<div class="avatar-edit-mask" >
 								<div class="mask-inner"></div>
 								<div class="mask-content"><svg viewBox="0 0 24 24"><path d="M20.094 6S22 6 22 8v10.017S22 20 19 20H4.036S2 20 2 18V7.967S2 6 4 6h3s1-2 2-2h6c1 0 2 2 2 2h3.094zM12 16a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7zm0 1.5a5 5 0 1 0-.001-10.001A5 5 0 0 0 12 17.5zm7.5-8a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"></path></svg><div class="modify">修改我的头像</div></div>
 							</div>
 							<input type="file" accept="image/png,image/jpeg" style="display:none;">
 						</div>
 					</div>
-					<div class="info">
+					<div class="info" v-if="user.info">
 						<div class="info-header"><h1 class="header-title">
 							<span class="name">{{user.username}}</span>
-							<span class="signature">{{user.intro}}</span>
-						</h1></div>
+							<span class="intro">{{user.info.intro}}</span>
+							</h1>
+						</div>
 						<div class="info-body">
 							<div class="related-info" v-if="user.info"> 
-								<div v-if="user.info.gender">
-									<span class="related-icon"><svg viewBox="0 0 20 18" width="13" height="16"><title></title><g><path d="M15 3.998v-2C14.86.89 13.98 0 13 0H7C5.822 0 5.016.89 5 2v2l-3.02-.002c-1.098 0-1.97.89-1.97 2L0 16c0 1.11.882 2 1.98 2h16.033c1.1 0 1.98-.89 1.987-2V6c-.007-1.113-.884-2.002-1.982-2.002H15zM7 4V2.5s-.004-.5.5-.5h5c.5 0 .5.5.5.5V4H7z"></path></g></svg></span>
-									<span>{{user.info.gender}}</span>
-								</div>
 								<div v-if="user.info.industry">
 									<span class="related-icon"><svg viewBox="0 0 20 18" width="13" height="16"><title></title><g><path d="M15 3.998v-2C14.86.89 13.98 0 13 0H7C5.822 0 5.016.89 5 2v2l-3.02-.002c-1.098 0-1.97.89-1.97 2L0 16c0 1.11.882 2 1.98 2h16.033c1.1 0 1.98-.89 1.987-2V6c-.007-1.113-.884-2.002-1.982-2.002H15zM7 4V2.5s-.004-.5.5-.5h5c.5 0 .5.5.5.5V4H7z"></path></g></svg></span>
 									<span>{{user.info.industry}}</span>

@@ -47,7 +47,6 @@ import {communicationMixin} from 'common/js/mixin.js';
  					}else{
  						me.on('click',(e)=> {
 	 						me.addClass('is-active').siblings('.tab-item').removeClass('is-active')
-	 						console.log(index);
 		 					this.showModule = index;
 	 					});
  					}

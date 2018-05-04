@@ -38,8 +38,8 @@ var UserSchema = new Schema({
 	},
 	info: {
     gender: {
-      type: String,
-      default: ''
+      type: Number,
+      default: 0
     },
     intro: {
       type: String,
