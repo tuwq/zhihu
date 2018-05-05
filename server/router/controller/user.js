@@ -168,7 +168,7 @@ exports.saveInfo = function (req,res) {
 	 tokenUtil.verifyToken(token)
 	 .then((_id)=> {
       	var user = req.body.user;
-      	User.findById(user._id,(err,dbUser)=> {
+      	User.findById(_id,(err,dbUser)=> {
       		if(err){
       			console.log(err)
       		}
@@ -185,13 +185,31 @@ exports.saveInfo = function (req,res) {
 }
 
 exports.setAvatar = function (req,res) {
+	// 解决ajaxFileUpload传送时MINE类型的问题
+	// 请求格式不同
 	res.header('content-type','text/html')
 	var form = new formidable.IncomingForm();
-	console.log(req.body)
-	// 存放文件的根目录 C:\zhihu\static\avatar
+	// 存放文件的根目录 	   zhihu\static\avatar
     form.uploadDir  = path.normalize(__dirname+'/../../../static/avatar');
     form.parse(req, function(err, fields, files) {
-       
-    	res.json(util.Result(fields.avatar_size))
+    	var size = fields.avatar_size;
+    	// 页面文本框中的name一定要取名
+       	var extname = path.extname(files.avatar.name)
+       	var oldpath = files.avatar.path;
+       	// 存放文件的路径为 zhihu\static\avatar\160\tuwq.png
+       	var newpath = path.normalize(__dirname+'/../../../static/avatar/'+size)+'\\'+fields.username+fields._id.substr(0,5)+extname;
+       	fs.rename(oldpath,newpath,(err)=> {
+       		if (err) {
+       			return res.json(util.Result(1))
+       			
+       		}else {
+       			return res.json(util.Result({path: newpath}))
+       		}
+       	})
     });
 }
+
+
+
+
+

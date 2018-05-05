@@ -25,6 +25,9 @@ const mutations = {
 	},
 	[types.SET_USER](state,user) {
 		state.user = user
+	},
+	[types.SET_CUT_AVATAR_MASK](state,isDispaly) {
+		state.cut_avatar_mask = isDispaly
 	}
 }
 export default mutations

@@ -10,7 +10,8 @@ import Detail from '@/pages/Detail/detail.vue';
 import People from '@/pages/People/people.vue';
 import PIndex from 'p_components/p-index.vue';
 import Edit from 'p_components/edit.vue'
-import Test from 'base/test.vue'
+import Test from 'base/testUpload.vue'
+import Cut from 'base/cut.vue'
 
 Vue.use(Router)
 
@@ -76,6 +77,13 @@ var router = new Router({
             requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
         }
       }]
+    },{
+      path: '/cut',
+      component: Cut,
+      name: 'cut',
+      meta: {
+          requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
+      }
     }
   ]
 })

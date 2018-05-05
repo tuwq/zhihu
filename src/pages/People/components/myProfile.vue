@@ -10,15 +10,16 @@
 			<div class="bottom-userinfo">
 				<div class="userinfo-box">
 					<div>
-						<div class="avatar-box" >
+						<div class="avatar-box" @click.stop="selectFile">
 							<div class="avatar-inner">
-								<img src="../../../common/image/index/user_avatar_people.jpg" class="avatar-img">
+								<img src="../../../common/image/index/user_avatar_people.jpg" id="avatar-img" 
+								width="160" height="160" class="avatar-img">
 							</div>	
 							<div class="avatar-edit-mask" >
 								<div class="mask-inner"></div>
 								<div class="mask-content"><svg viewBox="0 0 24 24"><path d="M20.094 6S22 6 22 8v10.017S22 20 19 20H4.036S2 20 2 18V7.967S2 6 4 6h3s1-2 2-2h6c1 0 2 2 2 2h3.094zM12 16a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7zm0 1.5a5 5 0 1 0-.001-10.001A5 5 0 0 0 12 17.5zm7.5-8a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"></path></svg><div class="modify">修改我的头像</div></div>
 							</div>
-							<input type="file" accept="image/png,image/jpeg" style="display:none;">
+							<input type="file" name="avatar" id="avatar_index" accept="image/png,image/jpeg" style="display:none;">
 						</div>
 					</div>
 					<div class="info" v-if="user.info">
@@ -47,6 +48,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+import {mapGetters,mapMutations,mapActions} from 'vuex';
  	export default {
  		props: {
  			user: {
@@ -58,8 +60,60 @@
  				}
  			}
  		},
+ 		data() {
+ 			return {
+ 				img_size: 0
+ 			}
+ 		},
+ 		methods: {
+ 			onChangUpload() {
+ 				$('#avatar_index').on('change',()=> {
+ 					this.ajaxUpload()
+ 				})
+ 			},
+ 			selectFile() {
+ 				$('#avatar_index').click();
+ 			},
+ 			ajaxUpload() {
+ 				var me = this;
+ 				$.ajaxFileUpload({  
+				    type: "POST",  
+				    url: "/user/setAvatar",  
+				    data:{avatar_size: this.img_size,username: this.user.username,_id: this.user._id},//要传到后台的参数，没有可以不写  
+				    secureuri : false,//是否启用安全提交，默认为false  
+				    fileElementId:'avatar_index',//文件选择框的id属性  
+				    dataType: 'json',//服务器返回的格式  
+				    async : true,  
+				    contentType: 'multipart/form-data',
+				    success: function(data){  
+				     // 已成功上传头像，去切图页面
+				     
+				    },  
+				    error: function (data, status, e){  
+				       
+				   	},
+				   	complete: ()=> {
+				   		// 内部递归解决change只触发一次的bug
+					 	$("#avatar_index").replaceWith('<input type="file" name="avatar" id="avatar_index" accept="image/png,image/jpeg" style="display:none;">') 
+				   		$('#avatar_index').on('change',(e)=> {
+							this.ajaxUpload()
+						}) 
+					}
+				});
+ 			},
+ 			initData() {
+ 				this.img_size = $('#avatar-img').attr('width')
+ 			},
+ 			...mapMutations({
+				setCutAvatarMask: 'SET_CUT_AVATAR_MASK'
+			}),
+ 		},
  		created() {
- 			
+
+ 		},
+ 		mounted() {
+ 			this.initData();
+ 			this.onChangUpload()
  		}
 	}
 </script>

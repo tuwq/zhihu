@@ -7,17 +7,17 @@
 						<div class="upload-inner">
 							<button class="upload-btn"><svg viewBox="0 0 20 16" width="14" height="16"><title></title><g><path d="M18.094 2H15s-1-2-2-2H7C6 0 5 2 5 2H2C0 2 0 3.967 0 3.967V14c0 2 2.036 2 2.036 2H17c3 0 3-1.983 3-1.983V4c0-2-1.906-2-1.906-2zM10 12c-1.933 0-3.5-1.567-3.5-3.5S8.067 5 10 5s3.5 1.567 3.5 3.5S11.933 12 10 12zm0 1.5c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm7.5-8c-.552 0-1-.448-1-1s.448-1 1-1 1 .448 1 1-.448 1-1 1z"></path></g></svg>上传封面图片</button>
 						</div>
-						<input type="file" id="upload" accept="image/png;image/jpeg" style="display: none;">
+						<input type="file" id="cover-upload" accept="image/png;image/jpeg" style="display: none;">
 					</div>
 				</div>
 				<div class="edit-main" v-if="user.info">
 					<div>
-						<div class="userAvatarEditor" @click.stop="openUpload">
-							<div class="userAvatar"><img src="../../../../static/avatar/160/avatar.png" width="160" height="160"></div>
+						<div class="userAvatarEditor" @click.stop="selectFile">
+							<div class="userAvatar"><img src="../../../../static/avatar/160/avatar.png" id="avatar-img" width="160" height="160"></div>
 							<div class="userAvatarMask"><div class="Mask-mask"></div><div class="Mask-content">
 								<svg fill="#fff" viewBox="0 0 24 24" width="36" height="36" style="margin-bottom: 14px;"><path d="M20.094 6S22 6 22 8v10.017S22 20 19 20H4.036S2 20 2 18V7.967S2 6 4 6h3s1-2 2-2h6c1 0 2 2 2 2h3.094zM12 16a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7zm0 1.5a5 5 0 1 0-.001-10.001A5 5 0 0 0 12 17.5zm7.5-8a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"></path></svg><div style="white-space: nowrap;">修改我的头像</div>
 							</div></div>
-							<input type="file" id="upload" accept="image/png,image/jpeg" style="display: none;" onchange="fileUpload">
+							<input type="file" name="avatar" id="avatar-upload" accept="image/png,image/jpeg" style="display: none;">
 						</div>
 					</div>
 					<div class="header-content">
@@ -210,6 +210,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+import {mapGetters,mapMutations,mapActions} from 'vuex';
 import {makeExpandingArea} from 'common/js/common.js';
 import axios from 'axios'
  	export default {
@@ -219,7 +220,8 @@ import axios from 'axios'
 					info: {
 						gender: 0
 					}
-				}
+				},
+				img_size: 0
 			}
 		},
 		methods: {
@@ -265,6 +267,7 @@ import axios from 'axios'
 						this.user.info.industry = $(e.target).text()
 					})
 				})
+				this.img_size = $('#avatar-img').attr('width')
 				const me = this;
 				// 刷新浏览器和关闭浏览器时的钩子
 				window.onbeforeunload = function(e){
@@ -283,6 +286,7 @@ import axios from 'axios'
 					 .then((res) => {
 						this.user = res.data.result
 					 })
+
 			},
 			toMyDetail() {
 				var params = {
@@ -301,13 +305,55 @@ import axios from 'axios'
 					 		callback()
 					 	}
 					 })
-			}
+			},
+			selectFile() {
+				$('#avatar-upload').click();
+			},
+			onchangeUpload() {
+				$('#avatar-upload').on('change',()=> {
+					// 选择文件后上传
+					this.ajaxUpload()
+				})
+			},
+			ajaxUpload() {
+				var me = this;
+				$.ajaxFileUpload({  
+				    type: "POST",  
+				    url: "/user/setAvatar",  
+				    //要传到后台的参数，没有可以不写  
+				    data:{avatar_size: this.img_size,username: this.user.username,_id: this.user._id},
+				    secureuri : false,//是否启用安全提交，默认为false  
+				    fileElementId:'avatar-upload',//文件选择框的id属性  
+				    dataType: 'json',//服务器返回的格式  
+				    async : true,  
+				    contentType: 'multipart/form-data',
+				    success: function(data){  
+				      // 已成功上传头像，去切图页面
+				      
+				      
+				    },  
+				    error: function (data, status, e){  
+				       
+				   	},
+				   	complete: ()=> {
+				   		// 内部递归解决change只触发一次的bug
+					 	$("#avatar-upload").replaceWith('<input type="file" name="avatar" id="avatar-upload" accept="image/png,image/jpeg" style="display: none;">') 
+				   		$('#avatar-upload').on('change',(e)=> {
+							this.ajaxUpload()
+						}) 
+					}
+				});
+			},
+			...mapMutations({
+				setCutAvatarMask: 'SET_CUT_AVATAR_MASK'
+			}),
 		},
 		created() {
 			this.initData();
 		},
 		mounted() {
 			this.initClick()
+			this.onchangeUpload()
 			makeExpandingArea(document.getElementById('introduction'));
 		},
 		watch: {

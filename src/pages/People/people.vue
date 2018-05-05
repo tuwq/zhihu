@@ -6,6 +6,7 @@
 		</div>
 		<remind-list :reminds="['suggest','toTop']"></remind-list>
 		 <z-drop></z-drop>
+		 <cutAvatar></cutAvatar>	
 	</div>
 </template>
 
@@ -15,13 +16,15 @@
 	import {mapMutations} from 'vuex';
 	import PHeader from 'p_components/p-header.vue'
 	import zDrop from 'z_components/zDrop.vue';
+	import cutAvatar from 'p_components/cutAvatar.vue'
 	import axios from 'axios'
  	export default {
 		components: {
 			'remind': remind,
 			'remind-list' : remindList,
 			'p-header': PHeader,
-			'z-drop': zDrop
+			'z-drop': zDrop,
+			'cutAvatar': cutAvatar
 		},
 		methods: {
 			clsDrop() {

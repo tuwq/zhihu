@@ -5,3 +5,4 @@ export const form_type = state => state.form_type
 export const people_dropup = state => state.people_dropup
 export const token = state => state.token
 export const user = state => state.user
+export const cut_avatar_mask = state => state.cut_avatar_mask

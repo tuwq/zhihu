@@ -1,0 +1,122 @@
+@import url('../../../common/style/common.less');
+.Modal-wrapper {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 203;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	flex-direction: column;
+	-webkit-box-pack: center;
+	justify-content: center;
+	overflow-x: hidden;
+	overflow-y: auto;
+	transition: opacity .3s ease-out;
+	.Modal-backdrop {
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		z-index: 0;
+		background: rgba(26,26,26,.65);
+		transition: background-color .3s ease-out;
+	}
+	.Modal-default {
+		position: relative;
+		z-index: 1;
+		display: flex;
+		-webkit-box-orient: vertical;
+		-webkit-box-direction: normal;
+		flex-direction: column;
+		width: 400px;
+		max-height: calc(100vh-24px*2);
+		margin-right: auto;
+		margin-left: auto;
+		outline: 0;
+		box-shadow: 0 5px 20px rgba(26,26,26,.1);
+		box-sizing: border-box;
+		transition: max-height .8s ease;
+		.Modal-inner {
+			overflow: auto;
+			background: #fff;
+			border-radius: 2px;
+			.Modal-title {
+				margin-top: 40px;
+				font-size: 24px;
+				font-weight: 500;
+				color: #1a1a1a;
+				text-align: center;
+			}
+			.Modal-subtitle {
+				display: block;
+				margin-top: 4px;
+				font-size: 14px;
+				line-height: 1.5;
+				color: #8590a6;
+				text-align: center;
+			}
+			.Modal-content {
+
+				.uploadImageModal-container {
+					display: block;
+					width: 100%;
+					height: 100%;
+					margin: 0 auto;
+					cursor: move;
+				}
+				.range {
+	                margin-top: 2px;
+	                background-color: #f6f6f6;
+	                border-radius: 3px;
+	                width: 220px;
+	                -webkit-appearance: none;
+	                height:12px;
+	                &::-webkit-slider-thumb {
+		                -webkit-appearance: none;
+		                cursor: default;
+		                position: relative;
+		                top: 4px;
+		                height: 14px;
+		                width: 14px;
+		                transform: translateY(-4px);
+		                background: rgb(196, 196, 196);
+		                border-radius: 15px;
+		            }
+				}
+				.buttonGroupModal {
+					margin-top: 40px;
+					margin-bottom: 16px;
+					button {
+						display: block;
+						width: 220px;
+						margin-right: auto;
+						margin-left: auto;
+					}
+				}
+			}
+		}
+		.Modal-closeButton {
+			position: absolute;
+			top: 0px;
+			right: -90px;
+			padding: 12px;
+			height: auto;
+			line-height: inherit;
+			background: transparent;
+			border: none;
+			border-radius: 0;
+			display: inline-block;
+			font-size: 14px;
+			color: #8590a6;
+			text-align: center;
+			cursor: pointer;
+			background: none;
+			align-items: flex-start;
+			box-sizing: border-box;
+		}
+	}
+}

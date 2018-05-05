@@ -65,7 +65,7 @@ import axios from 'axios'
 			},
 			...mapMutations({
 				setIndexDropDown: 'SET_INDEX_DROPDOWN',
-				'setUser': 'SET_USER'
+				setUser: 'SET_USER'
 			})
 		},
 		computed: {
