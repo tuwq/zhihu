@@ -1,5 +1,5 @@
 <template>
-	<div id="people" @click.stop.prevent="clsDrop">
+	<div id="people" @click.stop="clsDrop">
 		<p-header></p-header>
 		<div class="main">
 			<router-view></router-view>
@@ -12,7 +12,7 @@
 <script type="text/ecmascript-6">
 	import remind from 'base/remind.vue';
 	import remindList from 'base/remind-list.vue';
-	import {mapMutations} from 'vuex'; 
+	import {mapMutations} from 'vuex';
 	import PHeader from 'p_components/p-header.vue'
 	import zDrop from 'z_components/zDrop.vue';
 	import axios from 'axios'

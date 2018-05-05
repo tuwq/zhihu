@@ -5,6 +5,7 @@ const checkUtil = require('../../common/checkUtil.js')
 const tokenUtil = require('../../common/token.js')
 var formidable = require('formidable');
 var path = require('path')
+var fs = require('fs')
 
 
 exports.pwLogin = function (req,res) {
@@ -181,4 +182,16 @@ exports.saveInfo = function (req,res) {
 	 }).catch((err)=> {
 	 	return res.json(util.Result(401))
 	 })
+}
+
+exports.setAvatar = function (req,res) {
+	res.header('content-type','text/html')
+	var form = new formidable.IncomingForm();
+	console.log(req.body)
+	// 存放文件的根目录 C:\zhihu\static\avatar
+    form.uploadDir  = path.normalize(__dirname+'/../../../static/avatar');
+    form.parse(req, function(err, fields, files) {
+       
+    	res.json(util.Result(fields.avatar_size))
+    });
 }

@@ -7,7 +7,7 @@
 	<link rel="stylesheet" href="">
 </head>
 <body>
-	
+
 	<canvas id="mycanvas" width='90' height='40'>
 	    您的浏览器不支持canvas，请换个浏览器试试~
 	</canvas>
@@ -48,7 +48,7 @@
         var cxt=mycanvas.getContext('2d');
         cxt.fillStyle='#000';
         cxt.fillRect(0,0,90,40);
-        
+
         /*生成干扰线20条*/
         for(var j=0;j<20;j++){
             cxt.strokeStyle='#fff';
@@ -62,9 +62,9 @@
 
         cxt.fillStyle='red';
         cxt.font='bold 20px Arial';
-        cxt.fillText(rand(),25,25);   //把rand()生成的随机数文本填充到canvas中      
+        cxt.fillText(rand(),25,25);   //把rand()生成的随机数文本填充到canvas中
     }
- 
+
     clickChange();
 
     /*点击验证码更换*/

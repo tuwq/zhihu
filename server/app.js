@@ -7,6 +7,7 @@ const cookieParase = require('cookie-parser');
 var session = require("express-session");
 var bodyParser = require('body-parser');
 var mongoStore = require('connect-mongo')(session);
+var mime = require('mime');
 
 app.use(bodyParser.json());
 //post处理需要body-parser

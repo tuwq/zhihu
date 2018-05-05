@@ -8,6 +8,7 @@
 
 <script type="text/ecmascript-6">
 	import 'lib/jquery/jquery-3.3.1.min.js';
+	import 'lib/jquery/ajaxfileupload.js'
 	export default {
 
 	}

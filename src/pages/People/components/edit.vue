@@ -1,5 +1,5 @@
 <template>
-	<div id="edit" class="Edit-wrapper">
+	<div id="edit" class="Edit-wrapper" v-cloak>
 		<div class="Edit-center">
 			<div class="Card">
 				<div class="edit-header">
@@ -10,9 +10,9 @@
 						<input type="file" id="upload" accept="image/png;image/jpeg" style="display: none;">
 					</div>
 				</div>
-				<div class="edit-main">
+				<div class="edit-main" v-if="user.info">
 					<div>
-						<div class="userAvatarEditor" @click.stop.prevent="openUpload">
+						<div class="userAvatarEditor" @click.stop="openUpload">
 							<div class="userAvatar"><img src="../../../../static/avatar/160/avatar.png" width="160" height="160"></div>
 							<div class="userAvatarMask"><div class="Mask-mask"></div><div class="Mask-content">
 								<svg fill="#fff" viewBox="0 0 24 24" width="36" height="36" style="margin-bottom: 14px;"><path d="M20.094 6S22 6 22 8v10.017S22 20 19 20H4.036S2 20 2 18V7.967S2 6 4 6h3s1-2 2-2h6c1 0 2 2 2 2h3.094zM12 16a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7zm0 1.5a5 5 0 1 0-.001-10.001A5 5 0 0 0 12 17.5zm7.5-8a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"></path></svg><div style="white-space: nowrap;">修改我的头像</div>
@@ -39,8 +39,8 @@
 									</div>
 									<div style="display: none;">
 										<div>
-											<input type="radio" id="male"   @click="user.info.gender=1" value="1" name="gender" :checked='user.info.gender == 1' >男
-											<input type="radio" id="famale" @click="user.info.gender=2" value="2" name="gender" :checked="user.info.gender == 2" style="margin-left: 30px;">女
+											<input type="radio" id="male" value="1" v-model="user.info.gender" >男
+											<input type="radio" id="famale" value="2" name="gender" v-model="user.info.gender" style="margin-left: 30px;">女
 										</div>
 										<div class="ButtonGroup">
 											<button type="submit" class="button-blue">保存</button>
@@ -175,8 +175,8 @@
 									<div>
 										<textarea class="textArea" id="introduction"  v-model="user.info.introduction"></textarea>
 										<div class="ButtonGroup">
-											<button type="submit" class="button-blue submit">保存</button>
-											<button type="button" class="button-grey" style="margin-left: 16px;'">取消</button>
+											<button type="submit" class="button-blue submit" @click.stop.prevent>保存</button>
+											<button type="button" class="button-grey" style="margin-left: 16px;'" @click.stop.prevent>取消</button>
 										</div>
 									</div>
 								</div>
@@ -230,6 +230,8 @@ import axios from 'axios'
 				$('.Field-modify').each((index,el)=> {
 					var me = $(el)
 					me.on('click',(e)=> {
+						// 阻止默认行为
+						this.stopPrevent(e)
 						me.parent().hide();
 						me.parent().siblings().show();
 						me.siblings('.Field-text').hide();
@@ -238,6 +240,7 @@ import axios from 'axios'
 				$('.ButtonGroup:not(:last)').children('button').each((index,el)=> {
 					var me = $(el)
 					me.on('click',(e) => {
+						this.stopPrevent(e)
 						me.parent().parent().hide();
 						me.parent().parent().siblings().show();
 						me.parent().parent().siblings('div').children('.Field-text').show();
@@ -248,6 +251,7 @@ import axios from 'axios'
 				$('.AddButton').each((index,el)=> {
 					var me = $(el)
 					me.on('click',(e) => {
+						this.stopPrevent(e)
 						me.parent().siblings('div').show()
 						me.parent().siblings('.Field-text').hide()
 					})
@@ -255,12 +259,23 @@ import axios from 'axios'
 				$('.select-option').each((index,el) => {
 					var me = $(el)
 					me.on('click',(e)=> {
+						this.stopPrevent(e)
 						$('.select-content').hide();
-						
 						$('.industry').show();
 						this.user.info.industry = $(e.target).text()
 					})
 				})
+				const me = this;
+				// 刷新浏览器和关闭浏览器时的钩子
+				window.onbeforeunload = function(e){
+			       me.saveInfo()
+			    };
+				
+			},
+			stopPrevent(e) {
+				// 阻止冒泡和默认行为
+				e.stopPropagation();
+				e.preventDefault()
 			},
 			initData() {
 				// 获取用户信息
@@ -308,5 +323,8 @@ import axios from 'axios'
 </script>
 
 <style lang="less" rel="stylesheet/less" type="text/less">
+	[v-cloak] {
+	    display: none !important;
+	}
 	@import url('../cpLess/edit.less');
 </style>

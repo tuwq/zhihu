@@ -1,5 +1,5 @@
 <template>
- 	<div id="questionHome" @click.stop.prevent="clsMask">
+ 	<div id="questionHome" @click="clsMask">
  		<q-header ref="q_header"></q-header>
  		<br>
  		<div class="main">
