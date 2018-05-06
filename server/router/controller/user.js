@@ -6,6 +6,7 @@ const tokenUtil = require('../../common/token.js')
 var formidable = require('formidable');
 var path = require('path')
 var fs = require('fs')
+var gm = require('gm')
 
 
 exports.pwLogin = function (req,res) {
@@ -175,6 +176,7 @@ exports.saveInfo = function (req,res) {
       		if (!dbUser) {
       			return res.json(util.Result(1))
       		}
+      		dbUser.username = user.username
       		dbUser.info = user.info;
       		dbUser.save();
       		return res.json(util.Result(0))
@@ -196,19 +198,62 @@ exports.setAvatar = function (req,res) {
     	// 页面文本框中的name一定要取名
        	var extname = path.extname(files.avatar.name)
        	var oldpath = files.avatar.path;
-       	// 存放文件的路径为 zhihu\static\avatar\160\tuwq.png
-       	var newpath = path.normalize(__dirname+'/../../../static/avatar/'+size)+'\\'+fields.username+fields._id.substr(0,5)+extname;
+       	// 存放文件的路径为 zhihu\static\avatar\160\id.png
+       	var newpath = path.normalize(__dirname+'/../../../static/avatar/arbitrary')+'\\'+fields._id+'_'+files.avatar.name;
        	fs.rename(oldpath,newpath,(err)=> {
        		if (err) {
-       			return res.json(util.Result(1))
-       			
+       			return res.json(util.Result(1))	
        		}else {
+       			req.session.avatar = fields._id+'_'+files.avatar.name;
        			return res.json(util.Result({path: newpath}))
        		}
        	})
     });
 }
+exports.cut = function (req,res) {
+	var token = req.headers.token;
+	tokenUtil.verifyToken(token)
+	.then((_id)=> {
+		var fields = req.body;
+		const x = fields.x
+		const y = fields.y
+		const w = fields.w
+		const h = fields.h
+		var rootPath = path.normalize(__dirname+'/../../../static/avatar')
+		User.findById(_id,(err,dbUser)=> {
+ 			if (!dbUser) {
+        		return res.json(util.Result(401))
+        	}
+        	util.gmImage(rootPath,'arbitrary',req.session.avatar,{x,y,w,h},[24,25,30,34,38,160],(err)=> {
+		 		if (err) {
+		 			return res.json(util.Result(1))
+		 		}
+		 		dbUser.avatar = req.session.avatar
+	        	dbUser.save()
+	        	return res.send(util.Result(0))
+		 	})
+      	})
+	}).catch((err)=> {
+		return res.json(util.Result(401))
+	})
+}
 
+
+// 裁图片，需要 24 25 30 34 38 160 尺寸
+		// gm(rootPath+'/arbitrary/'+req.session.avatar).crop(w,h,x,y).resize(24,24,'!')
+		// .write(rootPath+'/24/'+req.session.avatar,function (err) {
+	 //        if (err) {
+	 //            return res.json(util.Result(1));     
+	 //        }
+	 //        User.findById(_id).select('avatar').exec((err,dbUser)=> {
+	 //        	if (!dbUser) {
+	 //        		return res.json(util.Result(401))
+	 //        	}
+	 //        	dbUser.avatar = req.session.avatar
+	 //        	dbUser.save()
+	 //        	res.json(util.Result(0))
+	 //        })
+	 //    });
 
 
 

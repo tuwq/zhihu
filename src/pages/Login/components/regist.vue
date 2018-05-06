@@ -30,7 +30,7 @@
 							</div>
 							<div class="phone-verification-wrapper" style="border: none;">
 								<span class="verification-input-wrapper">
-									<input type="number" v-model="password" 
+									<input type="text" v-model="password" 
 									class="input-password" 
 									placeholder="请设置您的密码">
 								</span>

@@ -12,5 +12,6 @@ module.exports = function (app) {
 	app.get('/user/test',User.test)
 	app.post('/user/getInfoById',User.getInfoById)
 	app.post('/user/setAvatar',User.setAvatar)
+	app.post('/user/cut',User.cut)
 	app.post('/user/test2',User.test2)
 }

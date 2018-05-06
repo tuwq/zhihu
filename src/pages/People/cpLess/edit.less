@@ -103,12 +103,60 @@
 					overflow: hidden;
 					text-overflow: ellipsis;
 					white-space: nowrap;
+					&:hover {
+						.modify-username {opacity: 1;}
+					}
 					.header-name {
 						font-size: 26px;
 						font-weight: 600;
 						line-height: 30px;
 					}
+					.modify-username {
+						position: absolute;	
+						display: inline-block;
+						flex: 1;
+						line-height: inherit;
+						transition: opacity .1s;
+						opacity: 0		;
+						font-size: 15px;
+						color: #175199;
+						cursor: pointer;
+						text-align: center;
+						background: none;
+					}
+					
 				}
+				.Field-input-wrapper {
+					position: relative;
+					margin-top: 10px;
+					display: inline-block;
+					width: 50%;
+					height: 34px;
+					padding: 4px 10px;
+					font-size: 14px;
+					background: #fff;
+					border: 1px solid #ebebeb;
+					border-radius: 3px;
+					box-sizing: border-box;
+					transition: background .2s,border .2s;
+					input {
+					    line-height: 26px;
+					    font-size: 15px;
+					    color: #1a1a1a;
+					}
+				}
+				.ButtonGroup {
+					display: block;
+					margin-top: 24px;
+					vertical-align: bottom;
+					.submit {
+						&:disabled {
+							background: #7FC1FF !important;;
+							color: #F1F8FF !important;
+						}
+					}
+				}
+
 				.actions {
 					bottom: auto;
 					.headerBtn {

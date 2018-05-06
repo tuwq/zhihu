@@ -22,9 +22,25 @@
 					</div>
 					<div class="header-content">
 						<div class="contentHeader">
-							<h1 class="title"><span class="header-name">{{user.username}}</span></h1>
-							<div class="actions"><a class="headerBtn" @click.stop.prevent="toMyDetail">返回我的主页<svg viewBox="0 0 10 6" width="10" height="16" style="margin: 0 4px 0 8px transform: rotate(-90deg); vertical-align: text-bottom;" fill="currentColor"></svg></a></div>
-						</div>
+							<h1 class="title" v-show="!modifyUsername"><span class="header-name">{{user.username}}</span>
+								<button class="modify-username" @click.stop="modifyUsername=!modifyUsername">
+							<svg viewBox="0 0 12 12" width="12" height="16" 
+							style="margin-right: 4px;" fill="currentColor">
+								<title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z"></path></g>
+							</svg>修改</button>
+							</h1>
+							<div class="modify-username-wrapper" v-show="modifyUsername">
+								<div class="Field-input-wrapper">
+										<input type="text" placeholder="新的用户名" v-model="user.username">
+									</div>
+									<div class="ButtonGroup" style="display: inline-block; margin-left: 24px; margin-top: 0;">
+										<button type="submit" class="button-blue" @click.stop="modifyUsername=!modifyUsername">保存</button>
+										<button type="button" class="button-grey" style="margin-left: 16px;'">取消</button>
+									</div>
+								</div>
+								
+								<div class="actions"><a class="headerBtn" @click.stop.prevent="toMyDetail">返回我的主页<svg viewBox="0 0 10 6" width="10" height="16" style="margin: 0 4px 0 8px transform: rotate(-90deg); vertical-align: text-bottom;" fill="currentColor"></svg></a></div>
+							</div>
 						<div class="fields" v-if="user.info">
 							<form class="Field">
 								<h3 class="Field-label">性别</h3>
@@ -64,7 +80,7 @@
 										<div class="Field-input-wrapper">
 											<input type="text" value="回翻旧账的欠债人" v-model="user.info.intro">
 										</div>
-										<div class="ButtonGroup">
+										<div class="ButtonGroup" style="display: inline-block; margin-left: 24px; margin-top: 0;">
 											<button type="submit" class="button-blue">保存</button>
 											<button type="button" class="button-grey" style="margin-left: 16px;'">取消</button>
 										</div>
@@ -221,6 +237,7 @@ import axios from 'axios'
 						gender: 0
 					}
 				},
+				modifyUsername: false,
 				img_size: 0
 			}
 		},
@@ -328,9 +345,15 @@ import axios from 'axios'
 				    async : true,  
 				    contentType: 'multipart/form-data',
 				    success: function(data){  
+				      if (data.status) {
+				      	alert('头像设置失败')
+				      }
 				      // 已成功上传头像，去切图页面
-				      
-				      
+				      // 路径 C:\zhihu\static\avatar\160\匿名用户5aec0.jpg
+				      var path = data.result.path
+				      // 修改路径 为 '../../static/avatar/160/匿名用户5aec0.jpg'
+				      var newPath = path.replace(/\\/g, '/').replace('C:/zhihu/','../../');
+				      me.$router.push({name: 'cut',params: {path: newPath,user_url: me.user.username+me.user._id.substr(0,5)}})
 				    },  
 				    error: function (data, status, e){  
 				       

@@ -1,28 +1,31 @@
 <template>  
   <div id="demo">  
     <!-- 遮罩层 -->  
-    <div class="container" v-show="panel&&path">  
+    <div class="container" v-show="panel">  
       <div>  
-        <img id="image" :src="url" alt="Picture" width="500" height="500">  
+        <img id="image" :src="url" alt="Picture">  
       </div>  
+  
       <button type="button" id="button" @click="crop">确定</button>  
+          
     </div>  
-    <div style="padding:20px;position: absolute;top: 30%; left: 45%;">  
+  
+    <div style="padding:20px;">  
         <div class="show">  
-          <div class="picture" :style="'backgroundImage:url('+headerImage+')'" width="50" height="50">  
+          <div class="picture" :style="'backgroundImage:url('+headerImage+')'">  
           </div>  
         </div>  
-        <div class="button-group">
-        	<button class="postImg" @click.stop="postImg">确认</button>
-        	<button class="select" @click.stop="select">重新裁剪</button>
-        </div>
+        <div style="margin-top:20px;">  
+          <input type="file" id="change" accept="image" @change="change">  
+          <label for="change"></label>  
+        </div>  
+          
     </div>  
   </div>  
 </template>  
   
 <script>  
 import Cropper from 'cropperjs'  
-import axios from 'axios'
 export default {  
   components: {  
       
@@ -34,8 +37,7 @@ export default {
       cropper:'',  
       croppable:false,  
       panel:false,  
-      url:'../../static/avatar/160/avatar.jpg' ,
-      path: '' 
+      url:''  
     }  
   },  
   mounted () {  
@@ -43,7 +45,7 @@ export default {
     var self = this;  
     var image = document.getElementById('image');  
     this.cropper = new Cropper(image, {  
-      aspectRatio: 1, 
+      aspectRatio: 1,  
       viewMode: 1,  
       background:false,  
       zoomable:false,  
@@ -51,21 +53,33 @@ export default {
         self.croppable = true;  
       }  
     });  
-    this.init()
   },  
   methods: {  
-  	select() {
-  		// 重新剪裁
-  		this.panel = true
-  	},
-  	init() {
-  		this.path = this.$route.params.path || this.url;
-  		// 获得头像
-  		this.url = this.path
-  		// 设置cropper的图片信息
-      this.cropper.replace(this.url);
-  		this.panel = true
-  	}, 
+    getObjectURL (file) {  
+      var url = null ;   
+      if (window.createObjectURL!=undefined) { // basic  
+        url = window.createObjectURL(file) ;  
+      } else if (window.URL!=undefined) { // mozilla(firefox)  
+        url = window.URL.createObjectURL(file) ;  
+      } else if (window.webkitURL!=undefined) { // webkit or chrome  
+        url = window.webkitURL.createObjectURL(file) ;  
+      }  
+      return url ;  
+    },  
+    change (e) {  
+      let files = e.target.files || e.dataTransfer.files;  
+      if (!files.length) return;  
+      this.panel = true;  
+      this.picValue = files[0];  
+        
+      this.url = this.getObjectURL(this.picValue);  
+      //每次替换图片要重新得到新的url  
+      if(this.cropper){  
+        this.cropper.replace(this.url);  
+      }  
+      this.panel = true;  
+  
+    },  
     crop () {  
         this.panel = false;  
         var croppedCanvas;  
@@ -75,13 +89,14 @@ export default {
           return;  
         }  
         // Crop  
-        // 获得图片信息
         croppedCanvas = this.cropper.getCroppedCanvas();  
+        console.log(this.cropper)  
         // Round  
-        roundedCanvas = this.getRoundedCanvas(croppedCanvas); 
-  		// 圆头像的数据
+        roundedCanvas = this.getRoundedCanvas(croppedCanvas);  
+  
         this.headerImage = roundedCanvas.toDataURL();  
-        // this.postImg()  
+        this.postImg()  
+          
     },  
     getRoundedCanvas (sourceCanvas) {  
         
@@ -104,30 +119,8 @@ export default {
     },  
     postImg () {  
       //这边写图片的上传  
-      // 剪裁图片的数据
-      var data = this.cropper.getData()
-      var x = data.x
-      var y = data.y
-      var w = data.width
-      var h = data.height
-      axios.post('/user/cut',{
-      	x: x,y: y,w: w,h: h
-      }).then((res)=> {
-      	console.log(res.data)
-      })
-    }
-  },
-  watch: {
-	'$route' (to, from) {
-        this.panel = false  
-        const toDepth = to.path
-        const fromDepth = from.path
-        if (fromDepth === '/people/edit' || fromDepth === '/people/'+this.$route.params.user_url) {
-          this.panel = false  
-        	this.init()
-        }
-     }
-  }
+    }  
+  }  
 }  
 </script>  
   
@@ -507,25 +500,6 @@ export default {
 .cropper-disabled .cropper-point {  
   cursor: not-allowed;  
 }  
-.button-group {
-	margin-top: 20px;
-}
-.button-group .postImg {
-	display: inline-block;
-	font-size: 14px;
-	color: #fff;
-	margin-right: 10px;
-	padding: 5px;
-	background:#0086ff;
-}
-.button-group .select {
-	display: inline-block;
-	font-size: 14px;
-	padding: 5px;
-	color: #8590a6;
-    border-color: #8590a6;
-	background-color: rgba(133,144,166,.06);
-}
-
   
-</style> 
+  
+</style>

@@ -15,10 +15,10 @@ exports.verifyToken  =  function(token) {
     return new Promise((resolve, reject) => {
         jwt.verify(token,secretOrPrivateKey, function(err,decode) { 
             if (err) {  //  时间失效的时候/ 伪造的token          
-               reject(err)
+               return reject(err)
             }else {
                // 返回解析出的id
-               resolve(decode._id)
+               return resolve(decode._id)
             }
         })
     })

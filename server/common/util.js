@@ -1,5 +1,5 @@
-const fs = require('fs');
-
+const fs = require('fs')
+const gm = require('gm')
 
  // 日期格式化
 Date.prototype.Format = function (fmt) {
@@ -82,9 +82,21 @@ const util = {
     } else {
         return true
     }
-  }  
+  } ,
+  gmImage: function (rp,origin,img,config,arr,callback) {
+      (function iterator(i){
+        if (i===arr.length-1) {
+          callback()
+        }
+        gm(rp+'/'+origin+'/'+img).crop(config.w,config.h,config.x,config.y).resize(arr[i],arr[i],'!')
+        .write(rp+'/'+arr[i]+'/'+img,(err)=>{
+          if(err){
+            callback(err);
+          }
+        });
+        iterator(i+1);      
+      })(0);
+  } 
 } 
-
 module.exports = util
-
 

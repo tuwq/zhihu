@@ -86,8 +86,16 @@ import {mapGetters,mapMutations,mapActions} from 'vuex';
 				    async : true,  
 				    contentType: 'multipart/form-data',
 				    success: function(data){  
-				     // 已成功上传头像，去切图页面
-				     
+				      // 已成功上传头像，去切图页面
+				      if (data.status) {
+				      	alert('头像设置失败')
+				      }
+				      // 已成功上传头像，去切图页面
+				      // 路径 C:\zhihu\static\avatar\160\匿名用户5aec0.jpg
+				      var path = data.result.path
+				      // 修改路径 为 '../../static/avatar/160/匿名用户5aec0.jpg'
+				      var newPath = path.replace(/\\/g, '/').replace('C:/zhihu/','../../');
+				      me.$router.push({name: 'cut',params: {path: newPath,user_url: me.user.username+me.user._id.substr(0,5)}})
 				    },  
 				    error: function (data, status, e){  
 				       
