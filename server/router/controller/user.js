@@ -220,6 +220,20 @@ exports.cut = function (req,res) {
 		const w = fields.w
 		const h = fields.h
 		var rootPath = path.normalize(__dirname+'/../../../static/avatar')
+		// gm(rootPath+'/arbitrary/'+req.session.avatar).crop(w,h,x,y).resize(24,24,'!')
+		// .write(rootPath+'/24/'+req.session.avatar,function (err) {
+	 //        if (err) {
+	 //            return res.json(util.Result(1));     
+	 //        }
+	 //        User.findById(_id).select('avatar').exec((err,dbUser)=> {
+	 //        	if (!dbUser) {
+	 //        		return res.json(util.Result(401))
+	 //        	}
+	 //        	dbUser.avatar = req.session.avatar
+	 //        	dbUser.save()
+	 //        	return res.json(util.Result(0))
+	 //        })
+	 //    });
 		User.findById(_id,(err,dbUser)=> {
  			if (!dbUser) {
         		return res.json(util.Result(401))
@@ -229,8 +243,8 @@ exports.cut = function (req,res) {
 		 			return res.json(util.Result(1))
 		 		}
 		 		dbUser.avatar = req.session.avatar
-	        	dbUser.save()
-	        	return res.send(util.Result(0))
+	        	dbUser.save();
+      			return res.json(util.Result(0))
 		 	})
       	})
 	}).catch((err)=> {

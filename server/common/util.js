@@ -85,13 +85,15 @@ const util = {
   } ,
   gmImage: function (rp,origin,img,config,arr,callback) {
       (function iterator(i){
-        if (i===arr.length-1) {
+        if (i===arr.length) {
           callback()
+          return
         }
         gm(rp+'/'+origin+'/'+img).crop(config.w,config.h,config.x,config.y).resize(arr[i],arr[i],'!')
         .write(rp+'/'+arr[i]+'/'+img,(err)=>{
           if(err){
             callback(err);
+            return
           }
         });
         iterator(i+1);      

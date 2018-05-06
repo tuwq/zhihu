@@ -113,7 +113,7 @@ export default {
       axios.post('/user/cut',{
       	x: x,y: y,w: w,h: h
       }).then((res)=> {
-      	console.log(res.data)
+      	this.$router.push('/')
       })
     }
   },
