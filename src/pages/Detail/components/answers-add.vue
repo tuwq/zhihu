@@ -9,7 +9,7 @@
 						<meta itemprop="image" content="">
 						<meta itemprop="url" content="">
 						<meta itemprop="zhihu:count">
-						<span class="avatar-link"><img src="../../../common/image/index/avatar_answer.png" width="38" height="38" alt="炮塔向后转"></span>		
+						<span class="avatar-link"><img src="../../../../static/avatar/38/avatar.png" width="38" height="38" alt="炮塔向后转"></span>		
 						<div class="author-info">
 							<div class="info-header"><span class="author-link">炮塔向后转</span></div>
 							<div class="info-detail">

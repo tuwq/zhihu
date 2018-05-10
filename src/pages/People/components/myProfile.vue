@@ -9,10 +9,10 @@
 			</div>
 			<div class="bottom-userinfo">
 				<div class="userinfo-box">
-					<div>
+					<div v-if="user.avatar">
 						<div class="avatar-box" @click.stop="selectFile">
 							<div class="avatar-inner">
-								<img src="../../../common/image/index/user_avatar_people.jpg" id="avatar-img" 
+								<img :src="base+user.avatar" id="avatar-img" 
 								width="160" height="160" class="avatar-img">
 							</div>	
 							<div class="avatar-edit-mask" >
@@ -62,7 +62,8 @@ import {mapGetters,mapMutations,mapActions} from 'vuex';
  		},
  		data() {
  			return {
- 				img_size: 0
+ 				img_size: 0,
+ 				base: '../../../../static/avatar/160/',
  			}
  		},
  		methods: {
@@ -109,15 +110,12 @@ import {mapGetters,mapMutations,mapActions} from 'vuex';
 					}
 				});
  			},
- 			initData() {
+ 			initData() {	
  				this.img_size = $('#avatar-img').attr('width')
  			},
  			...mapMutations({
 				setCutAvatarMask: 'SET_CUT_AVATAR_MASK'
 			}),
- 		},
- 		created() {
-
  		},
  		mounted() {
  			this.initData();

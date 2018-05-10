@@ -23,7 +23,6 @@ import axios from 'axios'
   		data() {
   			return {
   				index_type: 0,
-  				user: {},
   				preFrom: '',
   				preNext: ''
   			}	
@@ -45,25 +44,21 @@ import axios from 'axios'
 					// 比对是否是本人主页
 					if (user_url === username+res.data.result._id.substr(0,5)) {
 						this.index_type = 1;
-						callback(res.data.result._id)
 					}else{
 						//不是本人主页，需要他人id	
 						this.index_type = 2
-						// this.$route.params.uid;
-						callback(res.data.result._id)
+						this.$route.params.uid;
 					}
-				})
-			},
-			getUserInfo(id) {
-				axios.post('/user/getInfoById',{_id: id})
-				.then((res)=> {
-					this.user = res.data.result
-					
 				})
 			}
 		},
 		created() {
-			this.init(this.getUserInfo)
+			this.init()
+		},
+		computed: {
+			...mapGetters([
+				'user'
+			])
 		},
 		watch: {
 			// 解决组件内部修改地址栏同路由不更新页面数据的BUG

@@ -7,7 +7,7 @@
  					<div class="oneLine">来自话题: <span><a target="_blank">编程</a></span></div>
  					<div class="twoLine">
  						<span class="user-avatar"><div class="Popover"><a class="user-avatar-link">
- 							<img class="avatar-img" width="24" height="24" src="../../../common/image/index/user_avatar_index_questions.jpg">
+ 							<img class="avatar-img" width="24" height="24" src="../../../../static/avatar/34/avatar.png">
  						</a></div></span>
  						<div class="user-signature">
  							<div class="name"><span class="info-name"><a>codingXiaxw ,</a></span></div>

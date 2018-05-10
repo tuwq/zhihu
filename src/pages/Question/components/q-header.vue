@@ -11,7 +11,7 @@
  			<div class="userinfo">
  				<button class="submit">提问</button>
  				<div style="position: relative;">
- 					<a class="avatar-link"><img src="../../../common/image/index/avatar_user_header.jpg" alt="">
+ 					<a class="avatar-link"><img src="../../../../static/avatar/34/avatar.png" alt="">
 	 					<span class="tag">8</span></a>
 	 				<a class="username" @click.stop.prevent="switchDropDown">炮塔向后转</a>
 	 				<drop-down v-show="dropDownStatus"></drop-down>

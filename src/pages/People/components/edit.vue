@@ -11,9 +11,9 @@
 					</div>
 				</div>
 				<div class="edit-main" v-if="user.info">
-					<div>
-						<div class="userAvatarEditor" @click.stop="selectFile">
-							<div class="userAvatar"><img src="../../../../static/avatar/160/avatar.png" id="avatar-img" width="160" height="160"></div>
+					<div v-if="user">
+						<div class="userAvatarEditor" @click="selectFile">
+							<div class="userAvatar" v-if="user.avatar"><img :src="base+user.avatar" id="avatar-img" width="160" height="160"></div>
 							<div class="userAvatarMask"><div class="Mask-mask"></div><div class="Mask-content">
 								<svg fill="#fff" viewBox="0 0 24 24" width="36" height="36" style="margin-bottom: 14px;"><path d="M20.094 6S22 6 22 8v10.017S22 20 19 20H4.036S2 20 2 18V7.967S2 6 4 6h3s1-2 2-2h6c1 0 2 2 2 2h3.094zM12 16a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7zm0 1.5a5 5 0 1 0-.001-10.001A5 5 0 0 0 12 17.5zm7.5-8a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"></path></svg><div style="white-space: nowrap;">修改我的头像</div>
 							</div></div>
@@ -238,7 +238,8 @@ import axios from 'axios'
 					}
 				},
 				modifyUsername: false,
-				img_size: 0
+				img_size: 0,
+				base: '../../../../static/avatar/160/'
 			}
 		},
 		methods: {
@@ -328,6 +329,7 @@ import axios from 'axios'
 			},
 			onchangeUpload() {
 				$('#avatar-upload').on('change',()=> {
+					console.log('into')
 					// 选择文件后上传
 					this.ajaxUpload()
 				})

@@ -59,13 +59,7 @@
 				setIndexDropDown: 'SET_INDEX_DROPDOWN',
 				removeToken: 'REMOVE_TOKEN',
 				setUser: 'SET_USER'
-			}),
-			init() {
-				axios.post('/user/getNowUserInfo')
-				 .then((res) => {
-					this.setUser(res.data.result)			
-				 })
-			}
+			})
 		},
 		computed: {
 			...mapGetters([
@@ -73,9 +67,6 @@
 				'token',
 				'user'
 			])
-		},
-		created() {
-			this.init();
 		}
 	}
 </script>

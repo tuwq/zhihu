@@ -18,7 +18,7 @@
  									<div class="AuthorInfo">
  										<span class="avatar-wrapper">
  											<span class="popover"><div><a class="user-link" target="_blank">
- 												<img class="info-avatar" src="../../../common/image/index/question_user_avatar.png" width="38" height="38">
+ 												<img class="info-avatar" src="../../../../static/avatar/38/avatar.png" width="38" height="38">
  											</a></div></span>
  										</span>
  										<div class="info-content">

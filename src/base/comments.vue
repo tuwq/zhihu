@@ -11,7 +11,7 @@
  						<div>
  							<div class="item-meta">
  								<span class="user-link item-avatar"><div class="Popover">
- 									<div class="" id=""><a data-user="" target="_blank"><img class="user-link-avatar" src="../common/image/index/user_avatar_comments.png" width="24" height="24" alt="如此耕耘"></a></div>
+ 									<div class="" id=""><a data-user="" target="_blank"><img class="user-link-avatar" src="../../static/avatar/34/avatar.png" width="24" height="24" alt="如此耕耘"></a></div>
  								</div></span>
  								<span class="user-link"><a target="_blank">如此耕耘</a></span>
  								<span class="item-time">1 个月前</span>

@@ -13,7 +13,7 @@
 	  		<a href="#" class="nav-item">话题</a>
 	  	</nav>
 	  	<search-bar></search-bar>
-	  	<div class="userinfo">
+	  	<div class="userinfo" v-if="avatar">
 	  		<div class="Popover notifications">
 	  			<button class="notifications-btn">
 	  				<svg viewBox="0 0 20 22" class="Icon" width="20" height="20">
@@ -50,14 +50,15 @@ import axios from 'axios'
 			return {
 				loginStatus: 1,
 				base: '../../../../static/avatar/34/',
-				avatar: 'avatar.png'
+				avatar: ''
 			}
 		},
 		methods: {
 			init() {
 				axios.post('/user/getNowUserInfo')
 					 .then((res) => {
-						this.setUser(res.data.result)			
+						this.setUser(res.data.result)
+						this.avatar = this.user.avatar	
 					 })
 			},
 			openDrop() {
@@ -71,7 +72,8 @@ import axios from 'axios'
 		computed: {
 			...mapGetters([
 				'index_dropdown',
-				'token'
+				'token',
+				'user'
 			])
 		},
 		components: {
