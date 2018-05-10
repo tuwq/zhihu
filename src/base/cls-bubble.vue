@@ -1,6 +1,6 @@
 <template>
 	<div class="cls-bubble">
-		<button>x</button>
+		<button @click.stop.prevent="closeQuestion">x</button>
 		<z-tag class="z-tag"><p slot="content">不感兴趣</p></z-tag>
 	</div>
 </template>
@@ -8,8 +8,21 @@
 <script type="text/ecmascript-6">
 	import zTag from 'base/z-tag.vue';
 	export default {
+		props: {
+			index: {
+				type: Number
+			},
+			questionList: {
+				type: Array
+			}
+		},
 		components: {
 			'z-tag': zTag
+		},
+		methods: {
+			closeQuestion() {
+				this.questionList.splice(this.index,1)
+			}
 		}
 	}
 </script>

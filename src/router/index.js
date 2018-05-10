@@ -57,6 +57,7 @@ var router = new Router({
     },
     {
       path: '/question/:question_id',
+      name: 'question_detail',
       component: Detail
     },
     {

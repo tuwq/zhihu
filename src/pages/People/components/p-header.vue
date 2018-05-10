@@ -19,15 +19,17 @@
 				window.addEventListener('scroll',()=>{
 					// 浏览器被卷去的部分
 					// 元素的距离等于元素距可见顶部的距离 + 浏览器被卷去的距离
-					if(scroll().top>200){
-						$('.header-wrapper').hide();
-						$('.scroll-header-box').css('position','fixed');
-						$('.scroll-header-box').css('z-index','100');
+					if (this.$router.history.current.name === 'people_url') {
+						if(scroll().top>200){
+							$('.header-wrapper').hide();
+							$('.scroll-header-box').css('position','fixed');
+							$('.scroll-header-box').css('z-index','100');
 
-					}else{
-						$('.header-wrapper').show();
-						$('.scroll-header-box').css('position','absolute');
-						$('.scroll-header-box').css('z-index','0');
+						}else{
+							$('.header-wrapper').show();
+							$('.scroll-header-box').css('position','absolute');
+							$('.scroll-header-box').css('z-index','0');
+						}
 					}
 				})
 			}

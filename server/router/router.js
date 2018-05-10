@@ -1,4 +1,5 @@
 var User = require('./controller/user.js');
+var Question = require('./controller/question.js')
 var Index = require('./controller/index.js')
 
 module.exports = function (app) {
@@ -14,4 +15,7 @@ module.exports = function (app) {
 	app.post('/user/setAvatar',User.setAvatar)
 	app.post('/user/cut',User.cut)
 	app.post('/user/test2',User.test2)
+	app.post('/question/insert',Question.insert)
+	app.post('/question/read',Question.read)
+	app.get('/question/test',Question.test)
 }

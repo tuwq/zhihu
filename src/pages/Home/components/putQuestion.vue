@@ -6,9 +6,12 @@
 				<div class="prompt-2">描述精确的问题更易得到解答</div>
 				<form action="">
 					<div class="question-main">
-						<textarea class="question-title" placeholder="问题标题"></textarea>
+						<textarea class="question-title" placeholder="问题标题" @focus="errStatus=false" v-model="title"></textarea>
+						<div style="text-align: center;color: red;">
+							<h1 class="errMsg" v-show="errStatus"></h1>
+						</div>
 						<div class="question-topic-box">
-							<textarea class="question-topic" placeholder="添加话题"></textarea>
+							<textarea class="question-topic" placeholder="添加话题" v-model="category"></textarea>
 							<i class="search-icon"><svg width="24" height="24"><path d="M17.068 15.58a8.377 8.377 0 0 0 1.774-5.159 8.421 8.421 0 1 0-8.42 8.421 8.38 8.38 0 0 0 5.158-1.774l3.879 3.88c.957.573 2.131-.464 1.488-1.49l-3.879-3.878zm-6.647 1.157a6.323 6.323 0 0 1-6.316-6.316 6.323 6.323 0 0 1 6.316-6.316 6.323 6.323 0 0 1 6.316 6.316 6.323 6.323 0 0 1-6.316 6.316z"></path></svg></i>
 						</div>
 					</div>
@@ -20,15 +23,15 @@
 							<li class="tool-item"><svg width="24" height="24"><path d="M6.295 15.4L5.06 19H3L7.684 6h1.813l4.684 13h-2.06l-1.235-3.6h-4.59zM17.092 19c-1.548 0-2.647-.962-2.647-2.391 0-1.428 1.063-2.27 2.916-2.384l1.782-.103v-.43c0-.653-.419-.996-1.286-.996-.724 0-1.194.25-1.323.663l-.046.147H14.7l.027-.234c.161-1.366 1.436-2.24 3.196-2.24 1.93 0 3.076.987 3.076 2.66v5.188h-1.81v-.75c-.5.56-1.243.87-2.098.87zM6.89 13.646h3.4L8.59 8.69l-1.7 4.956zM17.582 15.7c-.901.06-1.267.325-1.267.842 0 .504.439.827 1.146.827.973 0 1.682-.6 1.682-1.383v-.385l-1.56.1z"></path></svg></li>
 						</ul>
 					</div>
-					<textarea class="question-desc" placeholder="问题背景、条件等详细信息">
+					<textarea class="question-desc" placeholder="问题背景、条件等详细信息" v-model="desc">
 						
 					</textarea>	
 					<div class="question-anonymous">
-						<input type="checkbox" class="anonymous"></input>
+						<input type="radio" class="anonymous" v-model="anonymousStatus" :value="1"></input>
 						<label for="anonymous-font" class="anonymous-font">匿名提问</label>
 					</div>
 					<div class="question-btn-wrapper">
-						<button class="question-btn">提交问题</button>
+						<button class="question-btn" @click.stop.prevent="submit">提交问题</button>
 					</div>
 				</form>
 			</div>
@@ -44,8 +47,34 @@
 <script type="text/ecmascript-6">
 	import {mapGetters,mapMutations} from 'vuex';
 	import {makeExpandingArea} from 'common/js/common.js';
+	import axios from 'axios'
 	export default {
+		data(){
+			return {
+				title: '',
+				category: '',
+				desc: '',
+				anonymousStatus: 0,
+				errStatus: false
+			}
+		},
 		methods: {
+			submit() {
+				if (this.title.length==''||this.category=='') {
+					$('.errMsg').text('标题不能为空')
+					this.errStatus = true
+				}else{
+					axios.post('/question/insert',{
+						title: this.title,
+						category: this.category,
+						desc: this.desc,
+						anonymousStatus: this.anonymousStatus
+					}).then((res)=> {
+						console.log(res.data)
+						this.setQuestionDisPlay(false);
+					})
+				}
+			},
 			cls_mask() {
 				this.setQuestionDisPlay(false);
 			},

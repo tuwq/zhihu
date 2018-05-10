@@ -7,21 +7,24 @@ var QuestionSchema = new Schema({
 		type: ObjectId,
 		ref: 'User'
 	},
-	categorys: [{
+	category: {
 		type: ObjectId,
 		ref: 'Category'
-	}],
+	},
 	title: {
 		unique: false,
 	    required: true,
 	    type: String
 	},
+	anonymousStatus: {
+		type: Number,
+		default: 0
+	},
 	desc: {
 		unique: false,
-	    required: true,
+	    required: false,
 	    type: String
 	},
-	imgs: [String],
 	status: {
 		type: Number,
 		default: 0
@@ -45,4 +48,15 @@ var QuestionSchema = new Schema({
 	    }
   	}
 })
+
+QuestionSchema.pre('save', function (next) {
+  if (this.isNew) {
+    this.meta.createdAt = this.meta.updatedAt = Date.now()
+  } else {
+    this.meta.updatedAt = Date.now()
+  }
+  next()
+})
+
+
 module.exports = QuestionSchema

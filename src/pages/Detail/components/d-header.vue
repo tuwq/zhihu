@@ -21,14 +21,16 @@ import {scroll} from 'common/js/common.js';
 				window.addEventListener('scroll',()=>{
 					// 浏览器被卷去的部分
 					// 元素的距离等于元素距可见顶部的距离 + 浏览器被卷去的距离
-					if(scroll().top>sumHeight){
-						$('.header-wrapper').hide();
-						$('.scroll-header-wrapper').css('position','fixed');
-						$('.scroll-header-wrapper').css('z-index','100');
-					}else{
-						$('.header-wrapper').show();
-						$('.scroll-header-wrapper').css('position','absolute');
-						$('.scroll-header-wrapper').css('z-index','0');
+					if (this.$router.history.current.name === 'question_detail') {
+						if(scroll().top>sumHeight){
+							$('.header-wrapper').hide();
+							$('.scroll-header-wrapper').css('position','fixed');
+							$('.scroll-header-wrapper').css('z-index','100');
+						}else{
+							$('.header-wrapper').show();
+							$('.scroll-header-wrapper').css('position','absolute');
+							$('.scroll-header-wrapper').css('z-index','0');
+						}
 					}
 				})
 			}

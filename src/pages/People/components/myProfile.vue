@@ -1,5 +1,5 @@
 <template>
-	<div id="myProFile">
+	<div id="myProFile" v-if="user">
 		<div class="Card">
 			<div class="top-upload">
 				<div class="upload-inner">
@@ -19,7 +19,7 @@
 								<div class="mask-inner"></div>
 								<div class="mask-content"><svg viewBox="0 0 24 24"><path d="M20.094 6S22 6 22 8v10.017S22 20 19 20H4.036S2 20 2 18V7.967S2 6 4 6h3s1-2 2-2h6c1 0 2 2 2 2h3.094zM12 16a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7zm0 1.5a5 5 0 1 0-.001-10.001A5 5 0 0 0 12 17.5zm7.5-8a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"></path></svg><div class="modify">修改我的头像</div></div>
 							</div>
-							<input type="file" name="avatar" id="avatar_index" accept="image/png,image/jpeg" style="display:none;">
+							<input type="file" name="avatar" @click.stop id="avatar_index" accept="image/png,image/jpeg" style="display:none;">
 						</div>
 					</div>
 					<div class="info" v-if="user.info">
