@@ -17,7 +17,7 @@ var CommentSchema = new Schema({
 		type: ObjectId,
 		ref: 'Answer'
 	},
-	from: {
+	user_id: {
 		type: ObjectId,
 		ref: 'User'
 	},
@@ -25,10 +25,6 @@ var CommentSchema = new Schema({
 		type: ObjectId,
 		ref: 'Comment'
 	},
-	comments: [{
-		type: ObjectId,
-		ref: 'Comment'
-	}],
 	meta: {
 	    createdAt: {
 	      type: Date,

@@ -322,3 +322,62 @@ a:-webkit-any-link {
 		}
 	}
 }
+.comment-footer {
+	padding: 12px 20px;
+	background: #fff;
+	border-top: 1px solid #ebebeb;
+	position: relative;
+	transition: padding .3s ease;
+	display: flex;
+	.comment-input-wrapper {
+		display: inline-block;
+		flex: 1;
+		.comment-input-inner {
+			.comment-input {
+				width: 90%;
+				display: inline-block;
+				overflow: hidden;
+				text-align: start;
+				font: 400 15px Arial;
+				box-sizing: content-box;
+				color: #999;
+				border: none;
+				outline: none;
+				min-height: 30px !important;
+				padding: 3px 10px;
+				font-size: 15px;
+				line-height: 20px;
+				background: #f6f6f6;
+				white-space: pre-wrap;
+				word-wrap: break-word;
+				transition: all .5s;
+				z-index: 10px !important;
+				&:focus {
+					background: #fff;
+					border: 1px solid #666;
+				}
+				&::-webkit-input-placeholder{
+				    color: #999;
+				    font-size: 16px;
+				    font-weight: 400;
+				    line-height: 25px;
+				}
+			}
+		}
+	}
+	.comment-btn {
+		display: inline-block;
+		padding: 0 14px;
+		box-sizing: border-box;
+		color: #fff;
+		align-self: center;
+		background: #0084ff;
+		line-height: 30px;
+		height: 40px;
+		font-size: 14px;
+		text-align: center;
+		cursor: pointer;
+		border-radius: 3px;
+		transition: scale .2s ease;
+	}
+}

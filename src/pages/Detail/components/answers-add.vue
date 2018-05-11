@@ -157,7 +157,6 @@
 				base: '../../../../static/avatar/38/',
 				content: '',
 				anonymousStatus: 0,
-
 			}
 		},
 		methods: {

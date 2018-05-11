@@ -2,6 +2,7 @@ var User = require('./controller/user.js');
 var Question = require('./controller/question.js')
 var Answer = require('./controller/answer.js')
 var Index = require('./controller/index.js')
+var Comment = require('./controller/comment.js')
 
 module.exports = function (app) {
 	app.post('/user/phoneLogin',User.phoneLogin)
@@ -23,4 +24,6 @@ module.exports = function (app) {
 	app.post('/answer/insert',Answer.insert)
 	app.get('/answer/test',Answer.test)
 	app.post('/answer/read',Answer.read)
+	app.post('/comment/insert',Comment.insert)
+	app.get('/comment/test',Comment.test)
 }
