@@ -2,7 +2,7 @@
  	<div class="scroll-header-wrapper">
  		<div class="content">
  			<div class="content-left">
- 				<h1 class="title">人脑的计算速度可以被量化吗？如果能，大概是多少 GHz？</h1>
+ 				<h1 class="title">{{question.title}}</h1>
  			</div>
  			<div class="content-right">
  				<div class="group">
@@ -17,7 +17,14 @@
 </template>
 
 <script type="text/ecmascript-6">
-	
+import {mapMutations,mapGetters} from 'vuex';
+	export default {
+		computed: {
+			...mapGetters([
+				'question'
+			])
+		}
+	}
 </script>
 
 <style scoped lang="less" rel="stylesheet/less" type="text/less">

@@ -313,6 +313,7 @@ import axios from 'axios'
 				// 离开前保存信息
 				this.saveInfo(()=> {
 					this.$router.push({name: 'people_url',params:params}) 
+					this.$router.go(0)
 				})
 			},
 			saveInfo(callback) {
@@ -329,7 +330,6 @@ import axios from 'axios'
 			},
 			onchangeUpload() {
 				$('#avatar-upload').on('change',()=> {
-					console.log('into')
 					// 选择文件后上传
 					this.ajaxUpload()
 				})

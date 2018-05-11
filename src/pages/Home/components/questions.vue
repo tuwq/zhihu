@@ -7,11 +7,11 @@
  					<div class="oneLine">来自话题: <span><a target="_blank">{{item.category.content}}</a></span></div>
  					<div class="twoLine">
  						<span class="user-avatar"><div class="Popover"><a class="user-avatar-link">
- 							<img class="avatar-img" width="24" height="24" :src="'../../../../static/avatar/34/'+item.user_id.avatar">
+ 							<img class="avatar-img" width="24" height="24" :src="item.anonymousStatus==0?'../../../../static/avatar/34/'+item.user_id.avatar:'../../../../static/avatar/34/avatar.png'">
  						</a></div></span>
  						<div class="user-signature">
- 							<div class="name"><span class="info-name"><a>{{item.user_id.username}} ,</a></span></div>
- 							<div class="detail"><div class="info-badge"><div class="text">{{item.user_id.info.industry}}</div></div></div>
+ 							<div class="name"><span class="info-name"><a>{{item.anonymousStatus==0?item.user_id.username:'匿名用户'}} ,</a></span></div>
+ 							<div class="detail"><div class="info-badge"><div class="text">{{item.anonymousStatus==0?item.user_id.info.industry:''}}</div></div></div>
  						</div>
  					</div>
  				</div>
@@ -96,12 +96,11 @@
 						let rich = me.siblings('.rich-text')
 						let moreDOM = me.siblings('.content-more')
 						if (moreDOM.text()=='阅读全文') {
-							console.log('into2')
 							periodWrap(rich,me)
 							moreDOM.text('收起')
-						}else{
-							console.log('into3')
+						}else{	
 							let text = me.children().text()
+							me.empty();
 							rich.text(text)
 							moreDOM.text('阅读全文')
 						}
@@ -117,7 +116,7 @@
 					} 
 				})
 			},
-			getQuestionList(page) {
+			getQuestionList() {
 				this.pend = true
 				axios.post('/question/read',{
 					limit: this.limit,

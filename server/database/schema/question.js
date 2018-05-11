@@ -29,10 +29,6 @@ var QuestionSchema = new Schema({
 		type: Number,
 		default: 0
 	},
-	answers: [{
-		type: ObjectId,
-		ref: 'Answer'
-	}],
 	bad: {
 		type: Number,
 		default: 0

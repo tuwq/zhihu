@@ -10,7 +10,10 @@ const state = {
 	people_dropup: false,
 	user: {},
 	token: _getToken()||'',
-	cut_avatar_mask: false
+	cut_avatar_mask: false,
+	question: {},
+	add_answer_status: false,
+	answers: []
 }
 
 export default state;

@@ -1,20 +1,16 @@
 <template>
-	<div class="answers-wrapper">
+	<div class="answers-wrapper" v-show="add_answer_status"> 
 	 	<div class="answersAdd-wrapper">
 	 		<a name="draft"></a>
 			<div class="answerAdd">
-				<div class="answerAdd-header">
-					<div class="user-info">
-						<meta itemprop="name" content="炮塔向后转">
-						<meta itemprop="image" content="">
-						<meta itemprop="url" content="">
-						<meta itemprop="zhihu:count">
-						<span class="avatar-link"><img src="../../../../static/avatar/38/avatar.png" width="38" height="38" alt="炮塔向后转"></span>		
+				<div class="answerAdd-header" v-show="anonymousStatus==0" v-if="user">
+					<div class="user-info" v-if="user.username">
+						<span class="avatar-link"><img :src="base+user.avatar" width="38" height="38"></span>		
 						<div class="author-info">
-							<div class="info-header"><span class="author-link">炮塔向后转</span></div>
+							<div class="info-header"><span class="author-link">{{user.username}}</span></div>
 							<div class="info-detail">
-								<div class="info-badge">
-									<span>回翻旧账的欠债人</span>
+								<div class="info-badge" v-if="user.info">
+									<span>{{user.info.intro}}</span>
 									<button><svg viewBox="0 0 12 12" width="12" height="16">
 										<title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z"></path></g>
 									</svg>编辑话题经验</button>
@@ -22,7 +18,16 @@
 							</div>
 						</div>
 					</div>
-					<button class="button">使用匿名身份回答</button>
+					<button class="button" @click.stop.prevent="switchStatus(1)">使用匿名身份回答</button>
+				</div>
+				<div class="answerAdd-header" v-show="anonymousStatus==1" v-if="user">
+					<div class="user-info" v-if="user.username">
+						<span class="avatar-link"><img :src="base+'anonymous.jpg'" width="38" height="38"></span>		
+						<div class="author-info">
+							<div class="info-header"><span class="author-link">匿名用户</span></div>
+						</div>
+					</div>
+					<button class="button" @click.stop.prevent="switchStatus(0)">使用实名身份回答</button>
 				</div>
 				<form class="answer-form">
 					<div>
@@ -114,7 +119,7 @@
 								</div>
 								<div class="rich-text">
 									<div class="rich-text-inner">
-										<textarea id="textarea" name="answer-content" placeholder="写回答..."></textarea>
+										<textarea id="textarea" name="answer-content" placeholder="写回答..." v-model="content"></textarea>
 									</div>
 								</div>
 							</div>
@@ -129,7 +134,7 @@
 												<svg viewBox="0 0 20 20" width="14" height="16"><title></title>
 												<g><path d="M 18.868 15.185 c -0.164 0.096 -0.315 0.137 -0.452 0.137 c -0.123 0 -1.397 -0.26 -1.617 -0.233 c -1.355 0.013 -1.782 1.275 -1.836 1.74 c -0.055 0.454 0 0.893 0.19 1.304 c 0.138 0.29 0.125 0.577 -0.067 0.85 c -0.863 0.893 -2.165 1.016 -2.357 1.016 c -0.123 0 -0.247 -0.055 -0.356 -0.15 c -0.11 -0.097 -0.685 -1.14 -1.07 -1.47 c -1.303 -0.954 -2.246 -0.328 -2.63 0 c -0.397 0.33 -0.67 0.7 -0.835 1.126 c -0.07 0.18 -0.18 0.302 -0.33 0.37 c -1.354 0.426 -2.918 -0.92 -3.014 -1.056 c -0.082 -0.11 -0.123 -0.22 -0.123 -0.356 c -0.014 -0.138 0.383 -1.276 0.342 -1.688 c -0.342 -1.9 -1.836 -1.687 -2.096 -1.673 c -0.303 0.014 -0.604 0.068 -0.92 0.178 c -0.205 0.056 -0.396 0.03 -0.588 -0.054 c -0.888 -0.462 -1.137 -2.332 -1.11 -2.51 c 0.055 -0.315 0.192 -0.52 0.438 -0.604 c 0.425 -0.164 0.81 -0.452 1.15 -0.85 c 0.932 -1.262 0.344 -2.25 0 -2.634 c -0.34 -0.356 -0.725 -0.645 -1.15 -0.81 c -0.137 -0.04 -0.233 -0.15 -0.328 -0.315 C -0.27 6.07 0.724 4.95 0.978 4.733 c 0.255 -0.22 0.6 -0.055 0.723 0 c 0.426 0.164 0.878 0.22 1.344 0.15 C 4.7 4.636 4.784 3.14 4.81 2.908 c 0.015 -0.247 -0.11 -1.29 -0.136 -1.4 c -0.027 -0.123 -0.014 -0.22 0.027 -0.315 C 5.318 0.178 7.073 0 7.223 0 c 0.178 0 0.33 0.055 0.44 0.178 c 0.108 0.124 0.63 1.11 1 1.4 c 0.398 0.338 1.582 0.83 2.588 0.013 c 0.398 -0.273 0.96 -1.288 1.083 -1.412 c 0.123 -0.123 0.26 -0.178 0.384 -0.178 c 1.56 0 2.33 1.03 2.438 1.22 c 0.083 0.124 0.096 0.248 0.07 0.37 c -0.03 0.152 -0.33 1.153 -0.262 1.606 c 0.366 1.537 1.384 1.742 1.89 1.783 c 0.494 0.027 1.645 -0.357 1.81 -0.344 c 0.164 0.014 0.315 0.083 0.424 0.206 c 0.535 0.31 0.85 1.715 0.905 2.14 c 0.027 0.233 -0.014 0.44 -0.11 0.562 c -0.11 0.138 -1.165 0.714 -1.48 1.112 c -0.855 0.982 -0.342 2.25 -0.068 2.606 c 0.26 0.37 1.22 0.905 1.288 0.96 c 0.15 0.137 0.26 0.302 0.315 0.494 c 0.146 1.413 -0.89 2.387 -1.07 2.47 Z m -8.905 -0.535 c 0.644 0 1.246 -0.123 1.822 -0.356 c 0.575 -0.248 1.082 -0.59 1.493 -1.016 c 0.425 -0.425 0.754 -0.92 1 -1.495 c 0.247 -0.562 0.357 -1.18 0.357 -1.81 c 0 -0.66 -0.11 -1.262 -0.356 -1.825 c -0.248 -0.562 -0.577 -1.056 -1.002 -1.48 c -0.41 -0.427 -0.918 -0.756 -1.493 -1.003 c -0.576 -0.233 -1.178 -0.357 -1.822 -0.357 c -0.644 0 -1.247 0.124 -1.81 0.357 c -0.56 0.247 -1.067 0.576 -1.478 1.002 c -0.425 0.425 -0.768 0.92 -1 1.48 c -0.247 0.564 -0.37 1.167 -0.37 1.826 c 0 0.644 0.123 1.248 0.37 1.81 c 0.232 0.563 0.575 1.07 1 1.495 c 0.424 0.426 0.917 0.768 1.48 1.016 c 0.56 0.233 1.164 0.356 1.808 0.356 Z"></path></g></svg>设置</button>
 										</div>
-										<button type="button" class="answerBtn">提交回答</button>
+										<button type="button" class="answerBtn" @click.stop.prevent="submit">提交回答</button>
 									</div>
 								</div>
 							</div>
@@ -144,9 +149,50 @@
 
 <script type="text/ecmascript-6">
 	import {makeExpandingArea} from 'common/js/common.js';
+	import {mapMutations,mapGetters} from 'vuex';
+	import axios from 'axios'
 	export default {
+		data() {
+			return {
+				base: '../../../../static/avatar/38/',
+				content: '',
+				anonymousStatus: 0,
+
+			}
+		},
+		methods: {
+			switchStatus(status) {
+				this.anonymousStatus = status
+			},
+			submit() {
+				if (this.content=='') {
+					return
+				}
+				axios.post('/answer/insert',{
+					content: this.content,
+					user_id: this.user._id,
+					question_id: this.question._id,
+					anonymousStatus: this.anonymousStatus
+				}).then((res)=> {
+					if (res.data.status==1) {
+						alert('添加回答失败')
+					}else if(res.data.status==2) {
+						alert(res.data.result.msg)
+					}else{
+						this.$router.go(0)	
+					}
+				})
+			}
+		},
 		mounted() {
 			makeExpandingArea(document.getElementById('textarea'));
+		},
+		computed: {
+			...mapGetters([
+				'question',
+				'user',
+				'add_answer_status'
+			])
 		}
 	}
 </script>

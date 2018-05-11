@@ -61,7 +61,7 @@
 		methods: {
 			submit() {
 				if (this.title.length==''||this.category=='') {
-					$('.errMsg').text('标题不能为空')
+					$('.errMsg').text('标题与话题不能为空')
 					this.errStatus = true
 				}else{
 					axios.post('/question/insert',{
@@ -70,8 +70,8 @@
 						desc: this.desc,
 						anonymousStatus: this.anonymousStatus
 					}).then((res)=> {
-						console.log(res.data)
-						this.setQuestionDisPlay(false);
+						// this.setQuestionDisPlay(false);
+						this.$router.go(0)
 					})
 				}
 			},

@@ -60,7 +60,7 @@ exports.read = function (req,res) {
 		.populate('user_id')
 		.limit(limit)
 		.skip(skip)
-		.sort({'meta.updatedAt': 1})
+		.sort({'meta.updatedAt': -1})
 		.exec((err,questions)=> {
 			let count = questions.length;
 			return res.json(util.Result({questions: questions,count: count}))
@@ -71,4 +71,18 @@ exports.read = function (req,res) {
 exports.test = function (req,res) {
 
 	return res.json(util.Result(1))
+}
+
+exports.detail = function (req,res) {
+	let fields = req.body
+	let question_id = fields.question_id
+	Question.findById(question_id)
+		.populate('category')
+		.populate('user_id')
+		.exec((err,question)=> {
+			if (!question) {
+				return res.json(util.Result(1))
+			}
+			return res.json(util.Result(question))
+		})
 }

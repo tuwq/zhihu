@@ -28,6 +28,15 @@ const mutations = {
 	},
 	[types.SET_CUT_AVATAR_MASK](state,isDispaly) {
 		state.cut_avatar_mask = isDispaly
+	},
+	[types.SET_QUESTION](state,question) {
+		state.question = question
+	},
+	[types.SET_ADD_ANSWER_STATUS](state,isDispaly) {
+		state.add_answer_status = isDispaly
+	},
+	[types.SET_ANSWERS](state,answers) {
+		state.answers = answers
 	}
 }
 export default mutations

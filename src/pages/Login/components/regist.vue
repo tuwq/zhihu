@@ -12,7 +12,7 @@
 									</svg></span>
 								</button>
 								<span>&nbsp;</span>
-								<input  type="tel" class="input-phone" 
+								<input  type="number" class="input-phone" 
 								v-model="telphone"
 								@blur="placeholderText='请输入正确的手机格式'"  
 								:placeholder="placeholderText" 
