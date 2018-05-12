@@ -1,6 +1,9 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 const { ObjectId, Mixed } = Schema.Types
+const moment = require('moment')
+
+// console.log(moment(Date.now()).format('YYYY-MM-DD'))
 
 var CommentSchema = new Schema({
 	content: {
@@ -35,5 +38,14 @@ var CommentSchema = new Schema({
 	      default: Date.now()
 	    }
   	}
+})
+
+CommentSchema.pre('save', function (next) {
+  if (this.isNew) {
+    this.meta.createdAt = this.meta.updatedAt = Date.now()
+  } else {
+    this.meta.updatedAt = Date.now()
+  }
+  next()
 })
 module.exports = CommentSchema

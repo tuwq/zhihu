@@ -25,6 +25,10 @@ var AnswerSchema = new Schema({
 		type: Number,
 		default: 0
 	},
+	cCount: {
+		type: Number,
+		default: 0
+	},
 	meta: {
 	    createdAt: {
 	      type: Date,

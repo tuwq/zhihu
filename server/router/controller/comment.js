@@ -15,41 +15,26 @@ exports.insert = function (req,res) {
 		if(checkUtil.isEmtry(fields.content)) {
 			return res.json(util.Result('信息不完整',1))
 		}
-		if(checkUtil.isEmtry([fields.user_id,fields.question_id])) {
-			return res.json(util.Result(401))
-		}
-		// 检查是回复回答还是回复评论
-		if(checkUtil.isEmtry(fields.answer_id)&&checkUtil.isEmtry(fields.to)) {
-			return res.json(util.Result('都空',1))
-		}
-		// 既回复回答又回复评论也不行
-		if (!checkUtil.isEmtry(fields.answer_id)&&checkUtil.isEmtry(fields.to)) {
-			return res.json(util.Result('都不空',1))
+		if(checkUtil.isEmtry([fields.user_id,fields.question_id,fields.answer_id])) {
+			return res.json(util.Result('id缺失',1))
 		}
 		let comment
-		if (!checkUtil.isEmtry(fields.answer_id)) {
+		// 当to 不存在，说明是根评论
+		if (!fields.to) {
 			comment = new Comment({
 				content: fields.content,
 				question_id: fields.question_id,
 				answer_id: fields.answer_id,
-				user_id: _id
+				user_id: fields.user_id,
 			})
-		}else if(!checkUtil.isEmtry(fields.to)){
-			// 是不是回复你自己
-			Comment.findById(fields.to,)
-			.select('user_id')
-			.exec((err,dbComment)=> {
-				if (dbComment.user_id === _id) {
-					return res.json(util.Result('你不能回复你自己',1))
-				}else{
-					comment = new Comment({
-						content: fields.content,
-						question_id: fields.question_id,
-						to: fields.to,
-						user_id: _id
-					})
-				}	
-			})	
+		}else{	
+			comment = new Comment({
+				content: fields.content,
+				question_id: fields.question_id,
+				answer_id: fields.answer_id,
+				user_id: fields.user_id,
+				to: fields.to
+			})
 		}
 		comment.save()
 		return res.json(util.Result(0))
@@ -57,6 +42,15 @@ exports.insert = function (req,res) {
 		return res.json(util.Result(401))
 	})
 
+}
+
+exports.read = function (req,res) {
+	let fields = req.body
+	Comment.find({answer_id: fields.answer_id})
+	.populate('user_id')
+	.exec((err,comments)=> {
+		return res.json(util.Result({comments: comments}))
+	})
 }
 
 exports.test = function (req,res) {

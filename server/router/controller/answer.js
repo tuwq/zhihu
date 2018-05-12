@@ -54,11 +54,28 @@ exports.read = function (req,res) {
 	.skip(skip)
 	.sort({'meta.updatedAt': -1})
 	.exec((err,answers)=> {
-		Answer.count({question_id: fields.question_id},(err,sum)=> {
-			let count = answers.length
-			return res.json(util.Result({answers: answers,count: count,sum: sum}))
+		// 获得每个回答下的评论数量
+		getCommentCount(answers,(answers)=> {
+			// 获取该问题下的回答数量
+			Answer.count({question_id: fields.question_id},(err,sum)=> {
+				let count = answers.length
+				return res.json(util.Result({answers: answers,count: count,sum: sum}))
+			})
 		})
 	})
+}
+
+function getCommentCount(answers,callback) {
+	(function iterator(i){
+		if (i == answers.length) {
+			callback(answers)
+			return 
+		}
+		Comment.count({answer_id: answers[i]._id},(err,cCount)=> {
+			answers[i].cCount = cCount
+			iterator(i+1)
+		})
+	})(0)
 }
 
 exports.test = function (req,res) {

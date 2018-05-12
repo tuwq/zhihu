@@ -62,7 +62,7 @@ const checkUtil = {
 				}
 			})
 		}else if(this._isString(str)){
-			if (str == null || this.trim(str).length === 0 || str == undefined) {
+			if (str == undefined || str == null || this.trim(str).length === 0 ) {
 				return true
 			}else{
 				return false
