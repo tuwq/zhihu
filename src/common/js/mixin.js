@@ -8,11 +8,7 @@ export const communicationMixin = new Vue({
 
 //用户组件中 混入方法
 export const MethodMixin = {
-	methods: {
-		con() {
-			console.log('con');
-		}
-	}
+	
 }
 
 export const userMixin = {

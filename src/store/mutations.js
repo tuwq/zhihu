@@ -37,6 +37,9 @@ const mutations = {
 	},
 	[types.SET_ANSWERS](state,answers) {
 		state.answers = answers
+	},
+	[types.SET_CONVERSATION_MASK](state,isDispaly) {
+		state.conversation_mask = isDispaly
 	}
 }
 export default mutations

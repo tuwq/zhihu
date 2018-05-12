@@ -13,7 +13,8 @@ const state = {
 	cut_avatar_mask: false,
 	question: {},
 	add_answer_status: false,
-	answers: []
+	answers: [],
+	conversation_mask: false
 }
 
 export default state;

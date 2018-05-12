@@ -1,5 +1,5 @@
 <template>
- 	<div class="mask" v-show="ModalStatus">
+ 	<div class="mask" v-show="conversation_mask">
  		<div class="backdrop" @click.stop="clsModal"></div>
  		<div class="modal-fullPage">
  			<div class="Modal-inner">
@@ -54,16 +54,36 @@
 </template>
 
 <script type="text/ecmascript-6">
+import {mapGetters,mapMutations} from 'vuex'
+import {communicationMixin} from 'common/js/mixin'
+import axios from 'axios'
 	export default {
-		data() {
-			return {
-				ModalStatus: false
-			}
-		},
+		mixins: [communicationMixin],
 		methods: {
 			clsModal() {
-				this.ModalStatus = false;
-			}
+				this.setConversationMask(false)
+			},
+			getCommentChain(commentId) {
+				axios.post('/comment/getConversation',{
+					commentId: commentId
+				}).then((res)=> {
+					console.log(res.data)
+				})
+			},
+			...mapMutations({
+				setConversationMask: 'SET_CONVERSATION_MASK'
+			})
+		},
+		computed: {
+			...mapGetters([
+				'conversation_mask'
+			])
+		},
+		created() {
+			communicationMixin.$on('openConversation',(commentId) => {
+				this.getCommentChain(commentId)
+				this.setConversationMask(true)
+			})
 		}
 	}
 </script>

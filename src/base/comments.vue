@@ -8,7 +8,7 @@
  			<div>
  				<div class="comment-list" v-if="commentList">
 
- 					<comment v-for="(item,index) in commentList" :item="item" :index="index" :key="item._id" :answer_id="answer_id"></comment>
+ 					<comment v-for="(item,index) in commentList" :item="item" :index="index" :key="item._id" :answer_id="answer_id" @replyOver="replyOver"></comment>
  					<!-- <div class="comment-list-divider">
  						<div class="line"></div>
  						<div class="text">以上为精选评论<svg viewBox="0 0 20 20" width="14" height="16"><title></title>
@@ -83,9 +83,15 @@ import axios from 'axios'
 						answer_id: this.answer_id
 					}).then((res)=> {
 						this.commentList = res.data.result.comments
-
 					})
 				}
+			},
+			replyOver() {
+				this.getCommentList()
+				this.incrCount({
+					list: this.answers,
+					index: this.index
+				})
 			},
 			...mapActions([
 		        'incrCount'

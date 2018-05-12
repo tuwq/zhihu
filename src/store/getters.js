@@ -9,3 +9,4 @@ export const cut_avatar_mask = state => state.cut_avatar_mask
 export const question = state => state.question
 export const add_answer_status = state => state.add_answer_status
 export const answers = state => state.answers
+export const conversation_mask = state => state.conversation_mask
