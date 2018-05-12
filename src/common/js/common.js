@@ -61,6 +61,7 @@ export function scroll() {
 export function periodWrap(el,target) {
     var pArray = [];
     var text = el.text();
+    console.log(text)
     var flag = true;
     var index,nt,p;
      while(flag) {

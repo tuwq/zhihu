@@ -1,10 +1,10 @@
 <template>
- 	<div id="question-main-wrapper">
- 		<div class="question-main">
+ 	<div id="detail-main-wrapper">
+ 		<div class="detail-main">
  			<div class="main-left">
  				<div>
  					<answers-add></answers-add>
- 					<question-list :sum="sum" :no_more_data="no_more_data"></question-list>
+ 					<answers-list :sum="sum" :no_more_data="no_more_data"></answers-list>
  				</div>
  			</div>
  			<div class="main-right"></div>
@@ -14,7 +14,7 @@
 
 <script type="text/ecmascript-6">
 	import answersAdd from 'detail_components/answers-add.vue';
-	import questionList from 'detail_components/question-list.vue';
+	import answersList from 'detail_components/answers-list.vue';
 	export default {
 		props: {
 			sum: {
@@ -28,11 +28,11 @@
 		},
 		components: {
 			'answers-add': answersAdd,
-			'question-list': questionList
+			'answers-list': answersList
 		}
 	}
 </script>
 
 <style scoped lang="less" rel="stylesheet/less" type="text/less">
-  @import url('../cpLess/question-main.less');
+  @import url('../cpLess/detail-main.less');
 </style>

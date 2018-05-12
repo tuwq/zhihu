@@ -6,7 +6,7 @@
 	 		<scroll-header slot="scroll-header"></scroll-header>
  		</d-header>
  		<div class="main-content">
- 			<question-main :sum="sum" :no_more_data="no_more_data"></question-main>
+ 			<detail-main :sum="sum" :no_more_data="no_more_data"></detail-main>
  		</div>
  		<div class="special">
 		<view-conversation></view-conversation>
@@ -22,7 +22,7 @@
 	import detailHeader from 'detail_components/detail-header.vue';
 	import scrollHeader from 'detail_components/scroll-header.vue';
 	import dHeader from 'detail_components/d-header.vue';
-	import questionMain from 'detail_components/question-main.vue';
+	import detailMain from 'detail_components/detail-main.vue';
 	import viewConversation from 'detail_components/view-conversation.vue'; 
 	import remindList from 'base/remind-list.vue';
 	import axios from 'axios'
@@ -45,7 +45,7 @@
 			'detail-header': detailHeader,
 			'scroll-header': scrollHeader,
 			'd-header': dHeader,
-			'question-main': questionMain,
+			'detail-main': detailMain,
 			'view-conversation': viewConversation,
 			'remind-list': remindList,
 			'z-drop': zDrop
