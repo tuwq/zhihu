@@ -57,6 +57,9 @@ exports.insert = function (req,res) {
 
 exports.read = function (req,res) {
 	let fields = req.body
+	var limit = fields.limit
+	var page = fields.page
+	var skip = limit*(page-1)
 	Comment.find({answer_id: fields.answer_id})
 	.populate('user_id')
 	.populate({
@@ -66,9 +69,13 @@ exports.read = function (req,res) {
 			select: 'username'
 		}
 	})
+	.limit(limit)
+	.skip(skip)
 	.sort({'meta.updatedAt': -1})
 	.exec((err,comments)=> {
-		return res.json(util.Result({comments: comments}))
+		Comment.count({answer_id: fields.answer_id},(err,count)=> {
+			return res.json(util.Result({comments: comments,count: count}))
+		})
 	})
 }
 
@@ -78,13 +85,13 @@ exports.getConversation = function (req,res) {
 	// 根据c_id找到c
 	Comment.findById(fields.commentId,(err,dbComment)=> {
 		if (!dbComment.to){
-
 			return res.json(util.Result('该评论没有评论树'))
 		}
 		// 寻找根评论
 		getRoot(dbComment,(rootNode)=> {
-			console.log(rootNode)
+			arr.push(rootNode)
 			getSons(rootNode,arr,(arr)=> {
+				console.log(arr) 
 				return res.json(util.Result({ conversation: arr}))
 			})
 		})
@@ -103,26 +110,17 @@ function getRoot(son,callback) {
 function getSons(parent,arr,callback) {
 	Comment.find({to: parent._id},(err,sons)=> {
 		if (sons.length==0){
-			callback(arr)
-			return
+			return 
 		}else{
-			// (function iterator(i){
-			// 	if (i==sons.length) {
-			// 		return arr
-			// 	}else{
-			// 		arr.push(sons[i])
-			// 		return getSons(sons[i])
-			// 		iterator(i+1)	
-			// 	}
-			// })(0)
-			sons.forEach(function(item,index){  
+			sons.forEach(function(item,index){
+				if(index==sons.length-1) {
+					console.log('into2')	// 被执行了两次
+					callback(arr)
+				}
+				console.log('into1')
 			    arr.push(item)
 			    return getSons(item,arr,callback)
-			});  
-			// for (let i = 0; i < sons.length i ++ ) {
-			// 	arr.push(sons[i])
-			// 	return getSons(sons[i])
-			// }
+			});
 		}
 	})
 }

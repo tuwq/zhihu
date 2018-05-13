@@ -11,7 +11,7 @@
  							</div>
  							<div class="topBar-options"></div>
  						</div>
- 						<div class="commentList">
+ 						<div class="commentList" v-if="conversationList">
  							<div class="CommentItem">
  								<div>
  									<div class="item-meta">
@@ -59,6 +59,11 @@ import {communicationMixin} from 'common/js/mixin'
 import axios from 'axios'
 	export default {
 		mixins: [communicationMixin],
+		data() {
+			return {
+				conversationList: []
+			}
+		},
 		methods: {
 			clsModal() {
 				this.setConversationMask(false)
@@ -67,7 +72,8 @@ import axios from 'axios'
 				axios.post('/comment/getConversation',{
 					commentId: commentId
 				}).then((res)=> {
-					console.log(res.data)
+					this.conversationList = res.data.result.conversation
+					console.log(this.conversationList)
 				})
 			},
 			...mapMutations({

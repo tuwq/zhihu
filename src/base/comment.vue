@@ -22,7 +22,7 @@
 				</div>
 				<div class="comment-editor" style="display: none;">
 					<div class="editor-top">
-						<textarea class="editor-input" v-model="reply_content" :placeholder="'回复'+item.user_id.username"></textarea>
+						<textarea class="editor-input" v-model="reply_content" :placeholder="'回复'+item.user_id.username" ref="editor_input"></textarea>
 					</div>
 					<div class="editor-bottom">
 						<button type="button" class="cancel reply_cancel" @click.stop.prevent="closeReply($event)">取消</button>
@@ -37,6 +37,7 @@
 <script type="text/ecmascript-7">
 import axios from 'axios'
 import {communicationMixin} from 'common/js/mixin'
+import {makeExpandingArea} from 'common/js/common.js';
 import {mapMutations,mapGetters} from 'vuex';
 	export default {
 		mixins: [communicationMixin],
@@ -52,6 +53,10 @@ import {mapMutations,mapGetters} from 'vuex';
 			answer_id: {
 				type: String,
 				default: ''
+			},
+			count: {
+				type: Number,
+				default: 0
 			}
 		},
 		data() {
@@ -89,6 +94,12 @@ import {mapMutations,mapGetters} from 'vuex';
 			openConversation(comment_id) {
 				communicationMixin.$emit('openConversation',comment_id)
 			}
+		},
+		mounted() {
+			makeExpandingArea(this.$refs.editor_input)
+		},
+		created() {
+			
 		},
 		computed: {
 			...mapGetters([

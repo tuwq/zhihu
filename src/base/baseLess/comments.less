@@ -152,12 +152,6 @@ a:-webkit-any-link {
 				}
 			}
 		}
-		.pagination {
-			border-top: 1px solid #ebebeb;
-			padding: 16px 20px;
-			text-align: center;
-			margin: 0 auto;
-		}
 		.bottom-bar {
 			padding: 12px 20px;
 			background: #fff;
@@ -228,5 +222,38 @@ a:-webkit-any-link {
 			background: #7FC1FF !important;;
 			color: #F1F8FF !important;
 		}
+	}
+}
+.pagination {
+	border-top: 1px solid #ebebeb;
+	padding: 16px 20px;
+	text-align: center;
+	margin: 0 auto;
+	.pageButton {
+		cursor: pointer;
+		color: #1a1a1a;
+		transition: color .2s;
+		padding: 0 15px;
+		line-height: inherit;
+		height: auto;
+		background: transparent;
+		border: none;
+		border-radius: 0;
+		display: inline-block;
+		font-size: 14px;
+		text-align: center;
+		background: none;
+		box-sizing: border-box;
+	}
+	.PaginationButton {
+		color: #1a1a1a;
+		transition: color .2s;
+		padding: 0 15px;
+		text-align: center;
+	}
+	.current {
+		color: #8590a6 !important;
+		opacity: .5 !important;
+		cursor: default;
 	}
 }
