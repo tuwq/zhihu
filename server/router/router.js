@@ -25,7 +25,9 @@ module.exports = function (app) {
 	app.get('/answer/test',Answer.test)
 	app.post('/answer/read',Answer.read)
 	app.post('/comment/insert',Comment.insert)
+	app.post('/comment/insert/question',Comment.insertToQuestion)
 	app.post('/comment/read',Comment.read)
+	app.post('/comment/read/question',Comment.readToQuestion)
 	app.post('/comment/getConversation',Comment.getConversation)
 	app.get('/comment/test',Comment.test)
 }

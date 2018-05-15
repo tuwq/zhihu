@@ -1,5 +1,5 @@
 <template>
- 	<div id="Detail">
+ 	<div id="Detail" @click.stop="clsModal">
  		<d-header class="d-header">
  			<z-header slot="z-header"></z-header>
 	 		<detail-header slot="detail-header"></detail-header>
@@ -53,8 +53,12 @@
 		methods: {
 			...mapMutations({
 				setQuestion: 'SET_QUESTION',
-				setAnswers: 'SET_ANSWERS'
+				setAnswers: 'SET_ANSWERS',
+				setIndexDropDown: 'SET_INDEX_DROPDOWN',
 			}),
+			clsModal() {
+	          this.setIndexDropDown(false)
+	        },
 			getDetail() {
 				axios.post('/question/detail',{
 					question_id: this.$route.params.question_id

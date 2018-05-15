@@ -25,6 +25,10 @@ var QuestionSchema = new Schema({
 	    required: false,
 	    type: String
 	},
+	cCount: {
+		type: Number,
+		default: 0
+	},
 	status: {
 		type: Number,
 		default: 0

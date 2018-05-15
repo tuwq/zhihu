@@ -1,6 +1,7 @@
 var mongoose = require('mongoose')
 var Question = mongoose.model('Question')
 var Category = mongoose.model('Category')
+var Comment = mongoose.model('Comment')
 const util = require('../../common/util.js');
 const checkUtil = require('../../common/checkUtil.js')
 const tokenUtil = require('../../common/token.js')
@@ -62,15 +63,31 @@ exports.read = function (req,res) {
 		.skip(skip)
 		.sort({'meta.updatedAt': -1})
 		.exec((err,questions)=> {
-			let count = questions.length;
-			return res.json(util.Result({questions: questions,count: count}))
+			getCommentCount(questions,(questions)=> {
+				let count = questions.length;
+				return res.json(util.Result({questions: questions,count: count}))
+			})
 		})
 	})
 }
 
-exports.test = function (req,res) {
+function getCommentCount(questions,callback) {
+	(function iterator(i){
+		if (i == questions.length) {
+			callback(questions)
+			return 
+		}
+		Comment.count({question_id: questions[i]._id,answer_id: undefined},(err,cCount)=> {
+			questions[i].cCount = cCount
+			iterator(i+1)
+		})
+	})(0)
+}
 
-	return res.json(util.Result(1))
+exports.test = function (req,res) {
+	Question.find({},(err,questions)=> {
+		return res.json(util.Result(questions))
+	})
 }
 
 exports.detail = function (req,res) {

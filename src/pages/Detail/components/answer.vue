@@ -5,23 +5,25 @@
 				<div class="ContentItem-meta">
 					<div class="AuthorInfo">
 						<span class="avatar-wrapper">
-							<span class="popover"><div><a class="user-link" target="_blank">
+							<span class="popover"><div><a class="user-link" target="_blank" 
+								@click.stop.prevent="toUser(item.anonymousStatus==0?item.user_id:null)">
 								<img class="info-avatar" :src="item.anonymousStatus==0?base+item.user_id.avatar:base+'anonymous.jpg'" width="38" height="38">
 							</a></div></span>
 						</span>
 						<div class="info-content">
 							<div class="info-header">
-								<div class="author-name">
+								<div class="author-name" @click.stop.prevent="toUser(item.anonymousStatus==0?item.user_id:null)">
 									<div class="popover">
 										<div><a target="_blank">{{item.anonymousStatus==0?item.user_id.username:'匿名用户'}}</a></div>
 									</div>
 								</div>
 							</div>
 							<div class="info-detail" v-if="item.user_id.info">
-								<div class="info-badge"><div class="badge-text">
-								{{item.user_id.info.intro}}</div>
+								<div class="info-badge">
 								<div class="badge-text">
-								{{item.user_id.info.industry}}</div>
+								{{item.user_id.info.industry}} ,</div>
+								<div class="badge-text">
+								{{item.user_id.info.intro}}</div>
 								</div>
 							</div>
 						</div>
@@ -71,7 +73,8 @@
 					</button>
 				</div>
 				</div>
-			<comments class="comments" style="display: none;" :cCount="item.cCount" :index="index" :answer_id="item._id">
+			<comments class="comments" v-if="loadComment" :cCount="item.cCount" :index="index" :answer_id="item._id" 
+			:question_id="question._id">
 			</comments>
 			</div>
 		</div>
@@ -81,7 +84,10 @@
 <script type="text/ecmascript-7">
 import comments from 'base/comments.vue';
 import {periodWrap,makeExpandingArea} from 'common/js/common.js';
+import {userMixin} from 'common/js/mixin'
+import {mapMutations,mapGetters,mapActions} from 'vuex';
 	export default {
+		mixins: [userMixin],
 		props: {
 			item: {
 				type: Object,
@@ -92,8 +98,15 @@ import {periodWrap,makeExpandingArea} from 'common/js/common.js';
 				default: 0
 			}
 		},
+		data() {
+			return {
+				base: '../../../../static/avatar/38/',
+				loadComment: false
+			}
+		},
 		methods: {
 			openComment(i,e,cCount) {
+				this.loadComment = true
 				$(e.target).text().trim()=='收起评论'?$(e.target).text(cCount+'条评论'):$(e.target).text('收起评论')
 				$(e.target).parents('.list-item').find('.comments').toggle()
 			},
@@ -111,14 +124,14 @@ import {periodWrap,makeExpandingArea} from 'common/js/common.js';
 				$(e.target).siblings('span').show()
 			}
 		},
-		data() {
-			return {
-				base: '../../../../static/avatar/38/',
-			}
-		},
 		components: {
 			comments
 		},
+		computed: {
+			...mapGetters([
+				'question',
+			])
+		}
 	}
 </script>
 

@@ -8,7 +8,7 @@
  			<div>
  				<div class="comment-list" v-if="commentList">
 
- 					<comment v-for="(item,index) in commentList" :count="count" :item="item" :index="index" :key="item._id" :answer_id="answer_id" @replyOver="replyOver"></comment>
+ 					<comment v-for="(item,index) in commentList" :count="count" :item="item" :index="index" :key="item._id" :answer_id="answer_id" :question_id="question_id" @replyOver="replyOver" from="question"></comment>
  					<!-- <div class="comment-list-divider">
  						<div class="line"></div>
  						<div class="text">以上为精选评论<svg viewBox="0 0 20 20" width="14" height="16"><title></title>
@@ -87,6 +87,14 @@ import axios from 'axios'
 			answer_id: {
 				type: String,
 				default: ''
+			},
+			question_id: {
+				type: String,
+				default: ''
+			},
+			from: {
+				type: String,
+				default: ''
 			}
 		},
 		data() {
@@ -106,23 +114,33 @@ import axios from 'axios'
 				if (this.content=='') {
 					return
 				}
-				axios.post('/comment/insert',{
-					content: this.content,
-					question_id: this.question._id,
-					answer_id: this.answer_id,
-					user_id: this.user._id,
-				}).then((res)=> {
-					this.content = ''
-					this.getCommentList()
-					this.incrCount({
-						list: this.answers,
-						index: this.index
-					})
-				})
+				if ( this.from  == 'question' ) {
+					axios.post('/comment/insert/question',{
+						content: this.content,
+						question_id: this.question_id,
+						user_id: this.user._id,
+					}).then((res)=> {
+						this.content = ''
+						this.getCommentList(1)
+						this.$emit('incrCount')
+					})	
+				}else {
+					axios.post('/comment/insert',{
+						content: this.content,
+						question_id: this.question_id,
+						answer_id: this.answer_id,
+						user_id: this.user._id,
+					}).then((res)=> {
+						this.content = ''
+						this.getCommentList(1)
+						this.incrCount({
+							list: this.answers,
+							index: this.index
+						})
+					})					
+				}
 			},
 			getCommentList(page) {
-				// this.page = page
-				
 				this.page = page
 				if(this.answer_id) {
 					axios.post('/comment/read',{
@@ -136,10 +154,20 @@ import axios from 'axios'
 						this.pageSum = Math.ceil(this.count/this.limit)
 						this.$nextTick().then(()=> {
 							this.currentClass(page)
-							if(this.first) {
-								$(this.$refs.btn[0]).addClass('current')
-								this.first = false
-							}
+						})
+					})
+				} else if ( this.from  == 'question' ) {
+					axios.post('/comment/read/question',{
+						question_id: this.question_id,
+						limit: this.limit,
+						page: page
+					}).then((res)=> {
+						// 需要总页数计算页码
+						this.commentList = res.data.result.comments
+						this.count = res.data.result.count
+						this.pageSum = Math.ceil(this.count/this.limit)
+						this.$nextTick().then(()=> {
+							this.currentClass(page)
 						})
 					})
 				}
@@ -155,11 +183,15 @@ import axios from 'axios'
 				})	
 			},
 			replyOver() {
-				this.getCommentList()
-				this.incrCount({
-					list: this.answers,
-					index: this.index
-				})
+				this.getCommentList(1)
+				if (this.from == 'question') {
+					this.$emit('incrCount')
+				}else {
+					this.incrCount({
+						list: this.answers,
+						index: this.index
+					})
+				}
 			},
 			...mapActions([
 		        'incrCount'
@@ -179,7 +211,6 @@ import axios from 'axios'
 		},
 		computed: {
 			...mapGetters([
-				'question',
 				'user',
 				'answers'
 			])

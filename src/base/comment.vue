@@ -3,10 +3,12 @@
 		<div class="comment-item">
 			<div>
 				<div class="item-meta">
-					<span class="user-link item-avatar"><div class="Popover">
+					<span class="user-link item-avatar" 
+					@click.stop.prevent="toUser(item.user_id)"><div class="Popover">
 						<div class="" id=""><a  target="_blank"><img class="user-link-avatar" :src="base+item.user_id.avatar" width="24" height="24"></a></div>
 					</div></span>
-					<span class="user-link"><a target="_blank">{{!item.to?item.user_id.username:item.user_id.username+'	回复	'+item.to.user_id.username}}</a></span>
+					<span class="user-link" 
+					@click.stop.prevent="toUser(item.user_id)"><a target="_blank">{{!item.to?item.user_id.username:item.user_id.username+'	回复	'+item.to.user_id.username}}</a></span>
 					<span class="item-time">{{item.meta.updatedAt}}</span>
 					<div></div>
 				</div>
@@ -36,11 +38,11 @@
 
 <script type="text/ecmascript-7">
 import axios from 'axios'
-import {communicationMixin} from 'common/js/mixin'
+import {communicationMixin,userMixin} from 'common/js/mixin'
 import {makeExpandingArea} from 'common/js/common.js';
 import {mapMutations,mapGetters} from 'vuex';
 	export default {
-		mixins: [communicationMixin],
+		mixins: [communicationMixin,userMixin],
 		props: {
 			item: {
 				type: Object,
@@ -54,9 +56,17 @@ import {mapMutations,mapGetters} from 'vuex';
 				type: String,
 				default: ''
 			},
+			question_id: {
+				type: String,
+				default: ''
+			},
 			count: {
 				type: Number,
 				default: 0
+			},
+			from: {
+				type: String,
+				default: ''
 			}
 		},
 		data() {
@@ -76,20 +86,36 @@ import {mapMutations,mapGetters} from 'vuex';
 				if (this.reply_content=='') {
 					return
 				}
-				axios.post('/comment/insert',{
-					content: this.reply_content,
-					question_id: this.question._id,
-					answer_id: this.answer_id,
-					user_id: this.user._id,
-					to: comment_id
-				}).then((res) => {
-					if (res.data.status) {
-						alert(res.data.result.msg)
-					}
-					this.reply_content = ''
-					this.$emit('replyOver')
-					this.closeReply(e)
-				})
+				if (this.from == 'question') {
+					axios.post('/comment/insert/question',{
+						content: this.reply_content,
+						question_id: this.question_id,
+						user_id: this.user._id,
+						to: comment_id
+					}).then((res) => {
+						if (res.data.status) {
+							return alert(res.data.result.msg)
+						}
+						this.reply_content = ''
+						this.$emit('replyOver')
+						this.closeReply(e)
+					})	
+				}else {
+					axios.post('/comment/insert',{
+						content: this.reply_content,
+						question_id: this.question._id,
+						answer_id: this.answer_id,
+						user_id: this.user._id,
+						to: comment_id
+					}).then((res) => {
+						if (res.data.status) {
+							return alert(res.data.result.msg)
+						}
+						this.reply_content = ''
+						this.$emit('replyOver')
+						this.closeReply(e)
+					})		
+				}
 			},
 			openConversation(comment_id) {
 				communicationMixin.$emit('openConversation',comment_id)
