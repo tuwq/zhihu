@@ -6,7 +6,7 @@
 	 		<scroll-header slot="scroll-header"></scroll-header>
  		</d-header>
  		<div class="main-content">
- 			<detail-main :sum="sum" :no_more_data="no_more_data"></detail-main>
+ 			<detail-main :sum="sum" :no_more_data="no_more_data" :loading="loading"></detail-main>
  		</div>
  		<div class="special">
 		<view-conversation></view-conversation>
@@ -37,7 +37,8 @@
 				pend: false, // 加载工作中
 				no_more_data: false, // 没有更多数据了
 				answerList: [],
-				sum: 0
+				sum: 0,
+				loading: true
 			}
 		},
 		components: {
@@ -76,6 +77,7 @@
 					limit: this.limit,
 					page: this.page
 				}).then((res)=> {
+					this.loading = false
 					this.sum = res.data.result.sum
 					if(res.data.result.count) {
 						this.answerList = this.answers.concat(res.data.result.answers)

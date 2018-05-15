@@ -4,7 +4,7 @@
  			<div class="main-left">
  				<div>
  					<answers-add></answers-add>
- 					<answers-list :sum="sum" :no_more_data="no_more_data"></answers-list>
+ 					<answers-list :sum="sum" :no_more_data="no_more_data" :loading="loading"></answers-list>
  				</div>
  			</div>
  			<div class="main-right"></div>
@@ -24,6 +24,10 @@
 			no_more_data: {
 				type: Boolean,
 				default: false
+			},
+			loading: {
+				type: Boolean,
+				default: true
 			}
 		},
 		components: {

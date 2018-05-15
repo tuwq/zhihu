@@ -201,9 +201,9 @@
 										<textarea class="textArea" ref="introduction" v-model="temp.info.introduction"></textarea>
 										<div class="ButtonGroup">
 											<button type="submit" class="button-blue submit save" 
-											@click.stop="user.info.introduction=temp.info.introduction">保存</button>
+											@click.stop.prevent="user.info.introduction=temp.info.introduction">保存</button>
 											<button type="button" class="button-grey" style="margin-left: 16px;" 
-											@click.stop="temp.info.introduction=user.info.introduction">取消</button>
+											@click.stop.prevent="temp.info.introduction=user.info.introduction">取消</button>
 										</div>
 									</div>
 								</div>
@@ -282,7 +282,6 @@ import axios from 'axios'
 						me.parent().parent().siblings().show();
 						me.parent().parent().siblings('div').children('.Field-text').show();
 						me.parent().parent().siblings('.Field-text').show();
-
 					})
 				})
 				$('.AddButton').each((index,el)=> {

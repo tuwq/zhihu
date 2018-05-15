@@ -36,6 +36,8 @@
     "mongoose": "^5.0.16",
     "redis": "^2.8.0",
     "style-loader": "^0.21.0",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.2",
     "vee-validate": "^2.0.8",
     "vue": "^2.5.2",
     "vue-lazyload": "^1.2.3",

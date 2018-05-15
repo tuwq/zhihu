@@ -1,5 +1,6 @@
 <template>
  	<div class="answers-wrapper">
+		<loading v-show="loading"></loading>
  		<div class="card">
  			<div class="list">
  				<div class="list-header">
@@ -22,7 +23,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-
+import loading from 'base/loading.vue'
 import answer from 'detail_components/answer.vue'
 import {mapMutations,mapGetters} from 'vuex';
 import axios from 'axios'
@@ -35,10 +36,15 @@ import axios from 'axios'
 			no_more_data: {
 				type: Boolean,
 				default: false
+			},
+			loading: {
+				type: Boolean,
+				default: true
 			}
 		},
 		components: {
-			answer
+			answer,
+			loading
 		},
 		computed: {
 			...mapGetters([

@@ -1,5 +1,7 @@
 <template>
  	<div class="questions" v-if="questionList">
+		
+		<loading v-show="loading"></loading>
 
 		<question v-for="(item,index) in questionList" :key="item._id" :item="item" :index="index" 
 				:questionList="questionList"></question>	
@@ -10,6 +12,7 @@
 
 <script type="text/ecmascript-6">
 	import question from 'z_components/question.vue'
+	import loading from 'base/loading.vue'
 	import axios from 'axios'
 	export default {
 		data() {
@@ -18,11 +21,13 @@
 				questionList: [],
 				pend: false, // 加载工作中
 				no_more_data: false, // 没有更多数据了
-				page: 1
+				page: 1,
+				loading: true
 			}
 		},
 		components: {
-			question
+			question,
+			loading
 		},
 		methods: {
 			getQuestionList() {
@@ -31,6 +36,7 @@
 					limit: this.limit,
 					page: this.page
 				}).then((res)=> {
+					this.loading = false
 					if(res.data.result.count) {	
 						this.questionList = this.questionList.concat(res.data.result.questions)
 						this.page++
