@@ -47,6 +47,7 @@
 				var params = {
 					user_url: this.user.username+this.user._id.substr(0,5)
 				}
+				this.setDetailUserId(this.user._id)
 				this.$router.push({name: 'people_url',params:params}) 
 				this.setIndexDropDown(false);
 			},
@@ -58,7 +59,8 @@
 			...mapMutations({
 				setIndexDropDown: 'SET_INDEX_DROPDOWN',
 				removeToken: 'REMOVE_TOKEN',
-				setUser: 'SET_USER'
+				setUser: 'SET_USER',
+				setDetailUserId: 'SET_DETAIL_USER_ID'
 			})
 		},
 		computed: {

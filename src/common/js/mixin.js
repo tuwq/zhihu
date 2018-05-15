@@ -12,5 +12,18 @@ export const MethodMixin = {
 }
 
 export const userMixin = {
-
+	methods: {
+		toUser(user) {
+			if (!user) {
+				return
+			}
+			let user_url = user.username + user._id.substr(0,5)
+			this.setDetailUserId(user._id)
+			this.$router.push({name: 'people_url',params: {user_url: user_url}}) 
+			this.$router.go(0)
+		},
+		...mapMutations({
+			setDetailUserId: 'SET_DETAIL_USER_ID'
+		})
+	}
 }

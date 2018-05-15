@@ -10,3 +10,4 @@ export const question = state => state.question
 export const add_answer_status = state => state.add_answer_status
 export const answers = state => state.answers
 export const conversation_mask = state => state.conversation_mask
+export const detail_user_id = state => state.detail_user_id

@@ -1,5 +1,5 @@
 
-import { _getToken } from 'common/js/cookie'
+import { _getToken,_get } from 'common/js/cookie'
 
 // vuex的数据刷新页面后会丢失
 const state = {
@@ -14,7 +14,8 @@ const state = {
 	question: {},
 	add_answer_status: false,
 	answers: [],
-	conversation_mask: false
+	conversation_mask: false,
+	detail_user_id: _get('detail_user_id')
 }
 
 export default state;

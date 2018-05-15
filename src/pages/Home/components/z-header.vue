@@ -45,7 +45,9 @@
 import searchBar from 'z_components/search-bar.vue';
 import {mapMutations,mapGetters} from 'vuex';
 import axios from 'axios'
+import {communicationMixin} from 'common/js/mixin'
 	export default {
+		mixins: [communicationMixin],
 		data() {
 			return {
 				loginStatus: 1,
@@ -57,6 +59,7 @@ import axios from 'axios'
 				axios.post('/user/getNowUserInfo')
 					 .then((res) => {
 						this.setUser(res.data.result)
+						communicationMixin.$emit('setUser')
 					 })
 			},
 			openDrop() {

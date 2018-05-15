@@ -1,13 +1,15 @@
 <template>
 	<div>
-		<div class="header" v-show="user">
-			<my-profile v-if="index_type == 1 " :user="user"></my-profile>
-			<other-profile v-if="index_type == 2" :user="user"></other-profile>
-		</div>
-		<div class="main-content">
-			<main-column></main-column>
-			<side-column></side-column>
-		</div>
+		<div v-if="user||otherUser">
+			<div class="header" v-show="user">
+				<my-profile v-if="index_type == 1 " :user="user"></my-profile>
+				<other-profile v-if="index_type == 2" :otherUser="otherUser"></other-profile>
+			</div>
+			<div class="main-content">
+				<main-column></main-column>
+				<side-column></side-column>
+			</div>
+		</div>	
 	</div>
 </template>
 
@@ -24,7 +26,8 @@ import axios from 'axios'
   			return {
   				index_type: 0,
   				preFrom: '',
-  				preNext: ''
+  				preNext: '',
+  				otherUser: null
   			}	
   		},
   		components: {
@@ -35,29 +38,31 @@ import axios from 'axios'
   		},
 		methods: {
 			init(callback) {
-				// 由主页router.push()传值而来,内容为用户名加5位用户id
-				var user_url = this.$route.params.user_url
-				var _id = user_url.substr(-5)
-				var username = user_url.substr(0,user_url.length-5)
-				// 查询用户完整id
-				axios.post('/user/getIdByToken').then( (res)=> {
-					// 比对是否是本人主页
-					if (user_url === username+res.data.result._id.substr(0,5)) {
-						this.index_type = 1;
-					}else{
-						//不是本人主页，需要他人id	
-						this.index_type = 2
-						this.$route.params.uid;
+				axios.post('/user/getIdByToken').then((res)=>{
+					if (res.data.result._id === this.detail_user_id ) {
+						this.index_type = 1
+					}else {
+						axios.post('/user/getInfoById',{
+							_id: this.detail_user_id
+						}).then((res)=> {
+							if (res.data.status) {
+								// 404
+							}else {
+								this.index_type = 2
+								this.otherUser = res.data.result
+							}
+						})
 					}
-				})
+				})		
 			}
 		},
-		created() {
+		mounted() {
 			this.init()
 		},
 		computed: {
 			...mapGetters([
-				'user'
+				'user',
+				'detail_user_id'
 			])
 		},
 		watch: {

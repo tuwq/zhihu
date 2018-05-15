@@ -1,5 +1,5 @@
 import * as types from './mutation-types'
-import { _setToken,_removeToken } from 'common/js/cookie'
+import { _setToken,_removeToken,_set } from 'common/js/cookie'
 
 const mutations = {
 	[types.SET_PUT_QUESTION_MASK](state,isDispaly) {
@@ -40,6 +40,9 @@ const mutations = {
 	},
 	[types.SET_CONVERSATION_MASK](state,isDispaly) {
 		state.conversation_mask = isDispaly
-	}
+	},
+	[types.SET_DETAIL_USER_ID] (state,id) {
+		state.detail_user_id = _set('detail_user_id',id)
+	}	
 }
 export default mutations

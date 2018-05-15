@@ -90,13 +90,31 @@ exports.getConversation = function (req,res) {
 		// 寻找根评论
 		getRoot(dbComment,(rootNode)=> {
 			arr.push(rootNode)
+			// 寻找根评论下所有评论
 			getSons(rootNode,arr,(arr)=> {
-				console.log(arr) 
-				return res.json(util.Result({ conversation: arr}))
+				return res.json(util.Result({arr: arr}))
 			})
 		})
 	})
 }
+
+function getSons(rootNode,arr,callback) {
+	Comment.find({to: rootNode._id})
+	.exec((err,sons)=>{
+		if (sons.length === 0 ) {
+			if (callback) {
+				callback(arr)
+			}
+			
+		}else {
+			sons.forEach((item)=> {
+				arr.push(item)
+				return getSons(item,arr)
+			})
+		}
+	})
+}
+
 function getRoot(son,callback) {
 	Comment.findById(son.to,(err,parent)=> {
 		if (parent.to==undefined) {
@@ -107,23 +125,6 @@ function getRoot(son,callback) {
 	})
 }
 
-function getSons(parent,arr,callback) {
-	Comment.find({to: parent._id},(err,sons)=> {
-		if (sons.length==0){
-			return 
-		}else{
-			sons.forEach(function(item,index){
-				if(index==sons.length-1) {
-					console.log('into2')	// 被执行了两次
-					callback(arr)
-				}
-				console.log('into1')
-			    arr.push(item)
-			    return getSons(item,arr,callback)
-			});
-		}
-	})
-}
 
 exports.test = function (req,res) {
 	Comment.find({},(err,comments)=> {

@@ -15,19 +15,19 @@ export function _removeToken(config) {
 	return cookies.remove(TOKEN_KEY)
 }
 
-export function set(name,value,config) {
+export function _set(name,value,config) {
 	cookies.set(name,value,config)
 	return value
 }
 
-export function get(name) {
+export function _get(name) {
 	return cookies.get(name)
 }
 
-export function remove(name,config) {
+export function _remove(name,config) {
 	cookies.remove(name,config)
 }
 
-export function getJSON(name) {
+export function _getJSON(name) {
 	cookies.getJSON(name)
 }

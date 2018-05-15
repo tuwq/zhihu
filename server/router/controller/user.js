@@ -81,7 +81,9 @@ exports.phoneLogin = function (req,res) {
 }
 
 exports.test = function (req,res) {	
-	return res.status(401)
+	User.find({},(err,users)=> {
+		return res.json(util.Result(users))
+	})
 }
 
 exports.test2 = function (req,res) {

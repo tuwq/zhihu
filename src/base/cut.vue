@@ -114,6 +114,7 @@ export default {
       	x: x,y: y,w: w,h: h
       }).then((res)=> {
       	this.$router.push('/people/'+this.$route.params.user_url)
+        this.$router.go(0)
       })
     }
   },

@@ -37,3 +37,9 @@ export function copyArr(arr){
         }
     })
 }
+// 深拷贝对象
+export function copyObj(initalObj) {
+    var obj = {};
+    obj = JSON.parse(JSON.stringify(initalObj));
+    return obj;
+}

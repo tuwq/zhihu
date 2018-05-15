@@ -122,7 +122,7 @@ import axios from 'axios'
 			},
 			getCommentList(page) {
 				// this.page = page
-				this.currentClass(page)
+				
 				this.page = page
 				if(this.answer_id) {
 					axios.post('/comment/read',{
@@ -135,6 +135,7 @@ import axios from 'axios'
 						this.count = res.data.result.count
 						this.pageSum = Math.ceil(this.count/this.limit)
 						this.$nextTick().then(()=> {
+							this.currentClass(page)
 							if(this.first) {
 								$(this.$refs.btn[0]).addClass('current')
 								this.first = false
