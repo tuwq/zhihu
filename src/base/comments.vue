@@ -8,7 +8,7 @@
  			<div>
  				<div class="comment-list" v-if="commentList">
 
- 					<comment v-for="(item,index) in commentList" :count="count" :item="item" :index="index" :key="item._id" :answer_id="answer_id" :question_id="question_id" @replyOver="replyOver" from="question"></comment>
+ 					<comment v-for="(item,index) in commentList" :count="count" :item="item" :index="index" :key="item._id" :answer_id="answer_id" :question_id="question_id" @replyOver="replyOver" :from="fromType"></comment>
  					<!-- <div class="comment-list-divider">
  						<div class="line"></div>
  						<div class="text">以上为精选评论<svg viewBox="0 0 20 20" width="14" height="16"><title></title>
@@ -26,7 +26,7 @@
 						<div v-else style="display: inline-block;" class="mod">
 							<!--三种情况 1-->
 							<!-- 1 2 3 4 ... 17 -->
-							<div v-if="page<4" class="p1">
+							<div v-if="page<=4" class="p1">
 								<button  @click.stop.prevent="getCommentList(item)" class="pageButton" v-for="item in [1,2,3,4]" type="button" ref="btn">{{item}}
 							 	</button>
 								<span class="PaginationButton">...</span>
@@ -92,7 +92,7 @@ import axios from 'axios'
 				type: String,
 				default: ''
 			},
-			from: {
+			fromType: {
 				type: String,
 				default: ''
 			}

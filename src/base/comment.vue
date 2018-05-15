@@ -86,7 +86,9 @@ import {mapMutations,mapGetters} from 'vuex';
 				if (this.reply_content=='') {
 					return
 				}
+				console.log('into1')
 				if (this.from == 'question') {
+					console.log('into2')
 					axios.post('/comment/insert/question',{
 						content: this.reply_content,
 						question_id: this.question_id,
@@ -101,6 +103,7 @@ import {mapMutations,mapGetters} from 'vuex';
 						this.closeReply(e)
 					})	
 				}else {
+					console.log('into3')
 					axios.post('/comment/insert',{
 						content: this.reply_content,
 						question_id: this.question._id,

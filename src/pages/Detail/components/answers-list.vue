@@ -1,8 +1,8 @@
 <template>
  	<div class="answers-wrapper">
-		<loading v-show="loading"></loading>
  		<div class="card">
- 			<div class="list">
+ 			<loading v-show="loading"></loading>
+ 			<div class="list" v-if="answers">
  				<div class="list-header">
  					<h4 class="list-headerText"><span>{{sum}}个回答</span></h4>
  					<div class="list-headerOptions">

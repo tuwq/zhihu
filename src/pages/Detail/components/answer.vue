@@ -73,7 +73,7 @@
 					</button>
 				</div>
 				</div>
-			<comments class="comments" v-if="loadComment" :cCount="item.cCount" :index="index" :answer_id="item._id" 
+			<comments class="comments" from="answer" v-if="loadComment" :cCount="item.cCount" :index="index" :answer_id="item._id" 
 			:question_id="question._id">
 			</comments>
 			</div>
