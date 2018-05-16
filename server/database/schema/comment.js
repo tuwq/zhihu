@@ -28,6 +28,14 @@ var CommentSchema = new Schema({
 		type: ObjectId,
 		ref: 'Comment'
 	},
+	good: {
+		type: Number,
+		default: 0
+	},
+	bad: {
+		type: Number,
+		default: 0
+	},
 	meta: {
 	    createdAt: {
 	      type: Date,

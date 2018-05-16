@@ -1,6 +1,7 @@
 <template>
  	<div class="comments-container">
  		<div class="comments-inner">
+			<loading v-show="loading"></loading>
  			<div class="top-bar">
  				<div class="top-title"><h2 class="title">{{cCount}} 条评论</h2></div>
  				<div class="top-options"><button class="sortBtn"><span>&#8203;<svg viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M13.004 7V4.232c0-.405.35-.733.781-.733.183 0 .36.06.501.17l6.437 5.033c.331.26.376.722.1 1.033a.803.803 0 0 1-.601.264H2.75a.75.75 0 0 1-.75-.75V7.75A.75.75 0 0 1 2.75 7h10.254zm-1.997 9.999v2.768c0 .405-.35.733-.782.733a.814.814 0 0 1-.5-.17l-6.437-5.034a.702.702 0 0 1-.1-1.032.803.803 0 0 1 .6-.264H21.25a.75.75 0 0 1 .75.75v1.499a.75.75 0 0 1-.75.75H11.007z"></path></svg></span>切换为时间排序</button></div>
@@ -8,7 +9,7 @@
  			<div>
  				<div class="comment-list" v-if="commentList">
 
- 					<comment v-for="(item,index) in commentList" :count="count" :item="item" :index="index" :key="item._id" :answer_id="answer_id" :question_id="question_id" @replyOver="replyOver" :from="fromType"></comment>
+ 					<comment v-for="(item,index) in commentList" :count="count" :item="item" :index="index" :key="item._id" :answer_id="answer_id" :question_id="question_id" @replyOver="replyOver" :fromType="fromType"></comment>
  					<!-- <div class="comment-list-divider">
  						<div class="line"></div>
  						<div class="text">以上为精选评论<svg viewBox="0 0 20 20" width="14" height="16"><title></title>
@@ -73,6 +74,7 @@
 import {makeExpandingArea} from 'common/js/common.js';
 import {mapMutations,mapGetters,mapActions} from 'vuex';
 import comment from 'base/comment.vue'
+import loading from 'base/loading.vue'
 import axios from 'axios'
 	export default {
 		props: {
@@ -106,7 +108,7 @@ import axios from 'axios'
 				count: 0,
 				pageSum: '',
 				page: 1,
-				first: true
+				loading: true
 			}
 		},
 		methods: {
@@ -114,7 +116,8 @@ import axios from 'axios'
 				if (this.content=='') {
 					return
 				}
-				if ( this.from  == 'question' ) {
+
+				if ( this.fromType  == 'question' ) {
 					axios.post('/comment/insert/question',{
 						content: this.content,
 						question_id: this.question_id,
@@ -142,13 +145,14 @@ import axios from 'axios'
 			},
 			getCommentList(page) {
 				this.page = page
-				if(this.answer_id) {
+				if(this.fromType == 'answer') {
 					axios.post('/comment/read',{
 						answer_id: this.answer_id,
 						limit: this.limit,
 						page: page
 					}).then((res)=> {
 						// 需要总页数计算页码
+						this.loading = false
 						this.commentList = res.data.result.comments
 						this.count = res.data.result.count
 						this.pageSum = Math.ceil(this.count/this.limit)
@@ -156,13 +160,14 @@ import axios from 'axios'
 							this.currentClass(page)
 						})
 					})
-				} else if ( this.from  == 'question' ) {
+				} else if ( this.fromType  == 'question' ) {
 					axios.post('/comment/read/question',{
 						question_id: this.question_id,
 						limit: this.limit,
 						page: page
 					}).then((res)=> {
 						// 需要总页数计算页码
+						this.loading = false
 						this.commentList = res.data.result.comments
 						this.count = res.data.result.count
 						this.pageSum = Math.ceil(this.count/this.limit)
@@ -204,7 +209,8 @@ import axios from 'axios'
 			makeExpandingArea(this.$refs.comment_input)
 		},
 		components: {
-			comment
+			comment,
+			loading
 		},
 		created() {
 			this.getCommentList(1)

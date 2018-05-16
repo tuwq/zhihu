@@ -33,6 +33,10 @@ var QuestionSchema = new Schema({
 		type: Number,
 		default: 0
 	},
+	good: {
+		type: Number,
+		default: 0
+	},
 	bad: {
 		type: Number,
 		default: 0

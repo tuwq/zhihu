@@ -2,6 +2,7 @@ var mongoose = require('mongoose')
 var Answer = mongoose.model('Answer')
 var Question = mongoose.model('Question')
 var Comment = mongoose.model('Comment')
+var common = require('./common.js')
 const util = require('../../common/util.js');
 const checkUtil = require('../../common/checkUtil.js')
 const tokenUtil = require('../../common/token.js')
@@ -121,10 +122,27 @@ exports.read = function (req,res) {
 	.sort({'meta.updatedAt': -1})
 	.exec((err,comments)=> {
 		Comment.count({answer_id: fields.answer_id},(err,count)=> {
-			return res.json(util.Result({comments: comments,count: count}))
+			getVote(comments,(comments)=> {
+				return res.json(util.Result({comments: comments,count: count}))
+			})
 		})
 	})
 }
+
+function getVote(comments,callback) {
+	(function iterator(i){
+		if (i == comments.length) {
+			callback(comments)
+			return 
+		}
+		common.getVoteComment(comments[i]._id,({good,bad})=> {
+			comments[i].good = good
+			comments[i].bad = bad
+			iterator(i+1)
+		})
+	})(0)
+}
+
 
 exports.readToQuestion = function (req,res) {
 	let fields = req.body
@@ -146,7 +164,9 @@ exports.readToQuestion = function (req,res) {
 	.sort({'meta.updatedAt': -1})
 	.exec((err,comments)=> {
 		Comment.count({question_id: fields.question_id,answer_id: undefined},(err,count)=> {
-			return res.json(util.Result({comments: comments,count: count}))
+			getVote(comments,(comments)=> {
+				return res.json(util.Result({comments: comments,count: count}))
+			})
 		})
 	})
 }

@@ -1,7 +1,9 @@
 <template>
 	<div id="people" @click.stop="clsDrop">
-		<p-header></p-header>
-		<div class="main">
+		<keep-alive>
+			<p-header></p-header>
+		</keep-alive>
+		<div class="main">	
 			<router-view></router-view>
 		</div>
 		<remind-list :reminds="['suggest','toTop']"></remind-list>

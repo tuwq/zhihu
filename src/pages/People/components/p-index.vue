@@ -1,5 +1,6 @@
 <template>
 	<div>
+		<loading v-show="loading"></loading>
 		<div v-if="user||otherUser">
 			<div class="header" v-show="user">
 				<my-profile v-if="index_type == 1 " :user="user"></my-profile>
@@ -18,6 +19,7 @@ import mainColumn from 'p_components/main-column.vue';
 import sideColumn from 'p_components/side-column.vue';
 import myproFile from 'p_components/myProfile.vue';
 import otherProfile from 'p_components/otherProfile.vue';
+import loading from 'base/loading.vue'
 import {mapMutations,mapGetters} from 'vuex';
 import { set, get } from '../../../common/js/cookie.js'
 import axios from 'axios'
@@ -27,24 +29,28 @@ import axios from 'axios'
   				index_type: 0,
   				preFrom: '',
   				preNext: '',
-  				otherUser: null
+  				otherUser: null,
+  				loading: true
   			}	
   		},
   		components: {
   			'main-column': mainColumn,
   			'side-column': sideColumn,
   			'my-profile': myproFile,
-  			'other-profile': otherProfile
+  			'other-profile': otherProfile,
+  			'loading': loading
   		},
 		methods: {
 			init(callback) {
 				axios.post('/user/getIdByToken').then((res)=>{
 					if (res.data.result._id === this.detail_user_id ) {
+						this.loading = false
 						this.index_type = 1
 					}else {
 						axios.post('/user/getInfoById',{
 							_id: this.detail_user_id
 						}).then((res)=> {
+							this.loading = false
 							if (res.data.status) {
 								// 404
 							}else {

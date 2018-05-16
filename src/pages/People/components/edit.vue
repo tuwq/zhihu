@@ -22,7 +22,7 @@
 					</div>
 					<div class="header-content">
 						<div class="contentHeader">
-							<h1 class="title" v-show="!modifyUsername"><span class="header-name">{{user.username}}</span>
+							<h1 class="title" v-show="!modifyUsername"><span class="header-name">{{temp.username}}</span>
 								<button class="modify-username" @click.stop="modifyUsername=!modifyUsername">
 							<svg viewBox="0 0 12 12" width="12" height="16" 
 							style="margin-right: 4px;" fill="currentColor">
@@ -31,11 +31,13 @@
 							</h1>
 							<div class="modify-username-wrapper" v-show="modifyUsername">
 								<div class="Field-input-wrapper">
-										<input type="text" placeholder="新的用户名" v-model="user.username">
+										<input type="text" placeholder="新的用户名" v-model="temp.username">
 									</div>
 									<div class="ButtonGroup" style="display: inline-block; margin-left: 24px; margin-top: 0;">
-										<button type="submit" class="button-blue" @click.stop="modifyUsername=!modifyUsername">保存</button>
-										<button type="button" class="button-grey" style="margin-left: 16px;'">取消</button>
+										<button type="submit" class="button-blue save" 
+										@click.stop="saveName">保存</button>
+										<button type="button" class="button-grey" style="margin-left: 16px;" 
+										@click.stop="temp.username=user.username">取消</button>
 									</div>
 								</div>
 								
@@ -314,6 +316,10 @@ import axios from 'axios'
 			    };
 				
 			},
+			saveName() {
+				this.modifyUsername=!this.modifyUsername
+				this.user.username=this.temp.username
+			},	
 			saveInfo() {
 				axios.post('/user/saveInfo',{
 					user: this.user

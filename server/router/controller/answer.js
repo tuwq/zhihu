@@ -2,6 +2,7 @@ var mongoose = require('mongoose')
 var Answer = mongoose.model('Answer')
 var Question = mongoose.model('Question')
 var Comment = mongoose.model('Comment')
+var common = require('./common.js')
 const util = require('../../common/util.js');
 const checkUtil = require('../../common/checkUtil.js')
 const tokenUtil = require('../../common/token.js')
@@ -58,12 +59,29 @@ exports.read = function (req,res) {
 		getCommentCount(answers,(answers)=> {
 			// 获取该问题下的回答数量
 			Answer.count({question_id: fields.question_id},(err,sum)=> {
-				let count = answers.length
-				return res.json(util.Result({answers: answers,count: count,sum: sum}))
+				getVote(answers,(answers)=> {
+					let count = answers.length
+					return res.json(util.Result({answers: answers,count: count,sum: sum}))
+				})
 			})
 		})
 	})
 }
+
+function getVote(answers,callback) {
+	(function iterator(i){
+		if (i == answers.length) {
+			callback(answers)
+			return 
+		}
+		common.getVoteAnswer(answers[i]._id,({good,bad})=> {
+			answers[i].good = good
+			answers[i].bad = bad
+			iterator(i+1)
+		})
+	})(0)
+}
+
 
 function getCommentCount(answers,callback) {
 	(function iterator(i){

@@ -3,6 +3,7 @@ var Question = mongoose.model('Question')
 var Category = mongoose.model('Category')
 var Comment = mongoose.model('Comment')
 const util = require('../../common/util.js');
+var common = require('./common.js')
 const checkUtil = require('../../common/checkUtil.js')
 const tokenUtil = require('../../common/token.js')
 
@@ -64,8 +65,10 @@ exports.read = function (req,res) {
 		.sort({'meta.updatedAt': -1})
 		.exec((err,questions)=> {
 			getCommentCount(questions,(questions)=> {
-				let count = questions.length;
-				return res.json(util.Result({questions: questions,count: count}))
+				getVote(questions,(questions)=>{
+					let count = questions.length;
+					return res.json(util.Result({questions: questions,count: count}))
+				})
 			})
 		})
 	})
@@ -83,6 +86,21 @@ function getCommentCount(questions,callback) {
 		})
 	})(0)
 }
+
+function getVote(questions,callback) {
+	(function iterator(i){
+		if (i == questions.length) {
+			callback(questions)
+			return 
+		}
+		common.getVoteQuestion(questions[i]._id,({good,bad})=> {
+			questions[i].good = good
+			questions[i].bad = bad
+			iterator(i+1)
+		})
+	})(0)
+}
+
 
 exports.test = function (req,res) {
 	Question.find({},(err,questions)=> {

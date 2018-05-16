@@ -3,6 +3,7 @@ var Question = require('./controller/question.js')
 var Answer = require('./controller/answer.js')
 var Index = require('./controller/index.js')
 var Comment = require('./controller/comment.js')
+var Common = require('./controller/common.js')
 
 module.exports = function (app) {
 	app.post('/user/phoneLogin',User.phoneLogin)
@@ -30,4 +31,7 @@ module.exports = function (app) {
 	app.post('/comment/read/question',Comment.readToQuestion)
 	app.post('/comment/getConversation',Comment.getConversation)
 	app.get('/comment/test',Comment.test)
+	app.post('/common/vote/question',Common.voteQuestion)
+	app.post('/common/vote/answer',Common.voteAnswer)
+	app.post('/common/vote/comment',Common.voteComment)
 }

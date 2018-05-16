@@ -21,6 +21,10 @@ var AnswerSchema = new Schema({
 		type: Number,
 		default: 0
 	},
+	good: {
+		type: Number,
+		default: 0
+	},
 	bad: {
 		type: Number,
 		default: 0
@@ -32,19 +36,19 @@ var AnswerSchema = new Schema({
 	meta: {
 	    createdAt: {
 	      type: Date,
-	      default: new Date().Format('yyyy-MM-dd')
+	      default: Date.now()
 	    },
 	    updatedAt: {
 	      type: Date,
-	      default: new Date().Format('yyyy-MM-dd')
+	      default: Date.now()
 	    }
   	}
 })
 AnswerSchema.pre('save', function (next) {
   if (this.isNew) {
-    this.meta.createdAt = this.meta.updatedAt = new Date().Format('yyyy-MM-dd')
+    this.meta.createdAt = this.meta.updatedAt = Date.now()
   } else {
-    this.meta.updatedAt = new Date().Format('yyyy-MM-dd')
+    this.meta.updatedAt = Date.now()
   }
   next()
 })

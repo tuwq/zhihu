@@ -31,12 +31,12 @@
 					</div>
 					<div class="content-actions">
 						<span>
-						<button class="up"><svg viewBox="0 0 20 18" width="9" height="16">
+						<button class="up" @click.stop="vote(1,item._id)"><svg viewBox="0 0 20 18" width="9" height="16">
 							<title></title><g><path d="M0 15.243c0-.326.088-.533.236-.896l7.98-13.204C8.57.57 9.086 0 10 0s1.43.57 1.784 1.143l7.98 13.204c.15.363.236.57.236.896 0 1.386-.875 1.9-1.955 1.9H1.955c-1.08 0-1.955-.517-1.955-1.9z"></path></g>
-						</svg>73</button>
-						<button class="down"><svg viewBox="0 0 20 18" width="9" height="16">
+						</svg>{{item.good}}</button>
+						<button class="down" @click.stop="vote(2,item._id)"><svg viewBox="0 0 20 18" width="9" height="16">
 							<title></title><g><path d="M0 15.243c0-.326.088-.533.236-.896l7.98-13.204C8.57.57 9.086 0 10 0s1.43.57 1.784 1.143l7.98 13.204c.15.363.236.57.236.896 0 1.386-.875 1.9-1.955 1.9H1.955c-1.08 0-1.955-.517-1.955-1.9z"></path></g>
-						</svg>73</button>
+						</svg>{{item.bad}}</button>
 						</span>
 						<button class="item-action" @click.stop.prevent="openComment($event,item.cCount)">
 						<span class="">
@@ -56,7 +56,7 @@
 					</button>
 					</div>
 				</div>
-				<comments :question_id="item._id" from="question" @incrCount="item.cCount++" :cCount="item.cCount" class="comment" 
+				<comments :question_id="item._id" fromType="question" @incrCount="item.cCount++" :cCount="item.cCount" class="comment" 
 				v-if="loadComment"></comments>
 			</div>
 		</div>
@@ -68,6 +68,8 @@
 	import clsBubble from 'base/cls-bubble.vue'
 	import comments from 'base/comments.vue'
 	import {userMixin} from 'common/js/mixin'
+	import {mapMutations,mapGetters,mapActions} from 'vuex';
+	import axios from 'axios'
 	export default {
 		mixins: [userMixin],
 		props: {
@@ -91,6 +93,32 @@
 			}
 		},
 		methods: {
+			vote(vote,question_id) {
+				axios.post('/common/vote/question',{
+					user_id: this.user._id,
+					question_id: question_id,
+					vote: vote
+				}).then((res)=> {
+					if (res.data.status === -1) {
+						// 取消赞踩
+						vote==1?this.item.good--:this.item.bad--
+					}else if(res.data.status === 0){
+						// 新建
+						vote==1?this.item.good++:this.item.bad++
+					}else {
+						// 改变
+						if (vote==1) {
+							this.item.good++
+							this.item.bad--
+						}else {
+							this.item.bad++
+							this.item.good--
+						}
+						this.item.good<0?0:this.item.good
+						this.item.bad<0?0:this.item.bad
+					}
+				})
+			},
 			toDetail(id) {
 				this.$router.push({ path: `/question/${id}` }) 
 			},
@@ -112,6 +140,11 @@
 				$(e.target).text().trim()=='收起评论'?$(e.target).text(cCount+'条问题评论'):$(e.target).text('收起评论')
 				$(e.target).parents('.question').find('.comment').toggle();
 			}
+		},
+		computed: {
+			...mapGetters([
+				'user',
+			])
 		},
 		components: {
 			'cls-bubble': clsBubble,
