@@ -59,7 +59,7 @@ import {communicationMixin} from 'common/js/mixin'
 				axios.post('/user/getNowUserInfo')
 					 .then((res) => {
 						this.setUser(res.data.result)
-						communicationMixin.$emit('setUser')
+						this.$emit('setUser',this.user)
 					 })
 			},
 			openDrop() {

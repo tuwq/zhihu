@@ -2,27 +2,34 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 const { ObjectId, Mixed } = Schema.Types
 
-var QuestionUser = new Schema({
-	question_id: {
-		type: ObjectId,
-		ref: 'Question'
+var DynamicsSchema = new Schema({
+	// 动态类型
+	// 1:问题相关	2:回答相关	3:评论相关
+	type: {					
+		type: Number,
+		default: 0
+	},
+	// 动作类型
+	// 1:提出	2:回答 3:关注	4:点赞
+	action: {
+		type: Number,
+		default: 0	
 	},
 	user_id: {
 		type: ObjectId,
 		ref: 'User'
 	},
-	vote: {
-		unique: false,
-	    required: true,
-		type: Number,
-		default: 0
+	question_id: {
+		type: ObjectId,
+		ref: 'Question'
 	},
-	// 0: 不关注,  1:关注
-	attentionStatus: {
-		unique: false,
-	    required: true,
-		type: Number,
-		default: 0
+	answer_id: {
+		type: ObjectId,
+		ref: 'Answer'
+	},
+	comment_id: {
+		type: ObjectId,
+		ref: 'Comment'
 	},
 	meta: {
 	    createdAt: {
@@ -37,7 +44,7 @@ var QuestionUser = new Schema({
 })
 
 
-QuestionUser.pre('save', function (next) {
+DynamicsSchema.pre('save', function (next) {
   if (this.isNew) {
     this.meta.createdAt = this.meta.updatedAt = Date.now()
   } else {
@@ -46,4 +53,4 @@ QuestionUser.pre('save', function (next) {
   next()
 })
 
-module.exports = QuestionUser
+module.exports = DynamicsSchema

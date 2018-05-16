@@ -2,7 +2,7 @@ var mongoose = require('mongoose')
 var Answer = mongoose.model('Answer')
 var Question = mongoose.model('Question')
 var Comment = mongoose.model('Comment')
-var common = require('./common.js')
+var Vote = require('./vote.js')
 const util = require('../../common/util.js');
 const checkUtil = require('../../common/checkUtil.js')
 const tokenUtil = require('../../common/token.js')
@@ -74,7 +74,7 @@ function getVote(answers,callback) {
 			callback(answers)
 			return 
 		}
-		common.getVoteAnswer(answers[i]._id,({good,bad})=> {
+		Vote.getVoteAnswer(answers[i]._id,({good,bad})=> {
 			answers[i].good = good
 			answers[i].bad = bad
 			iterator(i+1)

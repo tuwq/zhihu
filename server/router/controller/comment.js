@@ -2,7 +2,7 @@ var mongoose = require('mongoose')
 var Answer = mongoose.model('Answer')
 var Question = mongoose.model('Question')
 var Comment = mongoose.model('Comment')
-var common = require('./common.js')
+var Vote = require('./vote.js')
 const util = require('../../common/util.js');
 const checkUtil = require('../../common/checkUtil.js')
 const tokenUtil = require('../../common/token.js')
@@ -56,7 +56,6 @@ exports.insert = function (req,res) {
 	}).catch((err)=> {
 		return res.json(util.Result(401))
 	})
-
 }
 
 
@@ -135,7 +134,7 @@ function getVote(comments,callback) {
 			callback(comments)
 			return 
 		}
-		common.getVoteComment(comments[i]._id,({good,bad})=> {
+		Vote.getVoteComment(comments[i]._id,({good,bad})=> {
 			comments[i].good = good
 			comments[i].bad = bad
 			iterator(i+1)

@@ -98,7 +98,15 @@ var UserSchema = new Schema({
 	approve: {
 		type: Number,
 		default: 0
-	},	
+	},
+  sendFeed: {
+    type: ObjectId,
+    ref: 'Feed'
+  },
+  receiveFeed: {
+    type: ObjectId,
+    ref: 'Feed'
+  },
 	meta: {
 	    createdAt: {
 	      type: Date,

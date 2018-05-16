@@ -2,8 +2,9 @@ var mongoose = require('mongoose')
 var Question = mongoose.model('Question')
 var Category = mongoose.model('Category')
 var Comment = mongoose.model('Comment')
+var Attention = require('./attention.js')
 const util = require('../../common/util.js');
-var common = require('./common.js')
+var Vote = require('./vote.js')
 const checkUtil = require('../../common/checkUtil.js')
 const tokenUtil = require('../../common/token.js')
 
@@ -93,7 +94,7 @@ function getVote(questions,callback) {
 			callback(questions)
 			return 
 		}
-		common.getVoteQuestion(questions[i]._id,({good,bad})=> {
+		Vote.getVoteQuestion(questions[i]._id,({good,bad})=> {
 			questions[i].good = good
 			questions[i].bad = bad
 			iterator(i+1)
@@ -109,15 +110,24 @@ exports.test = function (req,res) {
 }
 
 exports.detail = function (req,res) {
-	let fields = req.body
-	let question_id = fields.question_id
-	Question.findById(question_id)
-		.populate('category')
-		.populate('user_id')
-		.exec((err,question)=> {
-			if (!question) {
-				return res.json(util.Result(1))
-			}
-			return res.json(util.Result(question))
-		})
+	var token = req.headers.token
+	tokenUtil.verifyToken(token)
+	.then((_id)=> {
+		let fields = req.body
+		let question_id = fields.question_id
+		Question.findById(question_id)
+			.populate('category')
+			.populate('user_id')
+			.exec((err,question)=> {
+				// 寻找关注等信息
+				if (!question) {
+					return res.json(util.Result(1))
+				}
+				Attention.getAttentionQuestion(_id,question._id,({sum,attentionStatus})=> {
+					return res.json(util.Result({question,sum,attentionStatus}))
+				})
+			})
+	}).catch((err)=> {
+		return res.json(util.Result(401))
+	})
 }

@@ -8,6 +8,7 @@ var session = require("express-session");
 var bodyParser = require('body-parser');
 var mongoStore = require('connect-mongo')(session);
 var mime = require('mime');
+var timeline = require('./tasks/timeline.js')
 
 app.use(bodyParser.json());
 //post处理需要body-parser

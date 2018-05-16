@@ -2,7 +2,7 @@
  	<div id="Detail" @click.stop="clsModal">
  		<d-header class="d-header">
  			<z-header slot="z-header"></z-header>
-	 		<detail-header slot="detail-header"></detail-header>
+	 		<detail-header slot="detail-header" :attentionSum="attentionSum" :attentionStatus="attentionStatus"  @changeAttention="changeAttention"></detail-header>
 	 		<scroll-header slot="scroll-header"></scroll-header>
  		</d-header>
  		<div class="main-content">
@@ -12,6 +12,7 @@
 		<view-conversation></view-conversation>
 		<remind-list :reminds="['suggest','toTop']"></remind-list>
 		<z-drop></z-drop>
+		<attention></attention>
 	    </div>
  	</div>
 </template>
@@ -22,6 +23,7 @@
 	import detailHeader from 'detail_components/detail-header.vue';
 	import scrollHeader from 'detail_components/scroll-header.vue';
 	import dHeader from 'detail_components/d-header.vue';
+	import attention from 'detail_components/attention.vue';
 	import detailMain from 'detail_components/detail-main.vue';
 	import viewConversation from 'detail_components/view-conversation.vue'; 
 	import remindList from 'base/remind-list.vue';
@@ -38,7 +40,9 @@
 				no_more_data: false, // 没有更多数据了
 				answerList: [],
 				sum: 0,
-				loading: true
+				loading: true,
+				attentionSum: 0,
+				attentionStatus: 0
 			}
 		},
 		components: {
@@ -49,7 +53,8 @@
 			'detail-main': detailMain,
 			'view-conversation': viewConversation,
 			'remind-list': remindList,
-			'z-drop': zDrop
+			'z-drop': zDrop,
+			'attention': attention
 		},
 		methods: {
 			...mapMutations({
@@ -57,17 +62,23 @@
 				setAnswers: 'SET_ANSWERS',
 				setIndexDropDown: 'SET_INDEX_DROPDOWN',
 			}),
+			changeAttention(status) {
+				status==1?this.attentionSum++:this.attentionSum--
+				this.attentionStatus = status==1?1:0
+			},
 			clsModal() {
 	          this.setIndexDropDown(false)
 	        },
-			getDetail() {
+			getDetail(user) {
 				axios.post('/question/detail',{
 					question_id: this.$route.params.question_id
 				}).then((res)=> {
 					if (res.data.status) {
 						// 转到404
 					}
-					this.setQuestion(res.data.result)
+					this.setQuestion(res.data.result.question)
+					this.attentionSum =  res.data.result.sum
+					this.attentionStatus =  res.data.result.attentionStatus
 				})
 			},
 			getAnswers() {

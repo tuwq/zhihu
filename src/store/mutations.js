@@ -43,6 +43,9 @@ const mutations = {
 	},
 	[types.SET_DETAIL_USER_ID] (state,id) {
 		state.detail_user_id = _set('detail_user_id',id)
-	}	
+	},
+	[types.SET_ATTENTION_QUESTION_MODAL] (state,isDispaly) {
+		state.attention_question_modal = isDispaly
+	}
 }
 export default mutations

@@ -41,7 +41,7 @@
 						</span>
 						<span class="overflow-text"></span>
 					</div>
-				<div><div class="item-time"><a target="_blank"><span data-tooltip="发布于 2018-04-09 20:04">编辑于 {{item.meta.createdAt}}</span></a></div></div>
+				<div><div class="item-time"><a target="_blank"><span data-tooltip="发布于 2018-04-09 20:04">编辑于 {{updatedAt}}</span></a></div></div>
 				<div class="content-item-actions">
 					<span>
 						<button class="up" @click.stop.prevent="vote(1,item._id)"><svg viewBox="0 0 20 18" width="9" height="16">
@@ -86,6 +86,7 @@ import comments from 'base/comments.vue';
 import {periodWrap,makeExpandingArea} from 'common/js/common.js';
 import {userMixin} from 'common/js/mixin'
 import {mapMutations,mapGetters,mapActions} from 'vuex';
+import moment from 'moment'  
 import axios from 'axios'
 	export default {
 		mixins: [userMixin],
@@ -104,12 +105,13 @@ import axios from 'axios'
 				base: '../../../../static/avatar/38/',
 				loadComment: false,
 				good: this.item.good,
-				bad: this.item.bad
+				bad: this.item.bad,
+				updatedAt: moment(this.item.meta.updatedAt).format('YYYY-MM-DD HH:mm:ss')
 			}
 		},
 		methods: {
 			vote(vote,answer_id){
-				axios.post('/common/vote/answer',{
+				axios.post('/vote/answer',{
 					answer_id: answer_id,
 					user_id: this.user._id,
 					vote: vote

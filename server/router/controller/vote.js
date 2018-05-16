@@ -31,7 +31,7 @@ exports.voteQuestion = function (req,res) {
 		// 没有上次记录，新建记录
 		// 建立第一张表关联
 		// 1: 赞 	2:踩
-		QuestionUser.findOne({user_id: fields.user_id,question_id: fields.question_id},(err,dbBind)=> {
+		QuestionUser.findOne({user_id: fields.user_id,question_id: fields.question_id},(err,dbBind) => {
 			if (!dbBind) {
 				let bind = new QuestionUser({
 					question_id: fields.question_id,
@@ -42,14 +42,19 @@ exports.voteQuestion = function (req,res) {
 				return res.json(util.Result(0))
 			}
 			if (dbBind.vote == fields.vote) {
-				// 点击于上次一次相等
-				dbBind.remove();
+				dbBind.vote = 0
+				dbBind.save()
 				return res.json(util.Result(-1))
 			}
-			dbBind.vote = fields.vote
+			if (dbBind.vote == 0) {
+				dbBind.vote = fields.vote
+				dbBind.save()
+				return res.json(util.Result(0))
+			}
+			dbBind.vote  = fields.vote
 			dbBind.save()
 			return res.json(util.Result(1))
-		})	
+		})
 	}).catch((err)=> {
 		return res.json(util.Result(401))
 	})

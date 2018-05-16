@@ -9,7 +9,7 @@
 					</div></span>
 					<span class="user-link" 
 					@click.stop.prevent="toUser(item.user_id)"><a target="_blank">{{!item.to?item.user_id.username:item.user_id.username+'	回复	'+item.to.user_id.username}}</a></span>
-					<span class="item-time">{{item.meta.updatedAt}}</span>
+					<span class="item-time">{{updatedAt}}</span>
 					<div></div>
 				</div>
 				<div class="item-content">{{item.content}}</div>
@@ -40,6 +40,7 @@
 import axios from 'axios'
 import {communicationMixin,userMixin} from 'common/js/mixin'
 import {makeExpandingArea} from 'common/js/common.js';
+import moment from 'moment' 
 import {mapMutations,mapGetters} from 'vuex';
 	export default {
 		mixins: [communicationMixin,userMixin],
@@ -73,6 +74,7 @@ import {mapMutations,mapGetters} from 'vuex';
 			return {
 				reply_content: '',
 				base: '../../static/avatar/34/',
+				updatedAt: moment(this.item.meta.updatedAt).format('YYYY-MM-DD HH:mm:ss')
 			}
 		},
 		methods: {
@@ -83,7 +85,7 @@ import {mapMutations,mapGetters} from 'vuex';
 				$(e.target).parents('.comment-editor').hide()
 			},
 			vote(vote,comment_id) {
-				axios.post('/common/vote/comment',{
+				axios.post('/vote/comment',{
 					user_id: this.user._id,
 					comment_id: comment_id,
 					vote: vote

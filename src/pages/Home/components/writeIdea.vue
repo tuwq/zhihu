@@ -9,7 +9,7 @@
       <form class="idea-commit" enctype="multipart/form-data">
         <div class="idea-main">
           <span class="idea-avatar"><img src="../../../common/image/header/avatar.png" width="30" height="30"></span>
-          <textarea class="idea-content" placeholder="分享你的想法"></textarea>
+          <textarea class="idea-content" placeholder="分享你的想法" ref="idea_content"></textarea>
         </div>
         <div class="idea-footer">
             <button class="upload-button">
@@ -36,7 +36,7 @@
       })
     },
     mounted() {
-      makeExpandingArea(document.getElementsByClassName('idea-content')[0]);
+      makeExpandingArea(this.$refs.idea_content);
     },
     computed: {
       ...mapGetters([

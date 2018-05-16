@@ -94,7 +94,7 @@
 		},
 		methods: {
 			vote(vote,question_id) {
-				axios.post('/common/vote/question',{
+				axios.post('/vote/question',{
 					user_id: this.user._id,
 					question_id: question_id,
 					vote: vote

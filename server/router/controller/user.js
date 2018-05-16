@@ -255,21 +255,6 @@ exports.cut = function (req,res) {
 }
 
 
-// 裁图片，需要 24 25 30 34 38 160 尺寸
-		// gm(rootPath+'/arbitrary/'+req.session.avatar).crop(w,h,x,y).resize(24,24,'!')
-		// .write(rootPath+'/24/'+req.session.avatar,function (err) {
-	 //        if (err) {
-	 //            return res.json(util.Result(1));     
-	 //        }
-	 //        User.findById(_id).select('avatar').exec((err,dbUser)=> {
-	 //        	if (!dbUser) {
-	 //        		return res.json(util.Result(401))
-	 //        	}
-	 //        	dbUser.avatar = req.session.avatar
-	 //        	dbUser.save()
-	 //        	res.json(util.Result(0))
-	 //        })
-	 //    });
 
 
 

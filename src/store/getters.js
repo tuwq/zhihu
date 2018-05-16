@@ -11,3 +11,4 @@ export const add_answer_status = state => state.add_answer_status
 export const answers = state => state.answers
 export const conversation_mask = state => state.conversation_mask
 export const detail_user_id = state => state.detail_user_id
+export const attention_question_modal = state => state.attention_question_modal

@@ -2,28 +2,15 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 const { ObjectId, Mixed } = Schema.Types
 
-var QuestionUser = new Schema({
-	question_id: {
-		type: ObjectId,
-		ref: 'Question'
-	},
+var Feed = new Schema({
 	user_id: {
 		type: ObjectId,
 		ref: 'User'
 	},
-	vote: {
-		unique: false,
-	    required: true,
-		type: Number,
-		default: 0
-	},
-	// 0: 不关注,  1:关注
-	attentionStatus: {
-		unique: false,
-	    required: true,
-		type: Number,
-		default: 0
-	},
+	dynamics:[{
+		type: ObjectId,
+		ref: 'Dynamics'
+	}],
 	meta: {
 	    createdAt: {
 	      type: Date,
@@ -37,7 +24,7 @@ var QuestionUser = new Schema({
 })
 
 
-QuestionUser.pre('save', function (next) {
+Feed.pre('save', function (next) {
   if (this.isNew) {
     this.meta.createdAt = this.meta.updatedAt = Date.now()
   } else {
@@ -46,4 +33,4 @@ QuestionUser.pre('save', function (next) {
   next()
 })
 
-module.exports = QuestionUser
+module.exports = Feed
