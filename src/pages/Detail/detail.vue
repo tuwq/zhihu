@@ -2,8 +2,8 @@
  	<div id="Detail" @click.stop="clsModal">
  		<d-header class="d-header">
  			<z-header slot="z-header"></z-header>
-	 		<detail-header slot="detail-header" :attentionSum="attentionSum" :attentionStatus="attentionStatus"  @changeAttention="changeAttention"></detail-header>
-	 		<scroll-header slot="scroll-header"></scroll-header>
+	 		<detail-header slot="detail-header" :attentionSum="attentionSum" :attentionStatus="attentionStatus"  @changeAttention="changeAttention" v-show="detail_loading"></detail-header>
+	 		<scroll-header slot="scroll-header" :attentionStatus="attentionStatus" @changeAttention="changeAttention"></scroll-header>
  		</d-header>
  		<div class="main-content">
  			<detail-main :sum="sum" :no_more_data="no_more_data" :loading="loading"></detail-main>
@@ -42,7 +42,8 @@
 				sum: 0,
 				loading: true,
 				attentionSum: 0,
-				attentionStatus: 0
+				attentionStatus: 0,
+				detail_loading: false
 			}
 		},
 		components: {
@@ -79,6 +80,7 @@
 					this.setQuestion(res.data.result.question)
 					this.attentionSum =  res.data.result.sum
 					this.attentionStatus =  res.data.result.attentionStatus
+					this.detail_loading = true
 				})
 			},
 			getAnswers() {

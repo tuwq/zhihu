@@ -241,9 +241,11 @@
 <script type="text/ecmascript-6">
 import {mapGetters,mapMutations,mapActions} from 'vuex';
 import {makeExpandingArea} from 'common/js/common.js';
+import {communicationMixin} from 'common/js/mixin'
 import {copyObj} from 'common/js/util'
 import axios from 'axios'
  	export default {
+ 		mixins: [communicationMixin],
 		data() {
 			return {
 				temp : {
@@ -258,7 +260,7 @@ import axios from 'axios'
 				},
 				modifyUsername: false,
 				img_size: 0,
-				base: '../../../../static/avatar/160/'
+				base: '../../../../static/avatar/160/',
 			}
 		},
 		methods: {
@@ -342,8 +344,8 @@ import axios from 'axios'
 				var params = {
 					user_url: this.user.username+this.user._id.substr(0,5)
 				}
+				this.setUse(this.user)
 				this.$router.push({name: 'people_url',params:params}) 
-				this.$router.go(0)
 			},
 			selectFile() {
 				$('#avatar-upload').click();
@@ -389,12 +391,19 @@ import axios from 'axios'
 					}
 				});
 			},
+			cutOver() {
+				communicationMixin.$on('cutOver',(newPath)=> {
+					this.user.avatar = newPath
+				})
+			},
 			...mapMutations({
-				setCutAvatarMask: 'SET_CUT_AVATAR_MASK'
+				setCutAvatarMask: 'SET_CUT_AVATAR_MASK',
+				setUse: 'SET_USER'
 			}),
 		},
 		created() {
 			this.initData();
+			this.cutOver()
 		},
 		mounted() {
 			this.initClick()

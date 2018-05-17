@@ -13,7 +13,7 @@
 	  		<a href="#" class="nav-item">话题</a>
 	  	</nav>
 	  	<search-bar></search-bar>
-	  	<div class="userinfo" v-if="user">
+	  	<div class="userinfo" v-show="user.avatar">
 	  		<div class="Popover notifications">
 	  			<button class="notifications-btn">
 	  				<svg viewBox="0 0 20 22" class="Icon" width="20" height="20">
@@ -28,8 +28,8 @@
 	  			</svg>
 	  			<span class="count-tag message-count">8</span>
 	  		</button></div></div>
-	  		<div class="profile" v-if="user.avatar">
-	  			<div class="Popover header-menu">
+	  		<div class="profile">
+	  			<div class="Popover header-menu" v-show="user.avatar">
 	  				<button v-if="loginStatus==1" v-cloak @click.stop.prevent="openDrop" class="Button button profileEntry button--plain" type="button">
 	  					<img :src="base+user.avatar" width="34" height="34" class="Avatar header-avatar">
 	  				</button>
@@ -50,7 +50,7 @@ import {communicationMixin} from 'common/js/mixin'
 		mixins: [communicationMixin],
 		data() {
 			return {
-				loginStatus: 1,
+				loginStatus: 0,
 				base: '../../../../static/avatar/34/',
 			}
 		},
@@ -60,6 +60,8 @@ import {communicationMixin} from 'common/js/mixin'
 					 .then((res) => {
 						this.setUser(res.data.result)
 						this.$emit('setUser',this.user)
+						this.loginStatus = 1
+
 					 })
 			},
 			openDrop() {

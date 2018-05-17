@@ -22,11 +22,10 @@
   
 <script>  
 import Cropper from 'cropperjs'  
+import {communicationMixin} from 'common/js/mixin'
 import axios from 'axios'
 export default {  
-  components: {  
-      
-  },  
+  mixins: [communicationMixin], 
   data () {  
     return {  
       headerImage:'',  
@@ -38,8 +37,8 @@ export default {
       path: '' 
     }  
   },  
-  mounted () {  
-    //初始化这个裁剪框  
+  mounted () {   
+    //初始化这个裁剪框 
     var self = this;  
     var image = document.getElementById('image');  
     this.cropper = new Cropper(image, {  
@@ -60,6 +59,8 @@ export default {
   	},
   	init() {
   		this.path = this.$route.params.path || this.url;
+
+
   		// 获得头像
   		this.url = this.path
   		// 设置cropper的图片信息
@@ -113,8 +114,8 @@ export default {
       axios.post('/user/cut',{
       	x: x,y: y,w: w,h: h
       }).then((res)=> {
+        communicationMixin.$emit('cutOver',this.path)
       	this.$router.push('/people/'+this.$route.params.user_url)
-        this.$router.go(0)
       })
     }
   },

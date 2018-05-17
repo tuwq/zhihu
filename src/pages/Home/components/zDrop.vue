@@ -53,7 +53,7 @@
 			},
 			quit() {
 				this.removeToken()	
-				this.$router.go(0)
+				this.$router.push({path: '/login'})
 				this.setIndexDropDown(false);
 			},
 			...mapMutations({

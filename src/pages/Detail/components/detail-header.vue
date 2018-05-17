@@ -26,7 +26,7 @@
 	 			<div class="right-side">
 	 				<div class="header-status">
 	 					<div class="status-counts">
-	 						<div class="attention" @click.stop.prevent="openAttention">
+	 						<div class="attention" @click.stop.prevent="openAttention(question._id)">
 	 							<div class="inner">
 	 								<div class="item-name">关注者</div>
 	 								<strong class="item-value">{{attentionSum}}</strong>
@@ -99,7 +99,9 @@
 import {mapMutations,mapGetters} from 'vuex';
 import loading from 'base/loading.vue'
 import axios from 'axios'
+import {communicationMixin} from 'common/js/mixin'
 	export default {
+		mixins: [communicationMixin],
 		props: {
 			attentionSum: {
 				type: Number,
@@ -125,7 +127,8 @@ import axios from 'axios'
 					this.$emit('changeAttention',res.data.status==1?1:0)
 				})
 			},
-			openAttention() {
+			openAttention(question_id) {
+				communicationMixin.$emit('openAttention',question_id)
 				this.setAttentionQuestionModal(true)
 			},
 			openAdd() {

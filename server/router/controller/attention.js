@@ -1,6 +1,8 @@
 var mongoose = require('mongoose')
 const util = require('../../common/util.js');
 const QuestionUser = mongoose.model('QuestionUser')
+const User = mongoose.model('User')
+const Answer = mongoose.model('Answer')
 const checkUtil = require('../../common/checkUtil.js')
 const tokenUtil = require('../../common/token.js')
 
@@ -33,13 +35,68 @@ exports.attentionQuestionAdd = function (req,res) {
 			if (fields.status==1) {	
 				return res.json(util.Result(1))
 			}else {
-				
 				return res.json(util.Result(0))
 			}
 		})
 	}).catch((err)=> {
 		return res.json(util.Result(401))
 	})
+}
+
+exports.attentionQuestionRed = function (req,res) {
+	// 关注问题
+	// 检查登录
+	var token = req.headers.token
+	var fields = req.body;
+	tokenUtil.verifyToken(token)
+	.then((_id)=> {
+		// 检查字段
+		if(checkUtil.isEmtry([fields.question_id])) {
+			return res.json(util.Result('信息不完整',1))
+		}
+		// 读取该问题下所有关注者
+		QuestionUser.find({question_id: fields.question_id,attentionStatus: 1})
+		.populate('user_id')
+		.sort({'meta.updatedAt': -1})
+		.exec((err,binds)=> {
+			let sum = binds.length 
+			getUserListInfo(binds,(users,infos)=> {
+				return res.json(util.Result({sum: sum,users: users,infos: infos}))
+			})
+		})
+
+	}).catch((err)=> {
+		return res.json(util.Result(401))
+	})
+}
+
+function getUserListInfo(binds,callback) {
+	var users = [];
+	var infos = [];
+	(function iterator(i){
+		if (i==binds.length) {
+			return callback(users,infos)
+		}
+		var user = binds[i].user_id
+		// 寻找该用户的回答数和粉丝数
+		Answer.count({user_id: user._id},(err,count)=> {
+			User.findById(user._id)
+			.select('fans')
+			.exec((err,dbUser)=> {
+				infos.push(new Info({
+					answerSum: count,
+					fansLength: dbUser.fans.length
+				}))
+				users.push(user)
+				iterator(i+1)	
+			})
+		})
+	})(0)
+}
+
+function Info({answerSum,fansLength}) {
+	this.answerSum = answerSum
+	this.fansLength = fansLength
 }
 
 exports.getAttentionQuestion = function(user_id,question_id,callback) {

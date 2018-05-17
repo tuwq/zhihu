@@ -45,8 +45,8 @@ exports.insert = function (req,res) {
 			var c_id = category._id;
 			question.category = c_id;
 			question.save()
+			return res.json(util.Result(question))
 		})
-		return res.json(util.Result(0))
 	}).catch((err)=> {
 		return res.json(util.Result(1))
 	})

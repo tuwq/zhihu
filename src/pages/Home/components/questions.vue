@@ -14,6 +14,7 @@
 	import question from 'z_components/question.vue'
 	import loading from 'base/loading.vue'
 	import axios from 'axios'
+	import {prepend} from 'common/js/common'
 	export default {
 		data() {
 			return {

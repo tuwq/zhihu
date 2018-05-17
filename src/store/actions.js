@@ -1,5 +1,5 @@
 import * as types from './mutation-types'
-import {shuffle,copyArr} from 'common/js/util'
+import {shuffle,copyArr,copyObj} from 'common/js/util'
 
 
 function findIndex(list, target) {
@@ -16,6 +16,14 @@ export const incrCount = function ({commit, state}, {list, index}) {
   item.cCount++; 
   commit(types.SET_ANSWERS, _newList)
 }
+
+export const changeAvatar = function ({commit, state}, avatar) {
+	let _newUser = copyObj(state.user)
+	_newUser.avatar = avatar
+	commit(types.SET_USER,_newUser)
+}
+
+
 
 
 

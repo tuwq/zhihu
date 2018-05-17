@@ -119,3 +119,19 @@ export function toTop(btn) {
         },25);
     })
 }
+
+export function extend(target,obj) {
+    for ( let key in obj ) {
+        target[key] = obj[key]
+    }
+    return target
+}
+
+export function prepend(arr,item) {
+     //将arr数组复制给a
+     var _arr = arr.slice(0);
+     console.log(_arr)
+     //使用unshift方法向a开头添加item
+     _arr.unshift(item);
+     return _arr;
+}

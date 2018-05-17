@@ -1,5 +1,5 @@
 <template>
-	<div id="myProFile" v-if="user">
+	<div id="myProFile" v-show="user">
 		<div class="Card">
 			<div class="top-upload">
 				<div class="upload-inner">
@@ -9,9 +9,9 @@
 			</div>
 			<div class="bottom-userinfo">
 				<div class="userinfo-box">
-					<div v-if="user.avatar">
+					<div v-show="user.avatar">
 						<div class="avatar-box" @click.stop="selectFile">
-							<div class="avatar-inner">
+							<div class="avatar-inner" v-if="user.avatar">
 								<img :src="base+user.avatar" id="avatar-img" 
 								width="160" height="160" class="avatar-img">
 							</div>	
@@ -19,7 +19,7 @@
 								<div class="mask-inner"></div>
 								<div class="mask-content"><svg viewBox="0 0 24 24"><path d="M20.094 6S22 6 22 8v10.017S22 20 19 20H4.036S2 20 2 18V7.967S2 6 4 6h3s1-2 2-2h6c1 0 2 2 2 2h3.094zM12 16a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7zm0 1.5a5 5 0 1 0-.001-10.001A5 5 0 0 0 12 17.5zm7.5-8a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"></path></svg><div class="modify">修改我的头像</div></div>
 							</div>
-							<input type="file" name="avatar" @click.stop id="avatar_index" accept="image/png,image/jpeg" style="display:none;">
+							<input type="file" name="avatar" id="avatar-upload" accept="image/png,image/jpeg" style="display: none;">'
 						</div>
 					</div>
 					<div class="info" v-if="user.info">
@@ -49,7 +49,9 @@
 
 <script type="text/ecmascript-6">
 import {mapGetters,mapMutations,mapActions} from 'vuex';
+import {communicationMixin} from 'common/js/mixin'
  	export default {
+ 		mixins: [communicationMixin],
  		props: {
  			user: {
  				type: Object,
@@ -68,26 +70,26 @@ import {mapGetters,mapMutations,mapActions} from 'vuex';
  		},
  		methods: {
  			onChangUpload() {
- 				$('#avatar_index').on('change',()=> {
+				$('#avatar-upload').on('change',()=> {
  					this.ajaxUpload()
  				})
  			},
  			selectFile() {
- 				$('#avatar_index').click();
+ 				$('#avatar-upload').click();
  			},
  			ajaxUpload() {
  				var me = this;
- 				$.ajaxFileUpload({  
+				$.ajaxFileUpload({  
 				    type: "POST",  
 				    url: "/user/setAvatar",  
-				    data:{avatar_size: this.img_size,username: this.user.username,_id: this.user._id},//要传到后台的参数，没有可以不写  
+				    //要传到后台的参数，没有可以不写  
+				    data:{avatar_size: this.img_size,username: this.user.username,_id: this.user._id},
 				    secureuri : false,//是否启用安全提交，默认为false  
-				    fileElementId:'avatar_index',//文件选择框的id属性  
+				    fileElementId:'avatar-upload',//文件选择框的id属性  
 				    dataType: 'json',//服务器返回的格式  
 				    async : true,  
 				    contentType: 'multipart/form-data',
 				    success: function(data){  
-				      // 已成功上传头像，去切图页面
 				      if (data.status) {
 				      	alert('头像设置失败')
 				      }
@@ -103,8 +105,8 @@ import {mapGetters,mapMutations,mapActions} from 'vuex';
 				   	},
 				   	complete: ()=> {
 				   		// 内部递归解决change只触发一次的bug
-					 	$("#avatar_index").replaceWith('<input type="file" name="avatar" id="avatar_index" accept="image/png,image/jpeg" style="display:none;">') 
-				   		$('#avatar_index').on('change',(e)=> {
+					 	$("#avatar-upload").replaceWith('<input type="file" name="avatar" id="avatar-upload" accept="image/png,image/jpeg" style="display: none;">') 
+				   		$('#avatar-upload').on('change',(e)=> {
 							this.ajaxUpload()
 						}) 
 					}
@@ -113,13 +115,22 @@ import {mapGetters,mapMutations,mapActions} from 'vuex';
  			initData() {	
  				this.img_size = $('#avatar-img').attr('width')
  			},
+ 			cutOver() {
+ 				communicationMixin.$on('cutOver',(newPath)=> {
+					this.changeAvatar(newPath.replace('../../static/avatar/arbitrary/',''))
+				})
+ 			},
  			...mapMutations({
 				setCutAvatarMask: 'SET_CUT_AVATAR_MASK'
 			}),
+			...mapActions([
+				'changeAvatar'
+			])
  		},
  		mounted() {
  			this.initData();
  			this.onChangUpload()
+ 			this.cutOver()
  		}
 	}
 </script>

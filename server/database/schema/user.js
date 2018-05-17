@@ -119,6 +119,14 @@ var UserSchema = new Schema({
   	}
 })
 
+UserSchema.virtual('answerSum').get(function() {
+    return 0
+});
+
+UserSchema.virtual('fansLength').get(function() {
+    return 0
+});
+
 //虚拟属性，不会把这个字段json上传和存储到数据库，但方法中有
 UserSchema.virtual('isLocked').get(function () {
   //是否保护锁还存在

@@ -36,4 +36,5 @@ module.exports = function (app) {
 	app.post('/vote/answer',Vote.voteAnswer)
 	app.post('/vote/comment',Vote.voteComment)
 	app.post('/attention/question/add',Attention.attentionQuestionAdd)
+	app.post('/attention/question/read',Attention.attentionQuestionRed)
 }

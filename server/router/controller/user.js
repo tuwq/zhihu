@@ -240,7 +240,7 @@ exports.cut = function (req,res) {
  			if (!dbUser) {
         		return res.json(util.Result(401))
         	}
-        	util.gmImage(rootPath,'arbitrary',req.session.avatar,{x,y,w,h},[24,25,30,34,38,160],(err)=> {
+        	util.gmImage(rootPath,'arbitrary',req.session.avatar,{x,y,w,h},[24,25,30,34,38,60,160],(err)=> {
 		 		if (err) {
 		 			return res.json(util.Result(1))
 		 		}

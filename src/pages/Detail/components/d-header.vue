@@ -37,7 +37,9 @@ import {scroll} from 'common/js/common.js';
 		},
 		mounted () {
 			$('#content-arrow').addClass('content-arrow').removeClass('content-arrow-top');
-			this.switchHeader();
+			this.$nextTick().then(()=> {
+				this.switchHeader();		
+			})
 		}
 	}
 </script>
