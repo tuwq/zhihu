@@ -1,6 +1,6 @@
 <template>
   <div class="header-wrapper">
-  	<div class="center">	
+  	<div class="center" v-show="user">	
   		<router-link to="/" class="logo-link">
   			<svg viewBox="0 0 200 91" width="64" height="30">
   				<title></title>
@@ -13,7 +13,7 @@
 	  		<a href="#" class="nav-item">话题</a>
 	  	</nav>
 	  	<search-bar></search-bar>
-	  	<div class="userinfo" v-show="user.avatar">
+	  	<div class="userinfo" v-if="loginStatus==1" v-show="user.avatar">
 	  		<div class="Popover notifications">
 	  			<button class="notifications-btn">
 	  				<svg viewBox="0 0 20 22" class="Icon" width="20" height="20">
@@ -30,10 +30,10 @@
 	  		</button></div></div>
 	  		<div class="profile">
 	  			<div class="Popover header-menu" v-show="user.avatar">
-	  				<button v-if="loginStatus==1" v-cloak @click.stop.prevent="openDrop" class="Button button profileEntry button--plain" type="button">
+	  				<button v-cloak @click.stop.prevent="openDrop" class="Button button profileEntry button--plain" type="button">
 	  					<img :src="base+user.avatar" width="34" height="34" class="Avatar header-avatar">
 	  				</button>
-	  				<router-link to="/login" v-cloak v-if="loginStatus==0" class="Button button button--plain login-btn" type="button">登录</router-link>
+	  				<router-link to="/login" v-cloak v-if="false" class="Button button button--plain login-btn" type="button">登录</router-link>
 	  			</div>
 	  		</div>
 	  	</div>
@@ -61,12 +61,17 @@ import {communicationMixin} from 'common/js/mixin'
 						this.setUser(res.data.result)
 						this.$emit('setUser',this.user)
 						this.loginStatus = 1
-
 					 })
 			},
 			openDrop() {
 				this.setIndexDropDown(true);
 			},
+			changeUser() {
+				communicationMixin.$on('changeUser',()=> {
+					this.loginStatus = 0
+					this.init()
+				})
+			},	
 			...mapMutations({
 				setIndexDropDown: 'SET_INDEX_DROPDOWN',
 				setUser: 'SET_USER'
@@ -84,6 +89,7 @@ import {communicationMixin} from 'common/js/mixin'
 		},
 		created() {
 			this.init();
+			this.changeUser()
 		}
 	}
 </script>

@@ -1,8 +1,6 @@
 <template>
 	<div id="people" @click.stop="clsDrop">
-		<keep-alive>
-			<p-header></p-header>
-		</keep-alive>
+		<p-header></p-header>
 		<div class="main">	
 			<router-view></router-view>
 		</div>

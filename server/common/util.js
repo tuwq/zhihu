@@ -95,8 +95,8 @@ const util = {
             callback(err);
             return
           }
+          iterator(i+1);   
         });
-        iterator(i+1);      
       })(0);
   } 
 } 

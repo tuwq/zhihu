@@ -50,6 +50,7 @@
 <script type="text/ecmascript-6">
 import {mapGetters,mapMutations,mapActions} from 'vuex';
 import {communicationMixin} from 'common/js/mixin'
+import {copyObj} from 'common/js/util'
  	export default {
  		mixins: [communicationMixin],
  		props: {
@@ -117,11 +118,14 @@ import {communicationMixin} from 'common/js/mixin'
  			},
  			cutOver() {
  				communicationMixin.$on('cutOver',(newPath)=> {
-					this.changeAvatar(newPath.replace('../../static/avatar/arbitrary/',''))
+						let _newUser = copyObj(this.user)
+						_newUser.avatar = newPath
+						this.setUser(_newUser)
 				})
  			},
  			...mapMutations({
-				setCutAvatarMask: 'SET_CUT_AVATAR_MASK'
+				setCutAvatarMask: 'SET_CUT_AVATAR_MASK',
+				setUser: 'SET_USER'
 			}),
 			...mapActions([
 				'changeAvatar'

@@ -17,11 +17,11 @@ export const incrCount = function ({commit, state}, {list, index}) {
   commit(types.SET_ANSWERS, _newList)
 }
 
-export const changeAvatar = function ({commit, state}, avatar) {
-	let _newUser = copyObj(state.user)
-	_newUser.avatar = avatar
-	commit(types.SET_USER,_newUser)
-}
+// export const changeAvatar = function ({commit, state}, avatar) {
+// 	let _newUser = copyObj(state.user)
+// 	_newUser.avatar = avatar
+// 	commit(types.SET_USER,_newUser)
+// }
 
 
 

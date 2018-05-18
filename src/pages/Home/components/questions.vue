@@ -15,7 +15,9 @@
 	import loading from 'base/loading.vue'
 	import axios from 'axios'
 	import {prepend} from 'common/js/common'
+	import {communicationMixin} from 'common/js/mixin'
 	export default {
+		mixins: [communicationMixin],
 		data() {
 			return {
 				limit: 5,
@@ -57,6 +59,12 @@
 		                }
 		                this.getQuestionList()
 		            }
+				})
+				communicationMixin.$on('addQuestion',()=> {
+					this.questionList = []
+					this.page = 1
+					this.loading = true
+					this.getQuestionList()
 				})
 			}
 		},

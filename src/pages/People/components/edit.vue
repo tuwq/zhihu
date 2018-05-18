@@ -10,8 +10,8 @@
 						<input type="file" id="cover-upload" accept="image/png;image/jpeg" style="display: none;">
 					</div>
 				</div>
-				<div class="edit-main" v-if="user.info">
-					<div v-if="user">
+				<div class="edit-main" v-show="user">
+					<div v-show="user">
 						<div class="userAvatarEditor" @click="selectFile">
 							<div class="userAvatar" v-if="user.avatar"><img :src="base+user.avatar" id="avatar-img" width="160" height="160"></div>
 							<div class="userAvatarMask"><div class="Mask-mask"></div><div class="Mask-content">

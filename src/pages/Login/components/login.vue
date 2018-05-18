@@ -30,6 +30,7 @@
 import {mapGetters,mapMutations,mapActions} from 'vuex';
 import phoneLogin from 'login_components/phone-login.vue';
 import mailLogin from 'login_components/mail-login.vue';
+import {communicationMixin} from 'common/js/mixin'
 import axios from 'axios'
 	export default {
 		components: {
@@ -82,6 +83,7 @@ import axios from 'axios'
 				this.setToken(res.data.result.token,{ expires: 365 })
 				// 去之前的页面或者去首页
 				this.$router.push(this.$route.query.redirect || '/')
+				communicationMixin.$emit('changeUser')
 			},
 			changeData(formData) {
 				this.formData = formData

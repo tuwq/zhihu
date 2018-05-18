@@ -1,18 +1,21 @@
 <template>
- 	<div id="Detail" @click.stop="clsModal">
- 		<d-header class="d-header">
- 			<z-header slot="z-header"></z-header>
-	 		<detail-header slot="detail-header" :attentionSum="attentionSum" :attentionStatus="attentionStatus"  @changeAttention="changeAttention" v-show="detail_loading"></detail-header>
-	 		<scroll-header slot="scroll-header" :attentionStatus="attentionStatus" @changeAttention="changeAttention"></scroll-header>
- 		</d-header>
- 		<div class="main-content">
- 			<detail-main :sum="sum" :no_more_data="no_more_data" :loading="loading"></detail-main>
- 		</div>
- 		<div class="special">
-		<view-conversation></view-conversation>
-		<remind-list :reminds="['suggest','toTop']"></remind-list>
-		<z-drop></z-drop>
-		<attention></attention>
+ 	<div id="Detail" @click.stop="clsModal" >
+ 		<loading v-show="loading"></loading>
+	    <div v-show="detail_loading">
+    		<d-header class="d-header">
+	 			<z-header slot="z-header"></z-header>
+		 		<detail-header slot="detail-header" :attentionSum="attentionSum" :attentionStatus="attentionStatus"  @changeAttention="changeAttention" v-show="detail_loading"></detail-header>
+		 		<scroll-header slot="scroll-header" :attentionStatus="attentionStatus" @changeAttention="changeAttention"></scroll-header>
+	 		</d-header>
+	 		<div class="main-content">
+	 			<detail-main :sum="sum" :no_more_data="no_more_data" :loading="loading"></detail-main>
+	 		</div>
+	 		<div class="special">
+				<view-conversation></view-conversation>
+				<remind-list :reminds="['suggest','toTop']"></remind-list>
+				<z-drop></z-drop>
+				<attention></attention>
+		    </div>
 	    </div>
  	</div>
 </template>
@@ -27,9 +30,12 @@
 	import detailMain from 'detail_components/detail-main.vue';
 	import viewConversation from 'detail_components/view-conversation.vue'; 
 	import remindList from 'base/remind-list.vue';
+	import loading from 'base/loading.vue'
 	import axios from 'axios'
 	import {mapMutations,mapGetters} from 'vuex';
+	import {communicationMixin} from 'common/js/mixin'
 	export default {
+		mixins: [communicationMixin],
 		data() {
 			return {
 				preFrom: '',
@@ -55,7 +61,8 @@
 			'view-conversation': viewConversation,
 			'remind-list': remindList,
 			'z-drop': zDrop,
-			'attention': attention
+			'attention': attention,
+			 loading
 		},
 		methods: {
 			...mapMutations({
@@ -72,7 +79,7 @@
 	        },
 			getDetail(user) {
 				axios.post('/question/detail',{
-					question_id: this.$route.params.question_id
+					question_id: this.question_id
 				}).then((res)=> {
 					if (res.data.status) {
 						// 转到404
@@ -86,7 +93,7 @@
 			getAnswers() {
 				this.pend = true
 				axios.post('/answer/read',{
-					question_id: this.$route.params.question_id,
+					question_id: this.question_id,
 					limit: this.limit,
 					page: this.page
 				}).then((res)=> {
@@ -113,6 +120,13 @@
 		                this.getAnswers()
 		            }
 				})
+				communicationMixin.$on('addAnswer',()=> {
+					this.answerList = []
+					this.setAnswers(this.answerList)
+					this.page = 1
+					this.loading = true
+					this.getAnswers()
+				})
 			}
 		},
 		created() {
@@ -121,21 +135,35 @@
 			this.loadData()
 		},
 		watch: {
+			question_id(newval,oldval) {
+				if (newval != oldval && newval !=undefined) {
+					this.detail_loading = false
+					this.getDetail()
+					this.answerList = []
+					this.setAnswers(this.answerList)
+					this.page = 1
+					this.loading = true
+					this.getAnswers()
+				}
+			}
 			// 解决组件内部修改地址栏同路由不更新页面数据的缓存
-			'$route' (to, from) {
-		        const toDepth = to.path
-		        const fromDepth = from.path
-		      	if (this.preFrom != toDepth && this.preTo == fromDepth) {
-		        	this.$router.go(0);
-		        } else if (toDepth.indexOf('/question')!=-1 && fromDepth!='/home') {
-		        	this.$router.go(0)
-		        }else {
-		        	 this.preFrom = fromDepth  		
-		         	 this.preTo = toDepth	
-		        }
-		     }
+			// '$route' (to, from) {
+		 //        const toDepth = to.path
+		 //        const fromDepth = from.path
+		 //      	if (this.preFrom != toDepth && this.preTo == fromDepth) {
+		 //        	this.$router.go(0);
+		 //        } else if (toDepth.indexOf('/question')!=-1 && fromDepth!='/home') {
+		 //        	this.$router.go(0)
+		 //        }else {
+		 //        	 this.preFrom = fromDepth  		
+		 //         	 this.preTo = toDepth	
+		 //        }
+		 //     }, 
 		},
 		computed: {
+			question_id() {
+				return this.$route.params.question_id
+			},
 			...mapGetters([
 				'question',
 				'answers'

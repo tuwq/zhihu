@@ -72,7 +72,11 @@
 						desc: this.desc,
 						anonymousStatus: this.anonymousStatus
 					}).then((res)=> {
-						this.$router.go(0)
+						communicationMixin.$emit('addQuestion')
+						this.setPutQuestionDisPlay(false);
+						this.title = ''
+						this.category = ''
+						this.desc = ''
 					})
 				}
 			},

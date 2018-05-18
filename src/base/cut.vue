@@ -1,5 +1,5 @@
 <template>  
-  <div id="demo">  
+  <div id="demo" v-show="path">  
     <!-- 遮罩层 -->  
     <div class="container" v-show="panel&&path">  
       <div>  
@@ -59,8 +59,10 @@ export default {
   	},
   	init() {
   		this.path = this.$route.params.path || this.url;
-
-
+      if (!this.$route.params.path) {
+        this.path=false
+        this.$router.go(-1)
+      }
   		// 获得头像
   		this.url = this.path
   		// 设置cropper的图片信息
@@ -114,19 +116,17 @@ export default {
       axios.post('/user/cut',{
       	x: x,y: y,w: w,h: h
       }).then((res)=> {
-        communicationMixin.$emit('cutOver',this.path)
-      	this.$router.push('/people/'+this.$route.params.user_url)
+        communicationMixin.$emit('cutOver',this.path.replace('../../static/avatar/arbitrary/',''))
+      	// this.$router.push('/people/'+this.$route.params.user_url)
+        this.$router.go(-1)
       })
     }
   },
   watch: {
 	'$route' (to, from) {
         this.panel = false  
-        const toDepth = to.path
-        const fromDepth = from.path
-        if (fromDepth === '/people/edit' || fromDepth === '/people/'+this.$route.params.user_url) {
-          this.panel = false  
-        	this.init()
+        if (to.path=='/cut') {
+           this.init()
         }
      }
   }

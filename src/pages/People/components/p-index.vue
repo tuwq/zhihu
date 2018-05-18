@@ -1,7 +1,7 @@
 <template>
 	<div>
-		<loading v-show="loading"></loading>
-		<div v-if="user||otherUser">
+		<loading v-show="loading||!detail_loading"></loading>
+		<div v-show="detail_loading">
 			<div class="header" v-show="user">
 				<my-profile v-if="index_type == 1 " :user="user"></my-profile>
 				<other-profile v-if="index_type == 2" :otherUser="otherUser"></other-profile>
@@ -10,7 +10,7 @@
 				<main-column></main-column>
 				<side-column></side-column>
 			</div>
-		</div>	
+		</div>
 	</div>
 </template>
 
@@ -30,8 +30,9 @@ import axios from 'axios'
   				preFrom: '',
   				preNext: '',
   				otherUser: null,
-  				loading: true
-  			}	
+  				loading: true,
+  				detail_loading: false
+  			}
   		},
   		components: {
   			'main-column': mainColumn,
@@ -46,6 +47,7 @@ import axios from 'axios'
 					if (res.data.result._id === this.detail_user_id ) {
 						this.loading = false
 						this.index_type = 1
+						this.detail_loading = true
 					}else {
 						axios.post('/user/getInfoById',{
 							_id: this.detail_user_id
@@ -56,10 +58,11 @@ import axios from 'axios'
 							}else {
 								this.index_type = 2
 								this.otherUser = res.data.result
+								this.detail_loading = true
 							}
 						})
 					}
-				})		
+				})
 			}
 		},
 		mounted() {
@@ -72,20 +75,28 @@ import axios from 'axios'
 			])
 		},
 		watch: {
-			// 解决组件内部修改地址栏同路由不更新页面数据的BUG
-			'$route' (to, from) {
-		        const toDepth = to.path
-		        const fromDepth = from.path
-		        if (this.preFrom != toDepth && this.preTo == fromDepth) {
-		        	this.$router.go(0);
-		        } else if (toDepth.indexOf('/people')!=-1 && fromDepth!='/home') {
-		        	this.$router.go(0)
-		        }else {
-		        	 this.preFrom = fromDepth  		
-		         	 this.preTo = toDepth	
-		        }
-		     }
+			detail_user_id (newval,oldval) {
+				if (newval != oldval && newval !=undefined) {
+					this.detail_loading = false
+					this.init()
+				}
+			}
 		}
+//		watch: {
+//			// 解决组件内部修改地址栏同路由不更新页面数据的BUG
+//			'$route' (to, from) {
+//		        const toDepth = to.path
+//		        const fromDepth = from.path
+//		        if (this.preFrom != toDepth && this.preTo == fromDepth) {
+//		        	this.$router.go(0);
+//		        } else if (toDepth.indexOf('/people')!=-1 && fromDepth!='/home') {
+//		        	this.$router.go(0)
+//		        }else {
+//		        	 this.preFrom = fromDepth
+//		         	 this.preTo = toDepth
+//		        }
+//		     }
+//		}
 	}
 </script>
 

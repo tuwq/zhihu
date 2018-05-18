@@ -119,7 +119,7 @@
 								</div>
 								<div class="rich-text">
 									<div class="rich-text-inner">
-										<textarea id="textarea" name="answer-content" placeholder="写回答..." v-model="content"></textarea>
+										<textarea id="textarea" ref="textarea" name="answer-content" placeholder="写回答..." v-model="content"></textarea>
 									</div>
 								</div>
 							</div>
@@ -150,8 +150,10 @@
 <script type="text/ecmascript-6">
 	import {makeExpandingArea} from 'common/js/common.js';
 	import {mapMutations,mapGetters} from 'vuex';
+	import {communicationMixin} from 'common/js/mixin'
 	import axios from 'axios'
 	export default {
+		mixins: [communicationMixin],
 		data() {
 			return {
 				base: '../../../../static/avatar/38/',
@@ -178,13 +180,15 @@
 					}else if(res.data.status==2) {
 						alert(res.data.result.msg)
 					}else{
-						this.$router.go(0)	
+						communicationMixin.$emit('addAnswer')
+						this.content = ''
+						console.log('into')
 					}
 				})
 			}
 		},
 		mounted() {
-			makeExpandingArea(document.getElementById('textarea'));
+			makeExpandingArea(this.$refs.textarea);
 		},
 		computed: {
 			...mapGetters([
