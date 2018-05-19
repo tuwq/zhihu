@@ -41,6 +41,10 @@ var QuestionSchema = new Schema({
 		type: Number,
 		default: 0
 	},
+	browseSum: {
+		type: Number,
+		default: 0
+	},
 	meta: {
 	    createdAt: {
 	      type: Date,

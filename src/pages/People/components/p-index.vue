@@ -2,13 +2,14 @@
 	<div>
 		<loading v-show="loading||!detail_loading"></loading>
 		<div v-show="detail_loading">
-			<div class="header" v-show="user">
+			<div class="header" v-show="user||otherUser">
 				<my-profile v-if="index_type == 1 " :user="user"></my-profile>
-				<other-profile v-if="index_type == 2" :otherUser="otherUser"></other-profile>
+				<other-profile v-if="index_type == 2" :otherUser="otherUser" :fllowerStatus="fllowerStatus"
+				@changeFllowerStatus="changeFllowerStatus"></other-profile>
 			</div>
 			<div class="main-content">
 				<main-column></main-column>
-				<side-column></side-column>
+				<side-column :detail_user_id="detail_user_id"></side-column>
 			</div>
 		</div>
 	</div>
@@ -23,6 +24,7 @@ import loading from 'base/loading.vue'
 import {mapMutations,mapGetters} from 'vuex';
 import { set, get } from '../../../common/js/cookie.js'
 import axios from 'axios'
+import {communicationMixin} from 'common/js/mixin'
   	export default {
   		data() {
   			return {
@@ -31,7 +33,8 @@ import axios from 'axios'
   				preNext: '',
   				otherUser: null,
   				loading: true,
-  				detail_loading: false
+  				detail_loading: false,
+  				fllowerStatus: 0
   			}
   		},
   		components: {
@@ -44,7 +47,7 @@ import axios from 'axios'
 		methods: {
 			init(callback) {
 				axios.post('/user/getIdByToken').then((res)=>{
-					if (res.data.result._id === this.detail_user_id ) {
+					if (res.data.result._id == this.detail_user_id ) {
 						this.loading = false
 						this.index_type = 1
 						this.detail_loading = true
@@ -53,20 +56,35 @@ import axios from 'axios'
 							_id: this.detail_user_id
 						}).then((res)=> {
 							this.loading = false
+							this.otherUser = res.data.result.userInfo
 							if (res.data.status) {
 								// 404
 							}else {
-								this.index_type = 2
-								this.otherUser = res.data.result
-								this.detail_loading = true
+								// 当前用户是否关注目标用户
+								axios.post('/follow/userBind',{
+									detail_id: this.detail_user_id
+								}).then((res)=> {
+									this.fllowerStatus = res.data.result.fllowerStatus
+									this.index_type = 2
+									this.detail_loading = true
+								})
 							}
 						})
 					}
 				})
+			},
+			changeFllowerStatus(status) {
+				this.fllowerStatus = status
 			}
 		},
-		mounted() {
+		created() {
 			this.init()
+			// 退出用户后再次登录后index_type不会被改变，无法init,所以要监听改变用户
+			communicationMixin.$on('changeUser',()=> {
+				this.loading = true,
+				this.detail_loading = false
+				this.init()
+			})
 		},
 		computed: {
 			...mapGetters([
@@ -76,10 +94,8 @@ import axios from 'axios'
 		},
 		watch: {
 			detail_user_id (newval,oldval) {
-				if (newval != oldval && newval !=undefined) {
-					this.detail_loading = false
-					this.init()
-				}
+				this.detail_loading = false
+				this.init()
 			}
 		}
 //		watch: {

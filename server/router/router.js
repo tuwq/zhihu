@@ -5,6 +5,7 @@ var Index = require('./controller/index.js')
 var Comment = require('./controller/comment.js')
 var Vote = require('./controller/vote.js')
 var Attention = require('./controller/attention.js')
+var Follow = require('./controller/follow.js')
 
 module.exports = function (app) {
 	app.post('/user/phoneLogin',User.phoneLogin)
@@ -37,4 +38,6 @@ module.exports = function (app) {
 	app.post('/vote/comment',Vote.voteComment)
 	app.post('/attention/question/add',Attention.attentionQuestionAdd)
 	app.post('/attention/question/read',Attention.attentionQuestionRed)
+	app.post('/follow/followTarget',Follow.followTarget)
+	app.post('/follow/userBind',Follow.userBind)
 }

@@ -33,6 +33,7 @@ exports.voteQuestion = function (req,res) {
 		// 1: 赞 	2:踩
 		QuestionUser.findOne({user_id: fields.user_id,question_id: fields.question_id},(err,dbBind) => {
 			if (!dbBind) {
+				// 第一次赞踩
 				let bind = new QuestionUser({
 					question_id: fields.question_id,
 					user_id: fields.user_id,
@@ -42,15 +43,18 @@ exports.voteQuestion = function (req,res) {
 				return res.json(util.Result(0))
 			}
 			if (dbBind.vote == fields.vote) {
+				//取消了赞
 				dbBind.vote = 0
 				dbBind.save()
 				return res.json(util.Result(-1))
 			}
 			if (dbBind.vote == 0) {
+				// 第一次添加赞
 				dbBind.vote = fields.vote
 				dbBind.save()
 				return res.json(util.Result(0))
 			}
+			// 改变了
 			dbBind.vote  = fields.vote
 			dbBind.save()
 			return res.json(util.Result(1))

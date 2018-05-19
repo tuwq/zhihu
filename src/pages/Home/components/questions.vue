@@ -60,6 +60,7 @@
 		                this.getQuestionList()
 		            }
 				})
+				
 				communicationMixin.$on('addQuestion',()=> {
 					this.questionList = []
 					this.page = 1

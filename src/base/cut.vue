@@ -16,11 +16,13 @@
         	<button class="postImg" @click.stop="postImg">确认</button>
         	<button class="select" @click.stop="select">重新裁剪</button>
         </div>
+        <loading v-show="waitLoad"></loading>
     </div>  
   </div>  
 </template>  
   
 <script>  
+import loading from 'base/loading'
 import Cropper from 'cropperjs'  
 import {communicationMixin} from 'common/js/mixin'
 import axios from 'axios'
@@ -34,7 +36,8 @@ export default {
       croppable:false,  
       panel:false,  
       url:'../../static/avatar/160/avatar.jpg' ,
-      path: '' 
+      path: '' ,
+      waitLoad: false
     }  
   },  
   mounted () {   
@@ -108,6 +111,7 @@ export default {
     postImg () {  
       //这边写图片的上传  
       // 剪裁图片的数据
+      this.waitLoad = true
       var data = this.cropper.getData()
       var x = data.x
       var y = data.y
@@ -119,8 +123,12 @@ export default {
         communicationMixin.$emit('cutOver',this.path.replace('../../static/avatar/arbitrary/',''))
       	// this.$router.push('/people/'+this.$route.params.user_url)
         this.$router.go(-1)
+        this.waitLoad = false
       })
     }
+  },
+  components: {
+    loading
   },
   watch: {
 	'$route' (to, from) {

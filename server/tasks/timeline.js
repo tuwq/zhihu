@@ -1,6 +1,5 @@
 const cp = require('child_process')
 const { resolve } = require('path')
-const mongoose = require('mongoose')
 
 
 ;(async () => {

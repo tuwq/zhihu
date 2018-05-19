@@ -1,6 +1,6 @@
 <template>
   <div class="header-wrapper">
-  	<div class="center" v-show="user">	
+  	<div class="center">	
   		<router-link to="/" class="logo-link">
   			<svg viewBox="0 0 200 91" width="64" height="30">
   				<title></title>
@@ -13,7 +13,7 @@
 	  		<a href="#" class="nav-item">话题</a>
 	  	</nav>
 	  	<search-bar></search-bar>
-	  	<div class="userinfo" v-if="loginStatus==1" v-show="user.avatar">
+	  	<div class="userinfo">
 	  		<div class="Popover notifications">
 	  			<button class="notifications-btn">
 	  				<svg viewBox="0 0 20 22" class="Icon" width="20" height="20">
@@ -29,11 +29,11 @@
 	  			<span class="count-tag message-count">8</span>
 	  		</button></div></div>
 	  		<div class="profile">
-	  			<div class="Popover header-menu" v-show="user.avatar">
-	  				<button v-cloak @click.stop.prevent="openDrop" class="Button button profileEntry button--plain" type="button">
+	  			<div class="Popover header-menu">
+	  				<button  v-if="user.avatar" @click.stop.prevent="openDrop" class="Button button profileEntry button--plain" type="button">
 	  					<img :src="base+user.avatar" width="34" height="34" class="Avatar header-avatar">
 	  				</button>
-	  				<router-link to="/login" v-cloak v-if="false" class="Button button button--plain login-btn" type="button">登录</router-link>
+	  				<router-link to="/login" v-show="!user" class="Button button button--plain login-btn" type="button">登录</router-link>
 	  			</div>
 	  		</div>
 	  	</div>

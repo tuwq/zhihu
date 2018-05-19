@@ -181,11 +181,14 @@
 						alert(res.data.result.msg)
 					}else{
 						communicationMixin.$emit('addAnswer')
+						this.setAddAnswerStatus(!this.add_answer_status)
 						this.content = ''
-						console.log('into')
 					}
 				})
-			}
+			},
+			...mapMutations({
+				setAddAnswerStatus: 'SET_ADD_ANSWER_STATUS',
+			})
 		},
 		mounted() {
 			makeExpandingArea(this.$refs.textarea);

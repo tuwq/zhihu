@@ -30,6 +30,7 @@ module.exports = {
       'common': resolve('src/common'),
       'lib': resolve('src/lib'),
       'base':  resolve('src/base'),
+      'socket': resolve('src/socket'),
       'store': resolve('src/store'),
       'z_components': resolve('src/pages/Home/components'),
       'question_components': resolve('src/pages/Question/components'),

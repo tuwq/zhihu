@@ -87,6 +87,9 @@ import axios from 'axios'
 						return;
 					}
 					this.toLogin();
+					this.telphone = ''
+					this.vCode = ''
+					this.password = ''
 				})
 			},
 			getCode() {

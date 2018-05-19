@@ -4,7 +4,7 @@
 			<div class="content-wrapper">
 				<div class="login-header">
 					<form class="login-form">
-						<mail-login :tipMsg="tipMsg" @changeTip="tipMsg=''" @changeData="changeData" v-show="login_type==0" @toPhoneLogin="login_type = 1" ></mail-login>
+						<mail-login :tipMsg="tipMsg" @changeTip="tipMsg=''" @changeData="changeData" v-show="login_type==0" @toPhoneLogin="login_type = 1" ref="mailForm"></mail-login>
 						<phone-login @changeData="changeData" v-show="login_type==1" @toMailLogin="login_type = 0" 
 						ref="phoneForm"></phone-login>
 						<button class="login-btn" type="submit" @click.stop.prevent="toLogin">登录</button>

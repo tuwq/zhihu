@@ -3,6 +3,7 @@ const util = require('../../common/util.js');
 const QuestionUser = mongoose.model('QuestionUser')
 const User = mongoose.model('User')
 const Answer = mongoose.model('Answer')
+const Follow = require('./follow.js')
 const checkUtil = require('../../common/checkUtil.js')
 const tokenUtil = require('../../common/token.js')
 
@@ -60,7 +61,7 @@ exports.attentionQuestionRed = function (req,res) {
 		.sort({'meta.updatedAt': -1})
 		.exec((err,binds)=> {
 			let sum = binds.length 
-			getUserListInfo(binds,(users,infos)=> {
+			getUserListInfo(binds,_id,(users,infos)=> {
 				return res.json(util.Result({sum: sum,users: users,infos: infos}))
 			})
 		})
@@ -70,7 +71,7 @@ exports.attentionQuestionRed = function (req,res) {
 	})
 }
 
-function getUserListInfo(binds,callback) {
+function getUserListInfo(binds,_id,callback) {
 	var users = [];
 	var infos = [];
 	(function iterator(i){
@@ -83,24 +84,30 @@ function getUserListInfo(binds,callback) {
 			User.findById(user._id)
 			.select('fans')
 			.exec((err,dbUser)=> {
-				infos.push(new Info({
-					answerSum: count,
-					fansLength: dbUser.fans.length
-				}))
-				users.push(user)
-				iterator(i+1)	
+				// 寻找当前用户和目标用户的关注关系
+				Follow.getUserBind(user._id,_id,(status)=> {
+					infos.push(new Info({
+						answerSum: count,
+						fansLength: dbUser.fans.length,
+						followStatus: status
+					}))
+					users.push(user)
+					iterator(i+1)	
+				})	
 			})
 		})
 	})(0)
 }
 
-function Info({answerSum,fansLength}) {
+function Info({answerSum,fansLength,followStatus}) {
 	this.answerSum = answerSum
 	this.fansLength = fansLength
+	this.followStatus = followStatus
 }
 
 exports.getAttentionQuestion = function(user_id,question_id,callback) {
 	QuestionUser.count({question_id: question_id,attentionStatus: 1},(err,sum)=> {
+		// 当前用户是否关注了这个问题
 		QuestionUser.findOne({question_id: question_id,user_id: user_id},(err,bind)=> {
 			if (!bind) {
 				return callback({sum: sum,attentionStatus: 0})

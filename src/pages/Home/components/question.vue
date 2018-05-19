@@ -17,7 +17,7 @@
 			<div class="footer">
 				<h2 class="title">
 					<div>
-						<a target="_blank" @click.stop.prevent="toDetail(item._id)">{{item.title}}?</a>
+						<router-link :to="{path:`/question/${item._id}` }">{{item.title}}?</router-link>
 					</div>
 				</h2>
 				<div class="line"></div>
@@ -118,9 +118,6 @@
 						this.item.bad<0?0:this.item.bad
 					}
 				})
-			},
-			toDetail(id) {
-				this.$router.push({ path: `/question/${id}` }) 
 			},
 			more(e) {	
 				let rich = $(e.target).siblings('.rich-text')	

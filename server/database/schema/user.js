@@ -87,6 +87,10 @@ var UserSchema = new Schema({
 	    type: ObjectId,
 	    ref: 'User'
 	}],
+  followers: [{
+      type: ObjectId,
+      ref: 'User'
+  }],
 	answers: [{
 	    type: ObjectId,
 	    ref: 'Answer'

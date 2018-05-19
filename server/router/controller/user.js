@@ -156,13 +156,11 @@ exports.getInfoById = function (req,res) {
 	User.findOne({_id: req.body._id})
 		.select('_id username avatar hobby info')
 		.exec((err,dbUser)=> {
-			if(err){
-				console.log(err)
-			}
+			// 需要知道当前用户是否关注了该用户
 			if(!dbUser) {
 				return res.json(util.Result(1))
 			}
-			return res.json(util.Result(dbUser))
+			return res.json(util.Result({userInfo: dbUser}))
 		})
 }
 

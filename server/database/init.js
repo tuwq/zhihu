@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const util = require('../common/util.js');
+
+
 // 加载资源目录
 
 var db = mongoose.connect('mongodb://localhost:27017/zhihu')

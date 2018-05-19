@@ -4,7 +4,7 @@
 	    <div v-show="detail_loading">
     		<d-header class="d-header">
 	 			<z-header slot="z-header"></z-header>
-		 		<detail-header slot="detail-header" :attentionSum="attentionSum" :attentionStatus="attentionStatus"  @changeAttention="changeAttention" v-show="detail_loading"></detail-header>
+		 		<detail-header slot="detail-header" :attentionSum="attentionSum" :attentionStatus="attentionStatus"  @changeAttention="changeAttention" v-show="detail_loading" :browseSum="browseSum"></detail-header>
 		 		<scroll-header slot="scroll-header" :attentionStatus="attentionStatus" @changeAttention="changeAttention"></scroll-header>
 	 		</d-header>
 	 		<div class="main-content">
@@ -34,6 +34,8 @@
 	import axios from 'axios'
 	import {mapMutations,mapGetters} from 'vuex';
 	import {communicationMixin} from 'common/js/mixin'
+	import {readBrowseCount,MessageListener} from 'socket/browse'
+
 	export default {
 		mixins: [communicationMixin],
 		data() {
@@ -49,7 +51,8 @@
 				loading: true,
 				attentionSum: 0,
 				attentionStatus: 0,
-				detail_loading: false
+				detail_loading: false,
+				browseSum: 0
 			}
 		},
 		components: {
@@ -119,7 +122,7 @@
 		                }
 		                this.getAnswers()
 		            }
-				})
+				})	
 				communicationMixin.$on('addAnswer',()=> {
 					this.answerList = []
 					this.setAnswers(this.answerList)
@@ -127,18 +130,27 @@
 					this.loading = true
 					this.getAnswers()
 				})
+				MessageListener('browseSum',(data)=> {
+					this.browseSum = data
+				})
+
+			},
+			getBrowseCount() {
+				readBrowseCount(this.question_id)
 			}
 		},
 		created() {
 			this.getDetail()
 			this.getAnswers()
 			this.loadData()
+			this.getBrowseCount()
 		},
 		watch: {
 			question_id(newval,oldval) {
-				if (newval != oldval && newval !=undefined) {
+				if (newval != oldval && newval!=undefined) {
 					this.detail_loading = false
 					this.getDetail()
+					this.getBrowseCount()
 					this.answerList = []
 					this.setAnswers(this.answerList)
 					this.page = 1
@@ -146,19 +158,6 @@
 					this.getAnswers()
 				}
 			}
-			// 解决组件内部修改地址栏同路由不更新页面数据的缓存
-			// '$route' (to, from) {
-		 //        const toDepth = to.path
-		 //        const fromDepth = from.path
-		 //      	if (this.preFrom != toDepth && this.preTo == fromDepth) {
-		 //        	this.$router.go(0);
-		 //        } else if (toDepth.indexOf('/question')!=-1 && fromDepth!='/home') {
-		 //        	this.$router.go(0)
-		 //        }else {
-		 //        	 this.preFrom = fromDepth  		
-		 //         	 this.preTo = toDepth	
-		 //        }
-		 //     }, 
 		},
 		computed: {
 			question_id() {

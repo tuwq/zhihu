@@ -35,7 +35,7 @@
 	 						<div class="browsed">
 	 							<div class="inner">
 	 								<div class="item-name">被浏览</div>
-	 								<strong class="item-value">876,853</strong>
+	 								<strong class="item-value">{{browseSum}}</strong>
 	 							</div>
 	 						</div>
 	 					</div>
@@ -108,6 +108,10 @@ import {communicationMixin} from 'common/js/mixin'
 				default: 0
 			},
 			attentionStatus: {
+				type: Number,
+				default: 0
+			},
+			browseSum: {
 				type: Number,
 				default: 0
 			}

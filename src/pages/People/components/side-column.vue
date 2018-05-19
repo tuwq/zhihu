@@ -1,6 +1,6 @@
 <template>
 	<div id="">
-		<div class="side-column">
+		<div class="side-column" v-show="detail_user_id">
 			<div class="Card achievement-box">
 				<div class="header-title"><div class="text">个人成就</div></div>
 				<div class="side-items">
@@ -82,9 +82,28 @@
 </template>
 
 <script type="text/ecmascript-6">
+import axios from 'axios'
  	export default {
-		components: {
-		
+ 		props: {
+ 			detail_user_id: {
+ 				type: String,
+ 				default: ''
+ 			}
+ 		},
+ 		methods: {
+ 			initData() {
+ 						
+ 			}
+ 		},
+		created() {
+			this.initData()
+		},
+		watch: {
+			detail_user_id(newval,oldval) {
+				if ( newval!=oldval && newval != undefined ) {
+					this.initData()
+				}
+			}
 		}
 	}
 </script>
