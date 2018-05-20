@@ -44,10 +44,12 @@
 				<div><div class="item-time"><a target="_blank"><span data-tooltip="发布于 2018-04-09 20:04">编辑于 {{updatedAt}}</span></a></div></div>
 				<div class="content-item-actions">
 					<span>
-						<button class="up" @click.stop.prevent="vote(1,item._id)"><svg viewBox="0 0 20 18" width="9" height="16">
+						<button :class="{up: true,'is-active': voteStatus==1}" 
+						@click.stop.prevent="vote(1,item._id)"><svg viewBox="0 0 20 18" width="9" height="16">
 							<title></title><g><path d="M0 15.243c0-.326.088-.533.236-.896l7.98-13.204C8.57.57 9.086 0 10 0s1.43.57 1.784 1.143l7.98 13.204c.15.363.236.57.236.896 0 1.386-.875 1.9-1.955 1.9H1.955c-1.08 0-1.955-.517-1.955-1.9z"></path></g>
 						</svg>{{good}}</button>
-						<button class="down" @click.stop.prevent="vote(2,item._id)"><svg viewBox="0 0 20 18" width="9" height="16">
+						<button :class="{down: true,'is-active':voteStatus==2}" 
+						@click.stop.prevent="vote(2,item._id)"><svg viewBox="0 0 20 18" width="9" height="16">
 							<title></title><g><path d="M0 15.243c0-.326.088-.533.236-.896l7.98-13.204C8.57.57 9.086 0 10 0s1.43.57 1.784 1.143l7.98 13.204c.15.363.236.57.236.896 0 1.386-.875 1.9-1.955 1.9H1.955c-1.08 0-1.955-.517-1.955-1.9z"></path></g>
 						</svg>{{bad}}</button>
 						</span>
@@ -106,7 +108,8 @@ import axios from 'axios'
 				loadComment: false,
 				good: this.item.good,
 				bad: this.item.bad,
-				updatedAt: moment(this.item.meta.updatedAt).format('YYYY-MM-DD HH:mm:ss')
+				updatedAt: moment(this.item.meta.updatedAt).format('YYYY-MM-DD HH:mm:ss'),
+				voteStatus: this.item.voteStatus
 			}
 		},
 		methods: {
@@ -118,18 +121,22 @@ import axios from 'axios'
 				}).then((res)=> {
 					if (res.data.status==-1) {
 						// 取消赞踩
-						vote==1?this.good--:this.bad--
+						this.voteStatus = 0
+						vote==1?this.good--:this.bad--	
 					}else if(res.data.status === 0){
 						// 新建
 						vote==1?this.good++:this.bad++
+						vote==1?this.voteStatus=1:this.voteStatus=2
 					}else {
 						// 改变
 						if (vote==1) {
 							this.good++
 							this.bad--
+							this.voteStatus=1
 						}else {
 							this.bad++
 							this.good--
+							this.voteStatus=2
 						}
 						this.good<0?0:this.good
 						this.bad<0?0:this.bad

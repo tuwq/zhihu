@@ -101,11 +101,11 @@ function getVote(questions,me_id,callback) {
 			callback(questions,infos)
 			return 
 		}
-		Vote.getVoteQuestion(questions[i]._id,me_id,({good,bad,votStatus})=> {
+		Vote.getVoteQuestion(questions[i]._id,me_id,({good,bad,voteStatus})=> {
 			questions[i].good = good
 			questions[i].bad = bad
 			infos.push({
-				votStatus: votStatus
+				voteStatus: voteStatus
 			})
 			iterator(i+1)
 		})

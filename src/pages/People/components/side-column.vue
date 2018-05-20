@@ -141,6 +141,10 @@ import {communicationMixin} from 'common/js/mixin.js'
 		created() {
 			this.initData()
 			this.listenerFollowChange()
+			communicationMixin.$on('updateCount',()=> {
+				console.log('into')
+ 				this.initData()		
+ 			}) 
 		},
 		watch: {
 			detail_user_id(newval,oldval) {

@@ -71,7 +71,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-import {makeExpandingArea} from 'common/js/common.js';
+import {makeExpandingArea,mergeData} from 'common/js/common.js';
 import {mapMutations,mapGetters,mapActions} from 'vuex';
 import comment from 'base/comment.vue'
 import loading from 'base/loading.vue'
@@ -153,7 +153,8 @@ import axios from 'axios'
 					}).then((res)=> {
 						// 需要总页数计算页码
 						this.loading = false
-						this.commentList = res.data.result.comments
+						let data = mergeData(res.data.result.comments,res.data.result.infos)
+						this.commentList = data
 						this.count = res.data.result.count
 						this.pageSum = Math.ceil(this.count/this.limit)
 						this.$nextTick().then(()=> {
@@ -168,7 +169,8 @@ import axios from 'axios'
 					}).then((res)=> {
 						// 需要总页数计算页码
 						this.loading = false
-						this.commentList = res.data.result.comments
+						let data = mergeData(res.data.result.comments,res.data.result.infos)
+						this.commentList = data
 						this.count = res.data.result.count
 						this.pageSum = Math.ceil(this.count/this.limit)
 						this.$nextTick().then(()=> {

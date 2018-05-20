@@ -153,8 +153,7 @@ import {communicationMixin} from 'common/js/mixin.js'
  					if (res.data.status) {
  						alert(res.data.result.msg)
  					}
- 					
- 					if (from==0) {
+ 					if (from==0) {	
  						if (action==1) {
  							this.follows[index].flowerStatus = 1
  						}else {
@@ -170,8 +169,8 @@ import {communicationMixin} from 'common/js/mixin.js'
  						}
  					}else{
  						if (action==1) {
+ 							this.fans[index].flowerStatus = 1
  							if (this.user._id == this.detail_user_id) {
- 								this.fans[index].flowerStatus = 1
 								// 当我在我的粉丝列表中关注我的粉丝时
 								// 我的关注列表要刷新，同时我的右侧关注数要增加
 								this.getFollowList()

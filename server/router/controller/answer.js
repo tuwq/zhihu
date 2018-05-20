@@ -45,38 +45,50 @@ exports.insert = function (req,res) {
 }
 
 exports.read = function (req,res) {
-	var fields = req.body
-	var limit = fields.limit
-	var page = fields.page
-	var skip = limit*(page-1)
-	Answer.find({question_id: fields.question_id})
-	.populate('user_id')
-	.limit(limit)
-	.skip(skip)
-	.sort({'meta.updatedAt': -1})
-	.exec((err,answers)=> {
-		// 获得每个回答下的评论数量
-		getCommentCount(answers,(answers)=> {
-			// 获取该问题下的回答数量
-			Answer.count({question_id: fields.question_id},(err,sum)=> {
-				getVote(answers,(answers)=> {
-					let count = answers.length
-					return res.json(util.Result({answers: answers,count: count,sum: sum}))
+
+
+	var token = req.headers.token
+	tokenUtil.verifyToken(token)
+	.then((_id)=> {
+		var fields = req.body
+		var limit = fields.limit
+		var page = fields.page
+		var skip = limit*(page-1)
+		Answer.find({question_id: fields.question_id})
+		.populate('user_id')
+		.limit(limit)
+		.skip(skip)
+		.sort({'meta.updatedAt': -1})
+		.exec((err,answers)=> {
+			// 获得每个回答下的评论数量
+			getCommentCount(answers,(answers)=> {
+				// 获取该问题下的回答数量
+				Answer.count({question_id: fields.question_id},(err,sum)=> {
+					getVote(answers,_id,(answers,infos)=> {
+						let count = answers.length
+						return res.json(util.Result({answers: answers,infos: infos,count: count,sum: sum}))
+					})
 				})
 			})
-		})
+		})		
+	}).catch((err)=> {
+		return res.json(util.Result(401))
 	})
 }
 
-function getVote(answers,callback) {
+function getVote(answers,me_id,callback) {
+	let infos = [];
 	(function iterator(i){
 		if (i == answers.length) {
-			callback(answers)
+			callback(answers,infos)
 			return 
 		}
-		Vote.getVoteAnswer(answers[i]._id,({good,bad})=> {
+		Vote.getVoteAnswer(answers[i]._id,me_id,({good,bad,voteStatus})=> {
 			answers[i].good = good
 			answers[i].bad = bad
+			infos.push({
+				voteStatus: voteStatus
+			})
 			iterator(i+1)
 		})
 	})(0)

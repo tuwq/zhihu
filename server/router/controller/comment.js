@@ -103,40 +103,50 @@ exports.insertToQuestion = function (req,res) {
 
 
 exports.read = function (req,res) {
-	let fields = req.body
-	var limit = fields.limit
-	var page = fields.page
-	var skip = limit*(page-1)
-	Comment.find({answer_id: fields.answer_id})
-	.populate('user_id')
-	.populate({
-		path: 'to',
-		populate: {
-			path: 'user_id',
-			select: 'username'
-		}
-	})
-	.limit(limit)
-	.skip(skip)
-	.sort({'meta.updatedAt': -1})
-	.exec((err,comments)=> {
-		Comment.count({answer_id: fields.answer_id},(err,count)=> {
-			getVote(comments,(comments)=> {
-				return res.json(util.Result({comments: comments,count: count}))
+	var token = req.headers.token
+	tokenUtil.verifyToken(token)
+	.then((_id)=> {
+		let fields = req.body
+		var limit = fields.limit
+		var page = fields.page
+		var skip = limit*(page-1)
+		Comment.find({answer_id: fields.answer_id})
+		.populate('user_id')
+		.populate({
+			path: 'to',
+			populate: {
+				path: 'user_id',
+				select: 'username'
+			}
+		})
+		.limit(limit)
+		.skip(skip)
+		.sort({'meta.updatedAt': -1})
+		.exec((err,comments)=> {
+			Comment.count({answer_id: fields.answer_id},(err,count)=> {
+				getVote(comments,_id,(comments,infos)=> {
+					return res.json(util.Result({comments: comments,infos: infos,count: count}))
+				})
 			})
 		})
+	}).catch((err)=> {
+		return res.json(util.Result(401))
 	})
 }
 
-function getVote(comments,callback) {
+function getVote(comments,me_id,callback) {
+	let infos = [];
 	(function iterator(i){
 		if (i == comments.length) {
-			callback(comments)
+			callback(comments,infos)
 			return 
 		}
-		Vote.getVoteComment(comments[i]._id,({good,bad})=> {
+		Vote.getVoteComment(comments[i]._id,me_id,({good,bad,voteStatus})=> {
 			comments[i].good = good
 			comments[i].bad = bad
+			infos.push({
+				voteStatus
+			})
 			iterator(i+1)
 		})
 	})(0)
@@ -144,29 +154,35 @@ function getVote(comments,callback) {
 
 
 exports.readToQuestion = function (req,res) {
-	let fields = req.body
-	var limit = fields.limit
-	var page = fields.page
-	var skip = limit*(page-1)
-	// 读取mongoose时 不存在属性使用undefined，而不能使用空字符串
-	Comment.find({question_id: fields.question_id,answer_id: undefined})
-	.populate('user_id')
-	.populate({
-		path: 'to',
-		populate: {
-			path: 'user_id',
-			select: 'username'
-		}
-	})
-	.limit(limit)
-	.skip(skip)
-	.sort({'meta.updatedAt': -1})
-	.exec((err,comments)=> {
-		Comment.count({question_id: fields.question_id,answer_id: undefined},(err,count)=> {
-			getVote(comments,(comments)=> {
-				return res.json(util.Result({comments: comments,count: count}))
+	var token = req.headers.token
+	tokenUtil.verifyToken(token)
+	.then((_id)=> {
+		let fields = req.body
+		var limit = fields.limit
+		var page = fields.page
+		var skip = limit*(page-1)
+		// 读取mongoose时 不存在属性使用undefined，而不能使用空字符串
+		Comment.find({question_id: fields.question_id,answer_id: undefined})
+		.populate('user_id')
+		.populate({
+			path: 'to',
+			populate: {
+				path: 'user_id',
+				select: 'username'
+			}
+		})
+		.limit(limit)
+		.skip(skip)
+		.sort({'meta.updatedAt': -1})
+		.exec((err,comments)=> {
+			Comment.count({question_id: fields.question_id,answer_id: undefined},(err,count)=> {
+				getVote(comments,_id,(comments,infos)=> {
+					return res.json(util.Result({comments: comments,infos: infos,count: count}))
+				})
 			})
 		})
+	}).catch((err)=> {
+		return res.json(util.Result(401))
 	})
 }
 

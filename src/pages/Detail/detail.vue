@@ -32,6 +32,7 @@
 	import remindList from 'base/remind-list.vue';
 	import loading from 'base/loading.vue'
 	import axios from 'axios'
+	import {prepend,mergeData} from 'common/js/common'
 	import {mapMutations,mapGetters} from 'vuex';
 	import {communicationMixin} from 'common/js/mixin'
 	import {readBrowseCount,MessageListener} from 'socket/browse'
@@ -103,7 +104,8 @@
 					this.loading = false
 					this.sum = res.data.result.sum
 					if(res.data.result.count) {
-						this.answerList = this.answers.concat(res.data.result.answers)
+						let data = mergeData(res.data.result.answers,res.data.result.infos)
+						this.answerList = this.answers.concat(data)
 						this.setAnswers(this.answerList)
 						this.page++
 					}else{
@@ -133,7 +135,13 @@
 				MessageListener('browseSum',(data)=> {
 					this.browseSum = data
 				})
-
+				communicationMixin.$on('changeUser',()=> {
+					this.answerList = []
+					this.setAnswers(this.answerList)
+					this.page = 1
+					this.loading = true
+					this.getAnswers()
+				})
 			},
 			getBrowseCount() {
 				readBrowseCount(this.question_id)
