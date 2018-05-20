@@ -7,6 +7,7 @@ var Answer = mongoose.model('Answer')
 const checkUtil = require('../../common/checkUtil.js')
 const tokenUtil = require('../../common/token.js')
 
+const self = this
 
 exports.followTarget = function (req,res) {
 	// 检查登录
@@ -119,77 +120,99 @@ exports.getUserBind = function(target_id,me_id,callback) {
 }
 
 exports.userFans = function(req,res) {
-	let fields = req.body
-	User.findById(fields.detail_id)
-	.select('avatar username')
-	.populate('fans')
-	.exec((err,user)=> {
-		// 所有粉丝对象
-		let fans = user.fans
-		// 寻找每个粉丝的回答数和关注列表人数
-		getFansData(fans,(infos)=> {
-			return res.json(util.Result({users: fans,infos: infos}))
+	// 检查登录
+	var token = req.headers.token
+	tokenUtil.verifyToken(token)
+	.then((_id)=> {
+		let fields = req.body
+		User.findById(fields.detail_id)
+		.select('avatar username')
+		.populate('fans')
+		.exec((err,user)=> {
+			// 所有粉丝对象
+			let fans = user.fans
+			// 寻找每个粉丝的回答数和关注列表人数
+			getFansData(fans,_id,(infos)=> {
+				return res.json(util.Result({users: fans,infos: infos}))
+			})
 		})
+	}).catch((err)=> {
+		return res.json(util.Result(1))
 	})
 }
 
-function getFansData(fans,callback) {
+function getFansData(fans,_id,callback) {
 	var infos = [];
 	(function iterator(i){
 		if ( i == fans.length ) {
 			return callback(infos)
 		}
-		Question.count({user_id: fans[i]._id})
-		.exec((err,questionSum)=> {
-			infos.push(new FansInfo({
-				questionSum: questionSum,
-				followSum: fans[i].followers.length
-			}))
-			iterator( i+1 )
+		// 当前用户是否关注过该粉丝列表中的用户
+		self.getUserBind(fans[i]._id,_id,(flowerStatus)=> {
+			Answer.count({user_id: fans[i]._id})
+			.exec((err,answerSum)=> {
+				infos.push(new FansInfo({
+					answerSum: answerSum,
+					followSum: fans[i].followers.length,
+					flowerStatus
+				}))
+				iterator( i+1 )
+			})
 		})
 	})(0)
 }
 
-function FansInfo({questionSum,followSum}) {
-	this.questionSum = questionSum
+function FansInfo({answerSum,followSum,flowerStatus}) {
+	this.answerSum = answerSum
 	this.followSum  = followSum
+	this.flowerStatus = flowerStatus
 }
 
 exports.userFollow = function (req,res) {
-	let fields = req.body
-	User.findById(fields.detail_id)
-	.populate({
-		path: 'followers',
-		select: 'avatar username info'
-	})
-	.exec((err,user)=> {
-		// 获得用户关注列表信息
-		let followers = user.followers
-		getFollowsData(followers,(infos)=> {
-			return res.json(util.Result({users: followers,infos}))
+	var token = req.headers.token
+	tokenUtil.verifyToken(token)
+	.then((_id)=> {
+		let fields = req.body
+		User.findById(fields.detail_id)
+		.populate({
+			path: 'followers',
+			select: '_id avatar username info'
 		})
+		.exec((err,user)=> {
+			// 获得用户关注列表信息
+			let followers = user.followers
+			getFollowsData(followers,_id,(infos)=> {
+				return res.json(util.Result({users: followers,infos}))
+			})
+		})
+	}).catch((err)=> {
+		return res.json(util.Result(1))
 	})
 }
 
-function getFollowsData (followers,callback) {
+function getFollowsData (followers,_id,callback) {
 	let infos = [];
 	(function iterator(i){
 		if (i==followers.length) {
 			return callback(infos)
 		}
-		// 查询回答数，提问数，被回答数
-		Answer.count({user_id: followers[i]._id},(err,answerSum)=> {
-			Question.find({user_id: followers[i]._id})
-			.select('_id')
-			.exec((err,questions)=> {
-				// 遍历问题，寻找每个问题下有多少个回答
-				getAnsweredSum(questions,(answeredSum)=> {
-					infos.push(new FollowerInfo({
-						answerSum,
-						questionSum: questions.length,
-						answeredSum
-					}))
-					iterator( i+1 )
+		// 当前用户是否关注过该关注列表中的用户
+		self.getUserBind(followers[i]._id,_id,(flowerStatus)=> {
+			// 查询回答数，提问数，被回答数
+			Answer.count({user_id: followers[i]._id},(err,answerSum)=> {
+				Question.find({user_id: followers[i]._id})
+				.select('_id')
+				.exec((err,questions)=> {
+					// 遍历问题，寻找每个问题下有多少个回答
+					getAnsweredSum(questions,(answeredSum)=> {
+						infos.push(new FollowerInfo({
+							answerSum,
+							questionSum: questions.length,
+							answeredSum,
+							flowerStatus
+						}))
+						iterator( i+1 )
+					})
 				})
 			})
 		})
@@ -209,8 +232,9 @@ function getAnsweredSum(questions,callback) {
 	})(0)
 }
 
-function FollowerInfo({answerSum,questionSum,answeredSum}) {
+function FollowerInfo({answerSum,questionSum,answeredSum,flowerStatus}) {
 	this.answerSum = answerSum
 	this.questionSum = questionSum
 	this.answeredSum = answeredSum
+	this.flowerStatus = flowerStatus
 }

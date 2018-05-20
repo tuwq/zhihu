@@ -4,21 +4,21 @@
 			<div class="Card main-box">
 				<div class="main-header">
 					<ul class="tabs">
-						<li class="tab-item is-active"><a href="javascript:void(0)" class="tab-link">动态</a></li>
-						<li class="tab-item"><a href="javascript:void(0)" class="tab-link">回答 <span>0</span></a></li>
-						<li class="tab-item"><a href="javascript:void(0)" class="tab-link">提问 <span>0</span></a></li>
-						<li class="tab-item"><a href="javascript:void(0)" class="tab-link">文章 <span>0</span></a></li>
-						<li class="tab-item"><a href="javascript:void(0)" class="tab-link">专栏 <span>0</span></a></li>
-						<li class="tab-item"><a href="javascript:void(0)" class="tab-link">想法 <span>0</span></a></li>
+						<li class="tab-item is-active" @click.stop.prevent="changeItem($event,0)"><a href="javascript:void(0)" class="tab-link">动态</a></li>
+						<li class="tab-item" @click.stop.prevent="changeItem($event,1)"><a href="javascript:void(0)" class="tab-link">回答 <span>0</span></a></li>
+						<li class="tab-item" @click.stop.prevent="changeItem($event,2)"><a href="javascript:void(0)" class="tab-link">提问 <span>0</span></a></li>
+						<li class="tab-item" @click.stop.prevent="changeItem($event,3)"><a href="javascript:void(0)" class="tab-link">文章 <span>0</span></a></li>
+						<li class="tab-item" @click.stop.prevent="changeItem($event,4)"><a href="javascript:void(0)" class="tab-link">专栏 <span>0</span></a></li>
+						<li class="tab-item" @click.stop.prevent="changeItem($event,5)"><a href="javascript:void(0)" class="tab-link">想法 <span>0</span></a></li>
 						<li class="tab-item" ref="more" @click.stop.prevent="getMore"><a href="javascript:void(0)" class="tab-link"><button class="more">更多<svg viewBox="0 0 10 6" width="10" height="16"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button></a></li>
 					</ul>
 				</div>
 				<content-list v-show="showModule==0"></content-list>
 				<answer-module v-show="showModule==1"></answer-module>
-				<following-module v-show="showModule==7"></following-module>
+				<following-module v-show="showModule==7" :otherUser="otherUser"></following-module>
 			</div>
 		</div>
-		<div class="content-arrow" v-show="people_dropup" id="content-arrow"> 
+		<div class="content-arrow" v-show="people_dropup" id="content-arrow" ref="content_arrow"> 
 			<span class="arrow-top"></span>
 			<div class="menu">
 				<a href="javascript:void(0)" class="menu-item">收藏 <span>5</span></a>
@@ -35,6 +35,16 @@ import followingModule from 'p_components/following-module.vue'
 import {mapGetters,mapMutations} from 'vuex'
 import {communicationMixin} from 'common/js/mixin.js'
  	export default {
+ 		props: {
+ 			otherUser: {
+ 				type: Object,
+ 				default() {
+ 					return {
+ 						info:{}
+ 					}
+ 				}
+ 			}
+ 		},
  		data() {
  			return {
  				showModule: 0,
@@ -42,19 +52,10 @@ import {communicationMixin} from 'common/js/mixin.js'
  			}
  		},
  		methods: {
- 			initLink() {
- 				$('.tab-item').each( (index,el)=> {
- 					var me = $(el);
- 					if(index==$('.tab-item').length-1) {
- 						return;
- 					}else{
- 						me.on('click',(e)=> {
-	 						me.addClass('is-active').siblings('.tab-item').removeClass('is-active')
-		 					this.showModule = index;
-		 					communicationMixin.$emit('changeScrollIndex',index)
-	 					});
- 					}
- 				});
+ 			changeItem(e,index) {
+ 				$(e.target).parent().addClass('is-active').siblings().removeClass('is-active')
+ 				this.showModule = index;
+ 				communicationMixin.$emit('changeScrollIndex',index)
  			},
  			listenHeaderModule() {
  				communicationMixin.$on('changeMainIndex',(index) => {
@@ -66,8 +67,8 @@ import {communicationMixin} from 'common/js/mixin.js'
  				})
  			},
  			getMore() {
- 				$('#content-arrow').css('top',258)
- 				$('#content-arrow').addClass('content-arrow').removeClass('content-arrow-top');
+ 				$(this.$refs.content_arrow).css('top',258)
+ 				$(this.$refs.content_arrow).addClass('content-arrow').removeClass('content-arrow-top');
  				this.setPeopleDropUp(true);
  			},
  			openFollowingModule() {
@@ -79,6 +80,8 @@ import {communicationMixin} from 'common/js/mixin.js'
  			ListenterFollwer() {
  				communicationMixin.$on('showFollwer',()=> {
  					this.showModule = 7
+ 					$(this.$refs.more).addClass('is-active').siblings('.tab-item').removeClass('is-active')
+ 					communicationMixin.$emit('openFollow')
  				})
  			},
  			...mapMutations({
@@ -86,7 +89,6 @@ import {communicationMixin} from 'common/js/mixin.js'
 			})
  		},
 		mounted() {
-			this.initLink();
 			this.listenHeaderModule();
 		},
 		created() {

@@ -36,8 +36,9 @@
 											关注{{item.info.gender==0?'他':item.info.gender==1?'他':'她'}}
 										</button>
 										<button class="follwButton cancel" ref="cancel" v-show="item.followStatus==1"
-										@click.stop.prevent="followPeople(item._id,0,index)">
-											{{followText}}
+										@click.stop.prevent="followPeople(item._id,0,index)"
+										@mouseenter="enter($event)" @mouseleave="leave($event)">
+											已关注
 										</button>
 									</div>
 								</div>
@@ -68,11 +69,16 @@ import axios from 'axios'
 				base: '../../../../static/avatar/60/',
 				loading: true,
 				users: [],
-				sum: 0,
-				followText: '已关注'
+				sum: 0
 			}
 		},
 		methods: {
+			enter(e) {
+				e.target.innerText = '取消关注'
+			},
+			leave(e) {
+				e.target.innerText = '已关注'
+			},
 			clsModal() {
 				this.setAttentionQuestionModal(false)
 			},
@@ -113,15 +119,6 @@ import axios from 'axios'
 					this.sum = res.data.result.sum
 					this.users = this.mergeData(res.data.result.users,res.data.result.infos)	
 					this.loading = false
-					this.$nextTick(()=> {
-						$(this.$refs.cancel).each((index,item)=> {
-							$(item).hover(()=> {
-								$(item).text('取消关注')
-							},()=> {
-								$(item).text('已关注')
-							})
-						})
-					})
 				})
 			})
 		},

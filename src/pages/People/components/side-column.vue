@@ -116,10 +116,31 @@ import {communicationMixin} from 'common/js/mixin.js'
  			openFans() {
  				communicationMixin.$emit('showFollwer')
  				communicationMixin.$emit('openFans')
+ 			},
+ 			listenerFollowChange() {
+ 				// 改变关注列表数量和粉丝列表数量
+ 				// from， 	0:关注列表  1:粉丝列表
+ 				// action, 	0:关注增加  1；关注减少
+ 				communicationMixin.$on('changeCount',(from,action)=> {
+ 					if (from==0) {
+ 						if (action==1) {
+ 							this.followerCount++
+ 						}else {
+ 							this.followerCount--
+ 						}
+ 					}else {
+ 						if (action==1) {
+ 							this.fansCount++
+ 						}else {
+ 							this.fansCount--
+ 						}
+ 					}
+ 				})
  			}
  		},
 		created() {
 			this.initData()
+			this.listenerFollowChange()
 		},
 		watch: {
 			detail_user_id(newval,oldval) {

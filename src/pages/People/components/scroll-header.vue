@@ -4,12 +4,12 @@
 			<div class="scroll-header-inner">
 				<div class="user-avatar"><img src="../../../common/image/index/user_avatar_38_38.jpg" width="38" height="38" class="Avatar"></div>
 				<ul class="tabList">
-					<li class="top-tab-item is-active"><a href="javascript:void(0)" class="tab-link is-active">动态</a></li>
-					<li class="top-tab-item"><a href="javascript:void(0)" class="tab-link">回答<span class="tab-meta">0</span></a></li>
-					<li class="top-tab-item"><a href="javascript:void(0)" class="tab-link">提问<span class="tab-meta">0</span></a></li>
-					<li class="top-tab-item"><a href="javascript:void(0)" class="tab-link">文章<span class="tab-meta">0</span></a></li>
-					<li class="top-tab-item"><a href="javascript:void(0)" class="tab-link">专栏<span class="tab-meta">0</span></a></li>
-					<li class="top-tab-item"><a href="javascript:void(0)" class="tab-link">想法<span class="tab-meta">0</span></a></li>
+					<li class="top-tab-item is-active" @click.stop.prevent="changeItem($event,0)"><a href="javascript:void(0)" class="tab-link is-active">动态</a></li>
+					<li class="top-tab-item" @click.stop.prevent="changeItem($event,1)"><a href="javascript:void(0)" class="tab-link">回答<span class="tab-meta">0</span></a></li>
+					<li class="top-tab-item" @click.stop.prevent="changeItem($event,2)"><a href="javascript:void(0)" class="tab-link">提问<span class="tab-meta">0</span></a></li>
+					<li class="top-tab-item" @click.stop.prevent="changeItem($event,3)"><a href="javascript:void(0)" class="tab-link">文章<span class="tab-meta">0</span></a></li>
+					<li class="top-tab-item" @click.stop.prevent="changeItem($event,4)"><a href="javascript:void(0)" class="tab-link">专栏<span class="tab-meta">0</span></a></li>
+					<li class="top-tab-item" @click.stop.prevent="changeItem($event,5)"><a href="javascript:void(0)" class="tab-link">想法<span class="tab-meta">0</span></a></li>
 					<li class="top-tab-item" ref="more"  @click.stop.prevent="getMore"><a href="javascript:void(0)" class="tab-link">更多<svg fill="currentColor" viewBox="0 0 10 6" width="10" height="16" style="margin-left: 4px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></a></li>
 				</ul>
 				<div class="buttonGroup">
@@ -34,18 +34,9 @@ import {communicationMixin} from 'common/js/mixin.js';
  			...mapMutations({
 				setPeopleDropUp: 'SET_PEOPLE_DROPUP'
 			}),
-			initLink() {
-				$('.top-tab-item').each((index,el) => {
-					var me = $(el)
-					if(index==$('.top-tab-item').length-1) {
- 						return;
- 					}else{
- 						me.on('click',(e)=> {
-	 						me.addClass('is-active').siblings('.top-tab-item').removeClass('is-active')
-	 						communicationMixin.$emit('changeMainIndex',index)
-	 					});
- 					}
-				})
+			changeItem(e,index) {
+				$(e.target).parent().addClass('is-active').siblings().removeClass('is-active')
+				communicationMixin.$emit('changeMainIndex',index)
 			}
  		},	
  		computed: {
@@ -60,9 +51,6 @@ import {communicationMixin} from 'common/js/mixin.js';
 			communicationMixin.$on('openFollow',()=> {
 				$(this.$refs.more).addClass('is-active').siblings().removeClass('is-active')
 			})
-		},
-		mounted() {
-			this.initLink();
 		}
 	}
 </script>

@@ -1,9 +1,9 @@
 <template>
 	<div class="selection-wrapper">
 		<div class="selection-bar">
-	 		<button class="bar-item is-active" @click.stop.prevent;>为你推荐</button>
-	 		<button class="bar-item" @click.stop.prevent;>全站热门</button>
-	 		<button class="bar-item" @click.stop.prevent;>邀请回答</button>
+	 		<button class="bar-item is-active" @click.stop.prevent="changeItem($event,0)">为你推荐</button>
+	 		<button class="bar-item" @click.stop.prevent="changeItem($event,1)">全站热门</button>
+	 		<button class="bar-item" @click.stop.prevent="changeItem($event,2)">邀请回答</button>
 	 	</div>
 	 	<div class="main-content">
 	 		<recommend v-show="content_type==0"></recommend>
@@ -28,18 +28,10 @@ import invite from 'question_components/invite.vue';
 			hot,
 			invite
 		},
-		mounted() {
-			this.initLink();
-		},
 		methods: {
-			initLink() {
-				$('.bar-item').each((index,el) => {
-					var me = $(el)
-					me.on('click',(e) => {
-						me.addClass('is-active').siblings('.bar-item').removeClass('is-active')
-						this.content_type = index;
-					})
-				});	
+			changeItem(e,index) {
+				$(e.target).addClass('is-active').siblings().removeClass('is-active')
+				this.content_type = index;
 			}
 		}
 	}

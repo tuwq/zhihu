@@ -8,7 +8,7 @@
 				@changeFllowerStatus="changeFllowerStatus"></other-profile>
 			</div>
 			<div class="main-content">
-				<main-column></main-column>
+				<main-column :otherUser="otherUser"></main-column>
 				<side-column :detail_user_id="detail_user_id"></side-column>
 			</div>
 		</div>

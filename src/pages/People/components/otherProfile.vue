@@ -24,7 +24,7 @@
 						<div class="buttons">
 							<button class="attention" v-show="fllowerStatus==0" @click.stop.prevent="followPeople(otherUser._id,1)"><span>&#8203;<svg fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em" style="margin-right: 8px;position: relative;top: 3px;"><path d="M13.491 10.488s-.012-5.387 0-5.998c-.037-1.987-3.035-1.987-2.997 0-.038 1.912 0 5.998 0 5.998H4.499c-1.999.01-1.999 3.009 0 3.009s5.995-.01 5.995-.01v5.999c0 2.019 3.006 2.019 2.997 0-.01-2.019 0-5.998 0-5.998s3.996.009 6.004.009c2.008 0 2.008-3-.01-3.009h-5.994z"></path></svg></span>关注{{otherUser.info.gender==0?'他':otherUser.info.gender==1?'他':'她'}}</button>
 							<button class="attention cancel" v-show="fllowerStatus==1" type="button" @click.stop.prevent="followPeople(otherUser._id,0)" 
-	 						style="color: #fff;background-color: #8590a6;">{{followText}}</button>
+	 						@mouseenter="enter($event)" @mouseleave="leave($event)" style="color: #fff;background-color: #8590a6;">已关注</button>
 							<button class="private"><span>&#8203;<svg fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em" style="margin-right: 8px;"><path d="M11 2c5.571 0 9 4.335 9 8 0 6-6.475 9.764-11.481 8.022-.315-.07-.379-.124-.78.078-1.455.54-2.413.921-3.525 1.122-.483.087-.916-.25-.588-.581 0 0 .677-.417.842-1.904.064-.351-.14-.879-.454-1.171A8.833 8.833 0 0 1 2 10c0-3.87 3.394-8 9-8zm10.14 9.628c.758.988.86 2.009.86 3.15 0 1.195-.619 3.11-1.368 3.938-.209.23-.354.467-.308.722.12 1.073.614 1.501.614 1.501.237.239-.188.562-.537.5-.803-.146-1.495-.42-2.546-.811-.29-.146-.336-.106-.563-.057-2.043.711-4.398.475-6.083-.927 5.965-.524 8.727-3.03 9.93-8.016z"></path></svg></span>发私信</button>
 						</div>
 					</div>
@@ -36,6 +36,7 @@
 
 <script type="text/ecmascript-6">
 import axios from 'axios'
+import {communicationMixin} from 'common/js/mixin.js'
  	export default {
  		props: {
  			otherUser: {
@@ -53,11 +54,16 @@ import axios from 'axios'
  		},
  		data() {
  			return {
- 				base: '../../../../static/avatar/160/',
- 				followText: '已关注'
+ 				base: '../../../../static/avatar/160/'
  			}
  		},
  		methods: {
+ 			enter(e) {
+ 				e.target.innerText = '取消关注'
+ 			},
+ 			leave(e) {
+ 				e.target.innerText = '已关注'
+ 			},
  			followPeople(target_id,action) {
  				axios.post('/follow/followTarget',{
  					target_id: target_id,
@@ -67,15 +73,10 @@ import axios from 'axios'
  						alert(res.data.result.msg)
  					}
  					this.$emit('changeFllowerStatus',action==1?1:0)
+ 					communicationMixin.$emit('reloadFollwer')
+ 					communicationMixin.$emit('changeCount',1,action==1?1:0)
  				})
  			}
- 		},
- 		mounted() {
- 			$('.cancel').hover(()=> {
- 				this.followText = '取消关注'
- 			},()=> {
- 				this.followText = '已关注'
- 			})
  		}
 	}
 </script>
