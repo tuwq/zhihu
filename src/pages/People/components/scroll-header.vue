@@ -1,8 +1,8 @@
 <template>
 	<div id="ScrollHeader">
 		<div class="scroll-header-box scroll-header-wrapper">
-			<div class="scroll-header-inner">
-				<div class="user-avatar"><img src="../../../common/image/index/user_avatar_38_38.jpg" width="38" height="38" class="Avatar"></div>
+			<div class="scroll-header-inner" v-if="avatar">
+				<div class="user-avatar" v-if="avatar"><img :src="base+avatar" width="38" height="38" class="Avatar"></div>
 				<ul class="tabList">
 					<li class="top-tab-item is-active" @click.stop.prevent="changeItem($event,0)"><a href="javascript:void(0)" class="tab-link is-active">动态</a></li>
 					<li class="top-tab-item" @click.stop.prevent="changeItem($event,1)"><a href="javascript:void(0)" class="tab-link">回答<span class="tab-meta">0</span></a></li>
@@ -23,8 +23,15 @@
 <script type="text/ecmascript-6">
 import {mapGetters,mapMutations} from 'vuex';
 import {scroll} from 'common/js/common.js';
-import {communicationMixin} from 'common/js/mixin.js';
+import {communicationMixin} from 'common/js/mixin.js'
+import axios from 'axios'
  	export default {
+ 		data() {
+ 			return {
+ 				base: '../../../../static/avatar/38/',
+ 				avatar: ''
+ 			}
+ 		},
  		methods: {
  			getMore() {
  				$('.content-arrow-top').css('top',scroll().top+80)
@@ -37,11 +44,19 @@ import {communicationMixin} from 'common/js/mixin.js';
 			changeItem(e,index) {
 				$(e.target).parent().addClass('is-active').siblings().removeClass('is-active')
 				communicationMixin.$emit('changeMainIndex',index)
+			},
+			getInfo() {
+				axios.post('/user/getInfoById',{
+					_id: this.detail_user_id
+				}).then((res)=> {
+					this.avatar = res.data.result.userInfo.avatar
+				})
 			}
  		},	
  		computed: {
 			...mapGetters([
-				'people_dropup'
+				'people_dropup',
+				'detail_user_id'
 			])
 		},
 		created() {
@@ -51,6 +66,12 @@ import {communicationMixin} from 'common/js/mixin.js';
 			communicationMixin.$on('openFollow',()=> {
 				$(this.$refs.more).addClass('is-active').siblings().removeClass('is-active')
 			})
+			this.getInfo()
+		},
+		watch: {
+			detail_user_id(newval) {
+				this.getInfo()
+			}
 		}
 	}
 </script>

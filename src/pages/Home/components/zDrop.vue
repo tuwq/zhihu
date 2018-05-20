@@ -36,6 +36,7 @@
 <script type="text/ecmascript-6">
 	import {mapGetters,mapMutations,mapActions} from 'vuex';
 	import axios from 'axios'
+	import {communicationMixin} from 'common/js/mixin'
 	export default {
 		data() {
 			return {

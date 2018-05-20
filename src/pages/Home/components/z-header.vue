@@ -28,7 +28,7 @@
 	  			</svg>
 	  			<span class="count-tag message-count">8</span>
 	  		</button></div></div>
-	  		<div class="profile">
+	  		<div class="profile" v-if="user">
 	  			<div class="Popover header-menu">
 	  				<button  v-if="user.avatar" @click.stop.prevent="openDrop" class="Button button profileEntry button--plain" type="button">
 	  					<img :src="base+user.avatar" width="34" height="34" class="Avatar header-avatar">

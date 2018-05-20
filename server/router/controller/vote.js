@@ -130,12 +130,25 @@ exports.voteComment = function (req,res) {
 }
 
 
-exports.getVoteQuestion = function (question_id,callback) {
+exports.getVoteQuestion = function (question_id,me_id,callback) {
 	QuestionUser.count({question_id: question_id,vote: 1},(err,good) => {
 		QuestionUser.count({question_id: question_id,vote: 2},(err,bad) => {	
-			return callback({
-				good: good,
-				bad: bad
+			// 还需要知道当前用户是否赞踩了这个问题
+			QuestionUser.findOne({question_id: question_id,user_id: me_id})
+			.exec((err,bind)=> {
+				let votStatus
+				// 如果用户没有对这项问题的评论
+				if ( !bind ) {
+					// 那么赞踩状态是0
+					votStatus = 0
+				}else {
+					votStatus = bind.vote
+				}
+				return callback({
+					good: good,
+					bad: bad,
+					votStatus: votStatus 
+				})
 			})
 		})
 	})

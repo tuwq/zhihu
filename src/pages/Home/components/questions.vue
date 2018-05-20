@@ -14,7 +14,7 @@
 	import question from 'z_components/question.vue'
 	import loading from 'base/loading.vue'
 	import axios from 'axios'
-	import {prepend} from 'common/js/common'
+	import {prepend,mergeData} from 'common/js/common'
 	import {communicationMixin} from 'common/js/mixin'
 	export default {
 		mixins: [communicationMixin],
@@ -41,7 +41,8 @@
 				}).then((res)=> {
 					this.loading = false
 					if(res.data.result.count) {	
-						this.questionList = this.questionList.concat(res.data.result.questions)
+						let data =  mergeData(res.data.result.questions,res.data.result.infos)
+						this.questionList = this.questionList.concat(data)
 						this.page++
 					}else{
 						this.no_more_data = true
@@ -62,6 +63,12 @@
 				})
 				
 				communicationMixin.$on('addQuestion',()=> {
+					this.questionList = []
+					this.page = 1
+					this.loading = true
+					this.getQuestionList()
+				})
+				communicationMixin.$on('changeUser',()=> {
 					this.questionList = []
 					this.page = 1
 					this.loading = true

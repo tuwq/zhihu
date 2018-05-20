@@ -153,10 +153,9 @@ exports.getIdByToken = function (req,res) {
 	})
 }
 exports.getInfoById = function (req,res) {
-	User.findOne({_id: req.body._id})
+	User.findById(req.body._id)
 		.select('_id username avatar hobby info')
 		.exec((err,dbUser)=> {
-			// 需要知道当前用户是否关注了该用户
 			if(!dbUser) {
 				return res.json(util.Result(1))
 			}

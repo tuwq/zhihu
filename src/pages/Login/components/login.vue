@@ -82,8 +82,9 @@ import axios from 'axios'
 				// 去首页之前，存储token放入本地
 				this.setToken(res.data.result.token,{ expires: 365 })
 				// 去之前的页面或者去首页
-				this.$router.push(this.$route.query.redirect || '/')
 				communicationMixin.$emit('changeUser')
+				this.$router.push(this.$route.query.redirect || '/')
+
 			},
 			changeData(formData) {
 				this.formData = formData

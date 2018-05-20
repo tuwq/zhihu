@@ -35,7 +35,8 @@
 				setPeopleDropUp: 'SET_PEOPLE_DROPUP',
 				setIndexDropDown: 'SET_INDEX_DROPDOWN',
 			})
-		}
+		},
+		
 	}
 </script>
 
