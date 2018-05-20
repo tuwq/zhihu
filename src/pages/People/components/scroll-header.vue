@@ -10,7 +10,7 @@
 					<li class="top-tab-item"><a href="javascript:void(0)" class="tab-link">文章<span class="tab-meta">0</span></a></li>
 					<li class="top-tab-item"><a href="javascript:void(0)" class="tab-link">专栏<span class="tab-meta">0</span></a></li>
 					<li class="top-tab-item"><a href="javascript:void(0)" class="tab-link">想法<span class="tab-meta">0</span></a></li>
-					<li class="top-tab-item" @click.stop.prevent="getMore"><a href="javascript:void(0)" class="tab-link">更多<svg fill="currentColor" viewBox="0 0 10 6" width="10" height="16" style="margin-left: 4px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></a></li>
+					<li class="top-tab-item" ref="more"  @click.stop.prevent="getMore"><a href="javascript:void(0)" class="tab-link">更多<svg fill="currentColor" viewBox="0 0 10 6" width="10" height="16" style="margin-left: 4px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></a></li>
 				</ul>
 				<div class="buttonGroup">
 					<router-link to="/people/edit">编辑个人资料</router-link>
@@ -42,7 +42,7 @@ import {communicationMixin} from 'common/js/mixin.js';
  					}else{
  						me.on('click',(e)=> {
 	 						me.addClass('is-active').siblings('.top-tab-item').removeClass('is-active')
-	 						communicationMixin.$emit('changeModule',index)
+	 						communicationMixin.$emit('changeMainIndex',index)
 	 					});
  					}
 				})
@@ -52,6 +52,14 @@ import {communicationMixin} from 'common/js/mixin.js';
 			...mapGetters([
 				'people_dropup'
 			])
+		},
+		created() {
+			communicationMixin.$on('changeScrollIndex',(index)=> {
+				$('.top-tab-item').eq(index).addClass('is-active').siblings('.top-tab-item').removeClass('is-active')
+			})
+			communicationMixin.$on('openFollow',()=> {
+				$(this.$refs.more).addClass('is-active').siblings().removeClass('is-active')
+			})
 		},
 		mounted() {
 			this.initLink();

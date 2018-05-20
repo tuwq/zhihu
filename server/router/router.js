@@ -40,4 +40,7 @@ module.exports = function (app) {
 	app.post('/attention/question/read',Attention.attentionQuestionRed)
 	app.post('/follow/followTarget',Follow.followTarget)
 	app.post('/follow/userBind',Follow.userBind)
+	app.post('/user/readApprove',User.readApprove)
+	app.post('/follow/user/fans',Follow.userFans)
+	app.post('/follow/user/follow',Follow.userFollow)
 }

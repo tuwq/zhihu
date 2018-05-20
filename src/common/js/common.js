@@ -135,3 +135,10 @@ export function prepend(arr,item) {
      _arr.unshift(item);
      return _arr;
 }
+
+export function mergeData(users,infos) {
+    infos.forEach((item,index)=> {
+        extend(users[index],item)
+    })
+    return users
+}

@@ -117,3 +117,100 @@ exports.getUserBind = function(target_id,me_id,callback) {
 		})
 	})
 }
+
+exports.userFans = function(req,res) {
+	let fields = req.body
+	User.findById(fields.detail_id)
+	.select('avatar username')
+	.populate('fans')
+	.exec((err,user)=> {
+		// 所有粉丝对象
+		let fans = user.fans
+		// 寻找每个粉丝的回答数和关注列表人数
+		getFansData(fans,(infos)=> {
+			return res.json(util.Result({users: fans,infos: infos}))
+		})
+	})
+}
+
+function getFansData(fans,callback) {
+	var infos = [];
+	(function iterator(i){
+		if ( i == fans.length ) {
+			return callback(infos)
+		}
+		Question.count({user_id: fans[i]._id})
+		.exec((err,questionSum)=> {
+			infos.push(new FansInfo({
+				questionSum: questionSum,
+				followSum: fans[i].followers.length
+			}))
+			iterator( i+1 )
+		})
+	})(0)
+}
+
+function FansInfo({questionSum,followSum}) {
+	this.questionSum = questionSum
+	this.followSum  = followSum
+}
+
+exports.userFollow = function (req,res) {
+	let fields = req.body
+	User.findById(fields.detail_id)
+	.populate({
+		path: 'followers',
+		select: 'avatar username info'
+	})
+	.exec((err,user)=> {
+		// 获得用户关注列表信息
+		let followers = user.followers
+		getFollowsData(followers,(infos)=> {
+			return res.json(util.Result({users: followers,infos}))
+		})
+	})
+}
+
+function getFollowsData (followers,callback) {
+	let infos = [];
+	(function iterator(i){
+		if (i==followers.length) {
+			return callback(infos)
+		}
+		// 查询回答数，提问数，被回答数
+		Answer.count({user_id: followers[i]._id},(err,answerSum)=> {
+			Question.find({user_id: followers[i]._id})
+			.select('_id')
+			.exec((err,questions)=> {
+				// 遍历问题，寻找每个问题下有多少个回答
+				getAnsweredSum(questions,(answeredSum)=> {
+					infos.push(new FollowerInfo({
+						answerSum,
+						questionSum: questions.length,
+						answeredSum
+					}))
+					iterator( i+1 )
+				})
+			})
+		})
+	})(0)
+}
+
+function getAnsweredSum(questions,callback) {
+	let answeredSum = 0;
+	(function iterator(i){
+		if ( i===questions.length ) {
+			return callback(answeredSum)
+		}
+		Answer.count({question_id: questions[i]._id},(err,count)=> {
+			answeredSum += count
+			iterator( i+1 )
+		})
+	})(0)
+}
+
+function FollowerInfo({answerSum,questionSum,answeredSum}) {
+	this.answerSum = answerSum
+	this.questionSum = questionSum
+	this.answeredSum = answeredSum
+}
