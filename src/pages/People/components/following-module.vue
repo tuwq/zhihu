@@ -24,9 +24,10 @@
  			<div class="list-item" v-for="(item,index) in follows" :key="item._id">
  				<div class="list-item">
  					<div class="item-main">
- 						<div class="item-image"><a><img :src="base+item.avatar" width="60" height="60"></a></div>
+ 						<div class="item-image"
+ 						@click.stop.prevent="toUser(item)"><a><img :src="base+item.avatar" width="60" height="60" ></a></div>
  						<div class="item-header">
- 							<h2 class="item-title"><a href="">{{item.username}}</a></h2>
+ 							<h2 class="item-title" @click.stop.prevent="toUser(item)"><a href="">{{item.username}}</a></h2>
  							<div class="item-meta">
  								<div class="ztext" v-if="item.info">{{item.info.intro}}</div>
  								<div class="status">
@@ -59,9 +60,10 @@
  			<div class="list-item">
  				<div class="list-item" v-for="(fan,fIndex) in fans" :key="fan._id">
  					<div class="item-main">
- 						<div class="item-image"><a><img :src="base+fan.avatar" width="60" height="60"></a></div>
+ 						<div class="item-image" @click.stop.prevent="toUser(fan)"><a><img :src="base+fan.avatar" width="60" height="60"
+ 							></a></div>
  						<div class="item-header">
- 							<h2 class="item-title"><a href="">{{fan.username}}</a></h2>
+ 							<h2 class="item-title" @click.stop.prevent="toUser(fan)"><a href="">{{fan.username}}</a></h2>
  							<div class="item-meta">
  								<div class="status">
  									<span class="status-item">{{fan.answerSum}} 回答</span>
@@ -96,8 +98,9 @@
 import {mapMutations,mapGetters} from 'vuex';
 import {mergeData} from 'common/js/common'
 import axios from 'axios'
-import {communicationMixin} from 'common/js/mixin.js'
+import {communicationMixin,userMixin} from 'common/js/mixin.js'
 	export default {
+		mixins: [userMixin],
 		props: {
  			otherUser: {
  				type: Object,
@@ -223,6 +226,9 @@ import {communicationMixin} from 'common/js/mixin.js'
 				if (newval!=oldval && newval != undefined) {
 					this.getFollowList()
 					this.getFansList()
+					// 更改查看用户时，回到动态第一页
+					communicationMixin.$emit('changeMainIndex',0)
+					communicationMixin.$emit('changeScrollIndex',0)
 				}
 			}
 		}

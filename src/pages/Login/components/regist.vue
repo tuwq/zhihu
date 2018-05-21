@@ -5,7 +5,7 @@
 				<div class="register-header">
 						<form class="register-form" @onsubmit="toRegist">
 							<div class="phone-input-wrapper">
-								<button class="select-country">
+								<button class="select-country" @click.stop.prevent>
 									中国 +86
 									<span>&#8203;<svg class="select-arrow">
 										<path d="M12 16.183l2.716-2.966a.757.757 0 0 1 1.064.001.738.738 0 0 1 0 1.052l-3.247 3.512a.758.758 0 0 1-1.064 0L8.22 14.27a.738.738 0 0 1 0-1.052.758.758 0 0 1 1.063 0L12 16.183zm0-9.365L9.284 9.782a.758.758 0 0 1-1.064 0 .738.738 0 0 1 0-1.052l3.248-3.512a.758.758 0 0 1 1.065 0L15.78 8.73a.738.738 0 0 1 0 1.052.757.757 0 0 1-1.063.001L12 6.818z"></path>

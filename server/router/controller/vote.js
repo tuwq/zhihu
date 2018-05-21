@@ -265,7 +265,6 @@ exports.handleTargetVote = function(type,target_id,now,pre) {
 }
 // 处理被点赞用户的赞踩问题
 exports.handleTargetUser = function(targetUser,now,pre) {
-	console.log( now + '-' + pre)
 	if ( now == 1 ) {
 		// 被点了一个赞
 		targetUser.approve++

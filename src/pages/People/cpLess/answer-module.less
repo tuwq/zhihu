@@ -1,3 +1,4 @@
+@import url('../../../common/style/common.less');
 .answer-box {
 	padding: 70px 0;
 	display: flex;
@@ -55,6 +56,207 @@
 					margin-left: 8px;overflow: hidden;
 					position: relative;
 					top: 8px;
+				}
+			}
+		}
+	}
+}
+
+.answer-list {
+	.list-item {
+		position: relative;
+		padding: 16px 20px;
+		.ContentItem {
+			.Content-title {
+				font-size: 18px;
+				font-weight: 600;
+				line-height: 1.6;
+				color: rgb(26,26,26);
+				margin-top: -4px;
+				margin-bottom: -4px;
+			}
+			.Content-meta {
+				margin-top: 6px;
+				font-size: 15px;
+				color: rgb(100,100,100);
+				.authorInfo {
+					margin-top: 10px;
+					display: flex;
+					-webkit-box-align: center;
+					align-items: center;
+					.avatarLink {
+						font-size: 15px;
+						color: rgb(100,100,100);
+						.Avatar {
+							vertical-align: top;
+							background: rgb(255,255,255);
+							border-radius: 2px;
+						}
+					}
+					.author-content {
+						-webkit-box-flex: 1;
+						margin-left: 14px;
+						flex: 1 1 0%;
+						overflow: hidden;
+						.authorInfo-head {
+							display: flex;
+							-webkit-box-align: center;
+							align-items: center;
+							font-size: 15px;
+							line-height: 1.1;
+							flex-shrink: 0;
+							.user-link {
+								font-weight: 600;
+								color: rgb(68,68,68);
+							}
+						}
+						.authorInfo-detail {
+							overflow: hidden;
+							.authorInfo-badge {
+								display: flex;
+								-webkit-box-align: center;
+								align-items: center;
+								margin-top: 2px;
+								font-size: 14px;
+								.AuthorInfo-badgeText {
+									text-overflow: ellipsis;
+									white-space: nowrap;
+									color: rgb(100,100,100);
+									overflow: hidden;
+									word-break: break-word;
+									line-height: 1.6;
+								}
+							}
+						}
+					}
+				}
+				.extraInfo {
+					margin-top: 10px;
+				    margin-bottom: -4px;
+				    font-size: 14px;
+				    color: rgb(133, 144, 166);
+				    .Voters {
+						color: rgb(133,144,166);
+						button {
+							height: auto;
+							line-height: inherit;
+							background: transparent;
+							padding: 0px;
+							border-width: initial;border-style: none;
+							border-color: initial;border-image: initial;
+							border-radius: 0px;
+							display: inline-block;font-size: 14px;
+							color: rgb(133,144,166);
+							text-align: center;
+							cursor: pointer;box-sizing: border-box;align-items: center;
+						}
+				    }
+				}
+			}
+			.RichContent {
+				cursor: pointer;
+				transition: color 0.14s ease-out;
+				.RichContent-inner {
+					max-height: 100px;
+					margin-top: 9px;
+					margin-bottom: -4px;
+					overflow: hidden;
+					.RichText {
+						white-space: normal;
+						display: box !important;
+						display: -webkit-box;
+						word-break: break-word;
+						line-height: 1.67;
+						overflow: hidden;
+						text-overflow: ellipsis;
+						-webkit-line-clamp: 2;
+						-webkit-box-orient: vertical;
+					}
+					.ContentItem-more {
+						margin-left: 4px;
+						color: rgb(23,81,153);
+						padding: 0;
+						height: auto;line-height: inherit;
+						background: transparent;border-radius: 0px;
+						border-width: initial;border-style: none;
+						border-color: initial;border-image: initial;
+						display: inline-block;
+						font-size: 14px;
+						text-align: center;
+						cursor: pointer;box-sizing: border-box;
+					}
+				}
+				.ContentItem-actions {
+					display: flex;
+					padding: 10px 20px;
+					align-items: center;
+					margin: 0px -20px -10px;
+					clear: both;
+					-webkit-box-align: center;
+					color: rgb(100,100,100);
+					background: rgb(255,255,255);
+					.up {
+						.button;
+						.Button;
+						line-height: 30px;
+						padding: 0 12px;
+						color: #0084ff;
+						background: rgba(0,132,255,.1);
+						border-color: transparent;
+						&:hover {
+							background: #D9EDFF;
+						}
+						svg {
+							position: relative;
+							bottom: 6px;
+							margin-right: 8px;
+							fill: #0084ff;
+							vertical-align: bottom;
+						}
+					}
+					.down {
+						.button;
+						.Button;
+						line-height: 30px;
+						padding: 0 12px;
+						color: #0084ff;
+						background: rgba(0,132,255,.1);
+						border-color: transparent;
+						&:hover {
+							background: #D9EDFF;
+						}
+						svg {
+							position: relative;
+							bottom: 6px;
+							transform: rotate(180deg);
+							margin-right: 8px;
+							fill: #0084ff;
+							vertical-align: bottom;
+						}
+					}
+					.is-active {
+						color: #fff;
+	   					background: #0084ff;
+	   					&:hover {
+							background: #0084ff;
+						}
+	   					svg {
+	   						fill: #fff !important;
+	   					}
+					}
+					.ContentItem-action {
+						padding: 0;
+						margin-left: 24px;
+						font-size: 14px;
+						height: auto;line-height: inherit;
+						background: transparent;border-radius: 0px;
+						border-style: none;border-width: initial;
+						border-color: initial;border-image: initial;
+						display: inline-block;
+						color: rgb(133,144,166);
+						text-align: center;
+						cursor: pointer; box-sizing: border-box;
+					}
 				}
 			}
 		}

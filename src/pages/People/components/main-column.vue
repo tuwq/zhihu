@@ -15,6 +15,7 @@
 				</div>
 				<content-list v-show="showModule==0"></content-list>
 				<answer-module v-show="showModule==1"></answer-module>
+				<question-module v-show="showModule==2"></question-module>
 				<following-module v-show="showModule==7" :otherUser="otherUser"></following-module>
 			</div>
 		</div>
@@ -31,6 +32,7 @@
 <script type="text/ecmascript-6">
 import contentList from 'p_components/content-list.vue'
 import answerModule from 'p_components/answer-module.vue'
+import questionModule from 'p_components/question-module.vue'
 import followingModule from 'p_components/following-module.vue' 
 import {mapGetters,mapMutations} from 'vuex'
 import {communicationMixin} from 'common/js/mixin.js'
@@ -53,7 +55,8 @@ import {communicationMixin} from 'common/js/mixin.js'
  		},
  		methods: {
  			changeItem(e,index) {
- 				$(e.target).parent().addClass('is-active').siblings().removeClass('is-active')
+ 				$(e.target).addClass('is-active').siblings().removeClass('is-active')
+ 				$(e.target).parent('li').addClass('is-active').siblings().removeClass('is-active')
  				this.showModule = index;
  				communicationMixin.$emit('changeScrollIndex',index)
  			},
@@ -102,6 +105,7 @@ import {communicationMixin} from 'common/js/mixin.js'
 		components: {
 			'content-list': contentList,
 			'answer-module': answerModule,
+			'question-module': questionModule,
 			'following-module': followingModule
 		}
 	}
