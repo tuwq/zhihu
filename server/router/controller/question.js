@@ -94,6 +94,7 @@ function getCommentCount(questions,callback) {
 	})(0)
 }
 
+
 function getVote(questions,me_id,callback) {
 	let infos = [];
 	(function iterator(i){
@@ -129,12 +130,15 @@ exports.detail = function (req,res) {
 			.populate('category')
 			.populate('user_id')
 			.exec((err,question)=> {
-				// 寻找关注等信息
 				if (!question) {
 					return res.json(util.Result(1))
 				}
-				Attention.getAttentionQuestion(_id,question._id,({sum,attentionStatus})=> {
-					return res.json(util.Result({question,sum,attentionStatus}))
+				Comment.count({question_id: question._id,answer_id: undefined},(err,cCount)=> {
+						question.cCount = cCount
+						// 寻找关注状态信息
+						Attention.getAttentionQuestion(_id,question._id,({sum,attentionStatus})=> {
+						return res.json(util.Result({question,sum,attentionStatus}))
+					})
 				})
 			})
 	}).catch((err)=> {

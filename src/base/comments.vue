@@ -118,6 +118,7 @@ import axios from 'axios'
 				}
 
 				if ( this.fromType  == 'question' ) {
+
 					axios.post('/comment/insert/question',{
 						content: this.content,
 						question_id: this.question_id,

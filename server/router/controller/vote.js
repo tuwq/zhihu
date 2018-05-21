@@ -269,15 +269,12 @@ exports.handleTargetUser = function(targetUser,now,pre) {
 	if ( now == 1 ) {
 		// 被点了一个赞
 		targetUser.approve++
-		console.log('赞')
 	}else if( now ==  0 && pre != 2){
 		// 这次取消的上一次不是踩
 		targetUser.approve--
-		console.log('取消')
 	}else if ( now == 2 && pre == 1 ) {
 		// 从赞变为踩
 		targetUser.approve--
-		console.log('取消2')
 	}
 	targetUser.save()
 }

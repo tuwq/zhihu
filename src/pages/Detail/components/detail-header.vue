@@ -47,17 +47,19 @@
 	 				<div class="inner-main">
 	 					<div class="button-group">
 	 						<button class="button button1" type="button" v-show="attentionStatus==0" @click.stop.prevent="attention(question._id,1)">关注问题</button>
-	 						<button class="button button1 cancel" v-show="attentionStatus==1" type="button" @click.stop.prevent="attention(question._id,0)" 
-	 						style="color: #fff;background-color: #8590a6;">{{attentionText}}</button>
+	 						<button class="button button1 cancel" v-show="attentionStatus==1" type="button" 
+							@mouseenter="enter($event)" @mouseleave="leave($event)"
+	 						@click.stop.prevent="attention(question._id,0)" 
+	 						style="color: #fff;background-color: #8590a6;">已关注</button>
 	 						<button class="button button2" @click.stop.prevent="openAdd"><svg viewBox="0 0 12 12" width="14" height="16" class="icon"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z"></path></g></svg>写回答</button>
 	 					</div>
 	 					<div class="actions">
-	 						<div class="comment">
-	 							<button class="commentBtn" type="button"><span>
+	 						<div class="commentCount" >
+	 							<button class="commentBtn" type="button" @click.stop.prevent="openComment($event)"><span>
 	 								&#8203;<svg viewBox="0 0 24 24" width="1.2em" height="1.2em">
 	 									<path d="M10.241 19.313a.97.97 0 0 0-.77.2 7.908 7.908 0 0 1-3.772 1.482.409.409 0 0 1-.38-.637 5.825 5.825 0 0 0 1.11-2.237.605.605 0 0 0-.227-.59A7.935 7.935 0 0 1 3 11.25C3 6.7 7.03 3 12 3s9 3.7 9 8.25-4.373 9.108-10.759 8.063z"></path>
 	 								</svg>
-	 							</span>问题评论</button>
+	 							</span>{{question.cCount}}条问题评论</button>
 	 						</div>
 	 						<div class="share-menu">
 	 							<div>
@@ -91,6 +93,11 @@
 	 				</div>
 	 			</div>
 	 		</div>
+	 		<div class="comments-wrapper">
+				<comments :question_id="question._id" fromType="question" @incrCount="question.cCount++" :cCount="question.cCount" class="comment" 
+				v-if="loadComment"
+				ref="comment"></comments>
+	 		</div>
 	 	</div>
  	</div>
 </template>
@@ -98,6 +105,7 @@
 <script type="text/ecmascript-6">
 import {mapMutations,mapGetters} from 'vuex';
 import loading from 'base/loading.vue'
+import comments from 'base/comments.vue'
 import axios from 'axios'
 import {communicationMixin} from 'common/js/mixin'
 	export default {
@@ -119,9 +127,16 @@ import {communicationMixin} from 'common/js/mixin'
 		data() {
 			return {
 				attentionText: '已关注',
+				loadComment: false
 			}
 		},
 		methods: {
+			enter(e) {
+				e.target.innerText = '取消关注'
+			},
+			leave(e) {
+				e.target.innerText = '已关注'
+			},
 			attention(question_id,status) {
 				axios.post('/attention/question/add',{
 					user_id: this.user._id,
@@ -138,25 +153,19 @@ import {communicationMixin} from 'common/js/mixin'
 			openAdd() {
 				this.setAddAnswerStatus(!this.add_answer_status)
 			},
-			initButton() {
-				
-
-				$(".cancel").hover(()=> {
-					this.attentionText = '取消关注'
-				},()=> {
-					this.attentionText = '已关注'
-				});
+			openComment(e) {
+				this.loadComment = true
+				$(e.target).text().trim()=='收起评论'?$(e.target).text(this.question.cCount+'条问题评论'):$(e.target).text('收起评论')
+				$('.comment').toggle()
 			},
 			...mapMutations({
 				setAddAnswerStatus: 'SET_ADD_ANSWER_STATUS',
 				setAttentionQuestionModal: 'SET_ATTENTION_QUESTION_MODAL',
 			})
 		},
-		mounted(){
-			this.initButton()
-		},
 		components: {
-			loading
+			loading,
+			comments
 		},
 		computed: {
 			...mapGetters([
