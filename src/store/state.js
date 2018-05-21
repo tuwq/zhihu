@@ -15,7 +15,6 @@ const state = {
 	add_answer_status: false,
 	answers: [],
 	conversation_mask: false,
-	detail_user_id: _get('detail_user_id'),
 	attention_question_modal: false
 }
 

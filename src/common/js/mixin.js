@@ -17,12 +17,8 @@ export const userMixin = {
 			if (!user) {
 				return
 			}
-			let user_url = user.username + user._id.substr(0,5)
-			this.setDetailUserId(user._id)
+			let user_url = user._id
 			this.$router.push({name: 'people_url',params: {user_url: user_url}}) 
-		},
-		...mapMutations({
-			setDetailUserId: 'SET_DETAIL_USER_ID'
-		})
+		}
 	}
 }

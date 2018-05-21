@@ -216,8 +216,10 @@ import {communicationMixin,userMixin} from 'common/js/mixin.js'
 			this.getFansList()
 		},
 		computed: {
+			detail_user_id() {
+				return this.$route.params.user_url
+			},
 			...mapGetters([
-				'detail_user_id',
 				'user'
 			])
 		},

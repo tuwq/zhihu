@@ -56,9 +56,11 @@ import axios from 'axios'
 			}
  		},	
  		computed: {
+ 			detail_user_id() {
+				return this.$route.params.user_url
+			},
 			...mapGetters([
 				'people_dropup',
-				'detail_user_id'
 			])
 		},
 		created() {
@@ -75,8 +77,10 @@ import axios from 'axios'
 			this.getInfo()
 		},
 		watch: {
-			detail_user_id(newval) {
-				this.getInfo()
+			detail_user_id(newval,oldval) {
+				if ( newval != oldval && newval != undefined ) {
+					this.getInfo()
+				}
 			}
 		}
 	}

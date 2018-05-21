@@ -99,7 +99,7 @@ import {copyObj} from 'common/js/util'
 				      var path = data.result.path
 				      // 修改路径 为 '../../static/avatar/160/匿名用户5aec0.jpg'
 				      var newPath = path.replace(/\\/g, '/').replace('C:/zhihu/','../../');
-				      me.$router.push({name: 'cut',params: {path: newPath,user_url: me.user.username+me.user._id.substr(0,5)}})
+				      me.$router.push({name: 'cut',params: {path: newPath,user_url: me.user._id}})
 				    },  
 				    error: function (data, status, e){  
 				       

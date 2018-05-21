@@ -72,9 +72,11 @@ import axios from 'axios'
 			this.init()
 		},
 		computed: {
+			detail_user_id() {
+				return this.$route.params.user_url
+			},
 			...mapGetters([
 				'user',
-				'detail_user_id'
 			])
 		},
 		components: {

@@ -118,9 +118,11 @@ import axios from 'axios'
 			}
 		},
 		computed: {
+			detail_user_id() {
+				return this.$route.params.user_url
+			},
 			...mapGetters([
 				'people_dropup',
-				'detail_user_id'
 			])
 		},
 		components: {

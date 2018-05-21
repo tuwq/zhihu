@@ -121,7 +121,6 @@ export default {
       	x: x,y: y,w: w,h: h
       }).then((res)=> {
         communicationMixin.$emit('cutOver',this.path.replace('../../static/avatar/arbitrary/',''))
-      	// this.$router.push('/people/'+this.$route.params.user_url)
         this.$router.go(-1)
         this.waitLoad = false
       })

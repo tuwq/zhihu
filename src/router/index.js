@@ -71,7 +71,7 @@ var router = new Router({
         }
       },
       {
-        path: ':user_url',
+        path: ':user_url',   // url上暴露用户id，其实并不合理，应该另取一个用户唯一标识
         component: PIndex,
         name: 'people_url', 
         meta: {
