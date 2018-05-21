@@ -125,10 +125,7 @@ import {communicationMixin} from 'common/js/mixin'
 			this.listenerFollowChange()
 			// 退出用户后再次登录后index_type不会被改变，无法init,所以要监听改变用户
 			communicationMixin.$on('changeUser',()=> {
-				this.loading = true,
-				this.detail_loading = false
-				this.init()
-				this.updateCountInfo()
+				
 			})
 		},
 		computed: {

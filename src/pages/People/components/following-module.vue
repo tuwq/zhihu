@@ -205,8 +205,7 @@ import {communicationMixin,userMixin} from 'common/js/mixin.js'
 				})
 				// 当改变用户时，因为缓存，也要刷新一次
 				communicationMixin.$on('changeUser',()=> {
-					this.getFollowList()
-					this.getFansList()
+					
 				})
 			}
 		},
@@ -225,9 +224,7 @@ import {communicationMixin,userMixin} from 'common/js/mixin.js'
 		},
 		watch: {
 			detail_user_id(newval,oldval) {
-				if (newval!=oldval && newval != undefined) {
-					this.getFollowList()
-					this.getFansList()
+				if ( newval != oldval && newval != undefined ) {
 					// 更改查看用户时，回到动态第一页
 					communicationMixin.$emit('changeMainIndex',0)
 					communicationMixin.$emit('changeScrollIndex',0)

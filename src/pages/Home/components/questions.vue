@@ -69,10 +69,7 @@
 					this.getQuestionList()
 				})
 				communicationMixin.$on('changeUser',()=> {
-					this.questionList = []
-					this.page = 1
-					this.loading = true
-					this.getQuestionList()
+					
 				})
 			}
 		},

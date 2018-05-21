@@ -28,7 +28,7 @@
 	  			</svg>
 	  			<span class="count-tag message-count">8</span>
 	  		</button></div></div>
-	  		<div class="profile" v-if="user">
+	  		<div class="profile" v-if="user" v-show="loginStatus==1">
 	  			<div class="Popover header-menu">
 	  				<button  v-if="user.avatar" @click.stop.prevent="openDrop" class="Button button profileEntry button--plain" type="button">
 	  					<img :src="base+user.avatar" width="34" height="34" class="Avatar header-avatar">
@@ -55,23 +55,27 @@ import {communicationMixin} from 'common/js/mixin'
 			}
 		},
 		methods: {
-			init() {
-				axios.post('/user/getNowUserInfo')
-					 .then((res) => {
-						this.setUser(res.data.result)
-						this.$emit('setUser',this.user)
-						this.loginStatus = 1
-					 })
-			},
 			openDrop() {
 				this.setIndexDropDown(true);
 			},
-			changeUser() {
-				communicationMixin.$on('changeUser',()=> {
-					this.loginStatus = 0
-					this.init()
+			getNowUserInfo() {
+				// 获得用户头像信息
+				axios.post('/user/getNowUserInfo')
+				.then((res)=> {
+					this.setUser(res.data.result)
+					console.log(' head set user ')
+					this.$emit('setUser',this.user)
+					this.loginStatus = 1
 				})
-			},	
+			},
+			ChangeUser() {
+				communicationMixin.$on('changeUser',()=> {
+					// 更换用户登录,重新加载当前用户信息
+					console.log(' change User the ')
+					this.loginStatus = 0
+					this.getNowUserInfo()
+				})
+			},
 			...mapMutations({
 				setIndexDropDown: 'SET_INDEX_DROPDOWN',
 				setUser: 'SET_USER'
@@ -80,16 +84,15 @@ import {communicationMixin} from 'common/js/mixin'
 		computed: {
 			...mapGetters([
 				'index_dropdown',
-				'token',
 				'user'
 			])
 		},
+		created() {
+			this.getNowUserInfo()
+			this.ChangeUser()
+		},
 		components: {
 			'search-bar' : searchBar
-		},
-		created() {
-			this.init();
-			this.changeUser()
 		}
 	}
 </script>

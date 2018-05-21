@@ -22,7 +22,7 @@
 			<div class="list-item" v-for="(item,index) in questions " :key="item._id">
 				<div class="Content-item">
 					<div class="ContenItem-title">
-						<a href="">{{item.title}}</a>
+						<router-link :to="{path:`/question/${item._id}` }">{{item.title}}?</router-link>
 					</div>
 					<div class="ContentItem-status">
 						<span class="status-item"></span>

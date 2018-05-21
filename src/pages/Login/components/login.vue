@@ -81,17 +81,17 @@ import axios from 'axios'
 			toIndex(res) {
 				// 去首页之前，存储token放入本地
 				this.setToken(res.data.result.token,{ expires: 365 })
-				// 去之前的页面或者去首页
+				// 有用户登录了,第一次发送时,zheader还没有创建这个监听
 				communicationMixin.$emit('changeUser')
 				this.$router.push(this.$route.query.redirect || '/')
-
+				// 去之前的页面或者去首页
 			},
 			changeData(formData) {
 				this.formData = formData
 			},
 			...mapMutations({
 				setFormType: 'SET_FORM_TYPE',
-				setToken: 'SET_TOKEN'
+				setToken: 'SET_TOKEN',
 			}),
 		},
 		computed: {

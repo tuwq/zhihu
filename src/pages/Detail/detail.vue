@@ -136,11 +136,7 @@
 					this.browseSum = data
 				})
 				communicationMixin.$on('changeUser',()=> {
-					this.answerList = []
-					this.setAnswers(this.answerList)
-					this.page = 1
-					this.loading = true
-					this.getAnswers()
+					
 				})
 			},
 			getBrowseCount() {
