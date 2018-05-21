@@ -8,8 +8,12 @@
 				@changeFllowerStatus="changeFllowerStatus"></other-profile>
 			</div>
 			<div class="main-content">
-				<main-column :otherUser="otherUser"></main-column>
-				<side-column :detail_user_id="detail_user_id"></side-column>
+				<main-column :otherUser="otherUser" 
+				:questionSum="questionSum" :answerSum="answerSum"></main-column>
+				<side-column :detail_user_id="detail_user_id"
+				:fansCount="fansCount" :followerCount="followerCount"
+				:approveCount="approveCount"
+				></side-column>
 			</div>
 		</div>
 	</div>
@@ -34,7 +38,12 @@ import {communicationMixin} from 'common/js/mixin'
   				otherUser: null,
   				loading: true,
   				detail_loading: false,
-  				fllowerStatus: 0
+  				fllowerStatus: 0,
+  				fansCount: 0,
+  				followerCount: 0,
+  				approveCount: 0,
+  				questionSum: 0,
+  				answerSum: 0
   			}
   		},
   		components: {
@@ -75,15 +84,51 @@ import {communicationMixin} from 'common/js/mixin'
 			},
 			changeFllowerStatus(status) {
 				this.fllowerStatus = status
-			}
+			},
+			updateCountInfo() {
+				// 查找赞同数，粉丝数，关注列表数
+ 				axios.post('/user/readApprove',{
+ 					detail_id: this.detail_user_id
+ 				}).then((res)=> {
+ 					this.fansCount = res.data.result.fansCount
+ 					this.followerCount = res.data.result.followerCount
+ 					this.approveCount = res.data.result.approveCount
+ 					this.answerSum = res.data.result.answerSum
+ 					this.questionSum = res.data.result.questionSum
+ 					communicationMixin.$emit('ChangeScrollCount',{questionSum: this.questionSum,answerSum: this.answerSum})
+ 				})
+			},
+			listenerFollowChange() {
+ 				// 改变关注列表数量和粉丝列表数量
+ 				// from， 	0:关注列表  1:粉丝列表
+ 				// action, 	0:关注增加  1；关注减少
+ 				communicationMixin.$on('changeFollowCount',(from,action)=> {
+ 					if (from==0) {
+ 						if (action==1) {
+ 							this.followerCount++
+ 						}else {
+ 							this.followerCount--
+ 						}
+ 					}else {
+ 						if (action==1) {
+ 							this.fansCount++
+ 						}else {
+ 							this.fansCount--
+ 						}
+ 					}
+ 				})
+ 			}
 		},
 		created() {
 			this.init()
+			this.updateCountInfo()
+			this.listenerFollowChange()
 			// 退出用户后再次登录后index_type不会被改变，无法init,所以要监听改变用户
 			communicationMixin.$on('changeUser',()=> {
 				this.loading = true,
 				this.detail_loading = false
 				this.init()
+				this.updateCountInfo()
 			})
 		},
 		computed: {
@@ -94,25 +139,13 @@ import {communicationMixin} from 'common/js/mixin'
 		},
 		watch: {
 			detail_user_id (newval,oldval) {
-				this.detail_loading = false
-				this.init()
+				if ( newval != oldval && newval != undefined ) {
+					this.detail_loading = false
+					this.init()
+					this.updateCountInfo()
+				}
 			}
 		}
-//		watch: {
-//			// 解决组件内部修改地址栏同路由不更新页面数据的BUG
-//			'$route' (to, from) {
-//		        const toDepth = to.path
-//		        const fromDepth = from.path
-//		        if (this.preFrom != toDepth && this.preTo == fromDepth) {
-//		        	this.$router.go(0);
-//		        } else if (toDepth.indexOf('/people')!=-1 && fromDepth!='/home') {
-//		        	this.$router.go(0)
-//		        }else {
-//		        	 this.preFrom = fromDepth
-//		         	 this.preTo = toDepth
-//		        }
-//		     }
-//		}
 	}
 </script>
 

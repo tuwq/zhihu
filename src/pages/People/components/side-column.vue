@@ -89,26 +89,21 @@ import {communicationMixin} from 'common/js/mixin.js'
  			detail_user_id: {
  				type: String,
  				default: ''
- 			}
- 		},
- 		data() {
- 			return {
- 				fansCount: 0,
- 				followerCount: 0,
- 				approveCount: 0
+ 			},
+ 			fansCount: {
+ 				type: Number,
+ 				default: 0
+ 			},
+ 			followerCount: {
+ 				type: Number,
+ 				default: 0
+ 			},
+ 			approveCount: {
+ 				type: Number,
+ 				default: 0
  			}
  		},
  		methods: {
- 			initData() {
- 				// 查找赞同数，粉丝数，关注列表数
- 				axios.post('/user/readApprove',{
- 					detail_id: this.detail_user_id
- 				}).then((res)=> {
- 					this.fansCount = res.data.result.fansCount
- 					this.followerCount = res.data.result.followerCount
- 					this.approveCount = res.data.result.approveCount
- 				})
- 			},
  			openFollow() {
  				communicationMixin.$emit('showFollwer')
  				communicationMixin.$emit('openFollw')
@@ -116,43 +111,8 @@ import {communicationMixin} from 'common/js/mixin.js'
  			openFans() {
  				communicationMixin.$emit('showFollwer')
  				communicationMixin.$emit('openFans')
- 			},
- 			listenerFollowChange() {
- 				// 改变关注列表数量和粉丝列表数量
- 				// from， 	0:关注列表  1:粉丝列表
- 				// action, 	0:关注增加  1；关注减少
- 				communicationMixin.$on('changeCount',(from,action)=> {
- 					if (from==0) {
- 						if (action==1) {
- 							this.followerCount++
- 						}else {
- 							this.followerCount--
- 						}
- 					}else {
- 						if (action==1) {
- 							this.fansCount++
- 						}else {
- 							this.fansCount--
- 						}
- 					}
- 				})
  			}
- 		},
-		created() {
-			this.initData()
-			this.listenerFollowChange()
-			communicationMixin.$on('updateCount',()=> {
-				console.log('into')
- 				this.initData()		
- 			}) 
-		},
-		watch: {
-			detail_user_id(newval,oldval) {
-				if ( newval!=oldval && newval != undefined ) {
-					this.initData()
-				}
-			}
-		}
+ 		}
 	}
 </script>
 

@@ -97,7 +97,7 @@
 	 		<div class="comments-wrapper">
 				<comments :question_id="question._id" fromType="question" @incrCount="question.cCount++" :cCount="question.cCount" class="comment" 
 				v-if="loadComment"
-				@changeCount="changeCount"
+				@changeCommentCount="changeCommentCount"
 				ref="comment"></comments>
 	 		</div>
 	 	</div>
@@ -158,11 +158,11 @@ import {communicationMixin} from 'common/js/mixin'
 			openComment(e) {
 				this.loadComment = true
 				$(e.target).text().trim()=='收起评论'?$(e.target).text(this.question.cCount+'条问题评论'):$(e.target).text('收起评论')
-				$('.comment').toggle()
+				$(e.target).parents('.detail-header-wrapper').find('.comment').toggle()
 			},
-			changeCount() {
+			changeCommentCount() {
 				this.$refs.commentCount.innerText = this.question.cCount+'条问题评论'
-				$('.comment').hide()
+				$('.detail-header-wrapper').find('.comment').hide()
 			},
 			...mapMutations({
 				setAddAnswerStatus: 'SET_ADD_ANSWER_STATUS',

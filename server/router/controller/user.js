@@ -1,5 +1,10 @@
 var mongoose = require('mongoose')
 var User = mongoose.model('User')
+var Answer = mongoose.model('Answer')
+var Question = mongoose.model('Question')
+var Comment = mongoose.model('Comment')
+var Vote = require('./vote.js')
+var Attention = require('./attention.js')
 const util = require('../../common/util.js');
 const checkUtil = require('../../common/checkUtil.js')
 const tokenUtil = require('../../common/token.js')
@@ -8,6 +13,7 @@ var path = require('path')
 var fs = require('fs')
 var gm = require('gm')
 
+const self = this
 
 exports.pwLogin = function (req,res) {
 	var fields = req.body;
@@ -17,14 +23,12 @@ exports.pwLogin = function (req,res) {
 				console.log(err)
 			} 
 			if(!dbUser) {
-				res.json(util.Result('该手机未注册',1))
-				return
+				return res.json(util.Result('该手机未注册',1))
 			}
 			dbUser.comparePassword(fields.password,dbUser.password).then((isMath) => {
 				if(!isMath){
 					dbUser.incLoginAttepts(dbUser);
-					res.json(util.Result('密码错误',1))
-					return
+					return res.json(util.Result('密码错误',1))
 				}
 				// 生成token,内部包含了用户id
 				const token = tokenUtil.setToken({_id: dbUser._id})
@@ -37,8 +41,7 @@ exports.getCode = function (req,res) {
 	var fields = req.body;
 	// 查询手机号是否存在
 	if(fields.telphone.length === 0) {
-		res.json(util.Result('手机号不能为空',1))
-		return
+		return res.json(util.Result('手机号不能为空',1))	
 	}
 	User.findOne({telphone: fields.telphone}, (err,user) => {
 		if (err) {
@@ -46,8 +49,7 @@ exports.getCode = function (req,res) {
 		}
 		if (user&&fields.action=='regist') {
 			// 存在，给予错误信息
-			res.json(util.Result('该手机号已注册',1))
-			return;
+			return res.json(util.Result('该手机号已注册',1))
 		}
 		// 不存在返回验证码,将验证码存储在cookie中
 		var result = util.getPhoneCode(6)	
@@ -59,20 +61,17 @@ exports.getCode = function (req,res) {
 exports.phoneLogin = function (req,res) {
 	var fields = req.body;	
 	if(checkUtil.isEmtry([fields.telphone,fields.vCode])) {
-		res.json(util.Result('信息不完整',1))
-		return;
+		return res.json(util.Result('信息不完整',1))
 	}
 	// TODO 手机号验证
 	var vCode = req.signedCookies.phoneCode
 	if(!checkUtil.isSame(fields.vCode,vCode)){
-		res.json(util.Result('手机验证码错误',1))
-		return
+		return res.json(util.Result('手机验证码错误',1))
 	}
 	User.findOne({telphone: fields.telphone})
 		.exec((err,dbUser)=> {
 			if(!dbUser) {
-				res.json(util.Result('该手机未注册',1))
-				return
+				return res.json(util.Result('该手机未注册',1))
 			}
 			// token
 			const token = tokenUtil.setToken({_id: dbUser._id})
@@ -94,21 +93,18 @@ exports.toRegist = function (req,res) {
 
 	var fields = req.body;
 	if(checkUtil.isEmtry([fields.telphone,fields.vCode,fields.password])) {
-		res.json(util.Result('信息不完整',1))
-		return;
+		return res.json(util.Result('信息不完整',1))
 	}
 	// TODO 手机号验证
 	//console.log(req.cookies);  //获取未加密的cookie  
     var vCode = req.signedCookies.phoneCode;   //获取加密的cookie  
 	if(!checkUtil.isSame(fields.vCode,vCode)) {
-		res.json(util.Result('手机验证码错误',1))
-		return
+		return res.json(util.Result('手机验证码错误',1))
 	}
 	// TODO 密码强度验证
 	User.findOne({telphone: fields.telphone},(err,dbUser) => {
 		if (dbUser) {
-			res.json(util.Result('该手机号已注册',1))
-			return
+			return res.json(util.Result('该手机号已注册',1))
 		}
 		const user = new User({
 			telphone: fields.telphone,
@@ -248,12 +244,110 @@ exports.readApprove = function (req,res) {
 			let fansCount = user.fans.length 
 			let followerCount = user.followers.length 
 			let approveCount = user.approve 
-			return res.json(util.Result({fansCount: fansCount,followerCount: followerCount,approveCount: approveCount}))
+			Question.count({user_id: fields.detail_id},(err,questionSum)=> {
+				Answer.count({user_id: fields.detail_id},(err,answerSum)=> {
+					return res.json(util.Result({
+						fansCount,
+						followerCount,
+						approveCount,
+						questionSum,
+						answerSum
+					}))
+				})
+			})
 		})
-
 	}).catch((err)=> {
 		return res.json(util.Result(401))
 	})	
+}
+
+exports.readUserAnswer = function (req,res) {
+	// 该用户的信息
+	// 读取用户的回答列表
+	// 寻找每个回答相关信息
+	// 这个回答的问题标题
+	// 这个回答的赞同数
+	// 我是否赞同了这个回答
+	var token = req.headers.token;
+	tokenUtil.verifyToken(token)
+	.then((_id)=> {
+		let fields = req.body
+		User.findById(fields.detail_id)
+		.select('username info avatar')
+		.exec((err,target)=> {
+			Answer.find({user_id: fields.detail_id},(err,answers)=> {
+				self.getAnswersInfo(answers,_id,(answers,infos)=>{
+					return res.json(util.Result({answers,infos,user: target}))
+				})
+			})
+		})			
+	}).catch((err)=> {
+		return res.json(util.Result(401))
+	})
+}
+
+exports.getAnswersInfo =  function (answers,me_id,callback) {
+	// 寻找每个回答相关信息
+	// 每个回答的问题标题
+	// 每个回答的赞踩数
+	// 我是否赞同了这个回答
+	// 该回答的评论数
+	let infos = [];
+	(function iterator(i){
+		if ( i === answers.length ) {
+			return callback(answers,infos)
+		}
+		Question.findById(answers[i].question_id)
+		.select('_id title')
+		.exec((err,question)=> {
+			Comment.count({answer_id: answers[i]._id},(err,commentSum)=> {
+				Vote.getVoteAnswer(answers[i]._id,me_id,({good,bad,voteStatus})=> {
+					infos.push({
+						questionTitle: question.title,
+						good,bad,voteStatus,commentSum
+					})
+					iterator( i+1 )
+				})
+			})
+		})
+	})(0)
+}
+
+exports.readUserQuestion = function (req,res) {
+	var token = req.headers.token;
+	tokenUtil.verifyToken(token)
+	.then((_id)=> {
+		// 读取我的所有问题
+		// 每个问题的回答数，这个问题所关注的人数
+		let fields = req.body
+		Question.find({user_id: fields.detail_id})
+		.select('_id meta title')
+		.exec((err,questions)=> {
+			self.getQuestionInfo(questions,_id,(questions,infos)=> {
+				return res.json(util.Result({questions,infos}))
+			})
+		})
+	}).catch((err)=> {
+		return res.json(util.Result(401))
+	})
+}
+
+exports.getQuestionInfo = function (questions,me_id,callback) {
+	let infos = [];
+	(function iterator(i){
+		// 每个问题的回答数，这个问题所关注的人数
+		if ( i === questions.length ) {
+			return callback(questions,infos)
+		}
+		Answer.count({question_id: questions[i]._id},(err,answerSum)=> {
+			Attention.getAttentionQuestion(me_id,questions[i]._id,({followSum,attentionStatus})=> {
+				infos.push({
+					answerSum,followSum,attentionStatus
+				})
+				iterator( i+1 )
+			})
+		}) 
+	})(0)
 }
 
 

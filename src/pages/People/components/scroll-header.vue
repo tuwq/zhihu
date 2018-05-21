@@ -5,8 +5,8 @@
 				<div class="user-avatar" v-if="avatar"><img :src="base+avatar" width="38" height="38" class="Avatar"></div>
 				<ul class="tabList">
 					<li class="top-tab-item is-active" @click.stop.prevent="changeItem($event,0)"><a href="javascript:void(0)" class="tab-link is-active">动态</a></li>
-					<li class="top-tab-item" @click.stop.prevent="changeItem($event,1)"><a href="javascript:void(0)" class="tab-link">回答<span class="tab-meta">0</span></a></li>
-					<li class="top-tab-item" @click.stop.prevent="changeItem($event,2)"><a href="javascript:void(0)" class="tab-link">提问<span class="tab-meta">0</span></a></li>
+					<li class="top-tab-item" @click.stop.prevent="changeItem($event,1)"><a href="javascript:void(0)" class="tab-link">回答<span class="tab-meta">{{answerSum}}</span></a></li>
+					<li class="top-tab-item" @click.stop.prevent="changeItem($event,2)"><a href="javascript:void(0)" class="tab-link">提问<span class="tab-meta">{{questionSum}}</span></a></li>
 					<li class="top-tab-item" @click.stop.prevent="changeItem($event,3)"><a href="javascript:void(0)" class="tab-link">文章<span class="tab-meta">0</span></a></li>
 					<li class="top-tab-item" @click.stop.prevent="changeItem($event,4)"><a href="javascript:void(0)" class="tab-link">专栏<span class="tab-meta">0</span></a></li>
 					<li class="top-tab-item" @click.stop.prevent="changeItem($event,5)"><a href="javascript:void(0)" class="tab-link">想法<span class="tab-meta">0</span></a></li>
@@ -29,7 +29,9 @@ import axios from 'axios'
  		data() {
  			return {
  				base: '../../../../static/avatar/38/',
- 				avatar: ''
+ 				avatar: '',
+ 				questionSum: 0,
+ 				answerSum: 0
  			}
  		},
  		methods: {
@@ -65,6 +67,10 @@ import axios from 'axios'
 			})
 			communicationMixin.$on('openFollow',()=> {
 				$(this.$refs.more).addClass('is-active').siblings().removeClass('is-active')
+			})
+			communicationMixin.$on('ChangeScrollCount',({questionSum,answerSum})=> {
+				this.questionSum = questionSum
+				this.answerSum = answerSum
 			})
 			this.getInfo()
 		},

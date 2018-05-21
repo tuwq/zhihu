@@ -95,7 +95,6 @@
 		methods: {
 			vote(vote,question_id) {
 				axios.post('/vote/question',{
-					user_id: this.user._id,
 					question_id: question_id,
 					vote: vote
 				}).then((res)=> {
@@ -143,11 +142,6 @@
 				$(e.target).text().trim()=='收起评论'?$(e.target).text(cCount+'条问题评论'):$(e.target).text('收起评论')
 				$(e.target).parents('.question').find('.comment').toggle();
 			}
-		},
-		computed: {
-			...mapGetters([
-				'user',
-			])
 		},
 		components: {
 			'cls-bubble': clsBubble,

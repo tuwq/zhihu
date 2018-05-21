@@ -106,13 +106,13 @@ function Info({answerSum,fansLength,followStatus}) {
 }
 
 exports.getAttentionQuestion = function(user_id,question_id,callback) {
-	QuestionUser.count({question_id: question_id,attentionStatus: 1},(err,sum)=> {
+	QuestionUser.count({question_id: question_id,attentionStatus: 1},(err,followSum)=> {
 		// 当前用户是否关注了这个问题
 		QuestionUser.findOne({question_id: question_id,user_id: user_id},(err,bind)=> {
 			if (!bind) {
-				return callback({sum: sum,attentionStatus: 0})
+				return callback({followSum,attentionStatus: 0})
 			}
-			callback({sum: sum,attentionStatus: bind.attentionStatus})
+			return callback({followSum,attentionStatus: bind.attentionStatus})
 		})
 	})
 }

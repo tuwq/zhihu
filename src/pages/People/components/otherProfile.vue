@@ -74,7 +74,7 @@ import {communicationMixin} from 'common/js/mixin.js'
  					}
  					this.$emit('changeFllowerStatus',action==1?1:0)
  					communicationMixin.$emit('reloadFollwer')
- 					communicationMixin.$emit('changeCount',1,action==1?1:0)
+ 					communicationMixin.$emit('changeFollowCount',1,action==1?1:0)
  				})
  			}
  		}

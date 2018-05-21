@@ -136,8 +136,8 @@ exports.detail = function (req,res) {
 				Comment.count({question_id: question._id,answer_id: undefined},(err,cCount)=> {
 						question.cCount = cCount
 						// 寻找关注状态信息
-						Attention.getAttentionQuestion(_id,question._id,({sum,attentionStatus})=> {
-						return res.json(util.Result({question,sum,attentionStatus}))
+						Attention.getAttentionQuestion(_id,question._id,({followSum,attentionStatus})=> {
+						return res.json(util.Result({question,followSum,attentionStatus}))
 					})
 				})
 			})

@@ -89,7 +89,7 @@
 						// 转到404
 					}
 					this.setQuestion(res.data.result.question)
-					this.attentionSum =  res.data.result.sum
+					this.attentionSum =  res.data.result.followSum
 					this.attentionStatus =  res.data.result.attentionStatus
 					this.detail_loading = true
 				})

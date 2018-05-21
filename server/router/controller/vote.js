@@ -17,9 +17,9 @@ exports.voteQuestion = function (req,res) {
 	var token = req.headers.token
 	var fields = req.body;
 	tokenUtil.verifyToken(token)
-	.then((_id)=> {	
+	.then((me_id)=> {	
 		// 检查字段
-		if(checkUtil.isEmtry([fields.question_id,fields.user_id,fields.vote])) {
+		if(checkUtil.isEmtry([fields.question_id,fields.vote])) {
 			return res.json(util.Result('信息不完整',1))
 		}
 
@@ -40,12 +40,12 @@ exports.voteQuestion = function (req,res) {
 		// 赞同时，给被点赞的问题的用户增加赞同数，
 		// 取消赞时， 给被点赞的问题的用户减少赞同数
 
-		QuestionUser.findOne({user_id: fields.user_id,question_id: fields.question_id},(err,dbBind) => {
+		QuestionUser.findOne({user_id: me_id,question_id: fields.question_id},(err,dbBind) => {
 			if (!dbBind) {
 				// 第一次赞踩
 				let bind = new QuestionUser({
 					question_id: fields.question_id,
-					user_id: fields.user_id,
+					user_id: me_id,
 					vote: fields.vote
 				})
 				bind.save()
@@ -83,17 +83,17 @@ exports.voteAnswer = function (req,res) {
 	var token = req.headers.token
 	var fields = req.body;
 	tokenUtil.verifyToken(token)
-	.then((_id)=> {
+	.then((me_id)=> {
 		// 检查字段
-		if(checkUtil.isEmtry([fields.answer_id,fields.user_id,fields.vote])) {
+		if(checkUtil.isEmtry([fields.answer_id,fields.vote])) {
 			return res.json(util.Result('信息不完整',1))
 		}
-		AnswerUser.findOne({user_id: fields.user_id,answer_id: fields.answer_id},(err,dbBind) => {
+		AnswerUser.findOne({user_id: me_id,answer_id: fields.answer_id},(err,dbBind) => {
 			if (!dbBind) {
 				// 第一次赞踩
 				let bind = new AnswerUser({
 					answer_id: fields.answer_id,
-					user_id: fields.user_id,
+					user_id: me_id,
 					vote: fields.vote
 				})
 				bind.save()
@@ -122,16 +122,16 @@ exports.voteComment = function (req,res) {
 	var token = req.headers.token
 	var fields = req.body;
 	tokenUtil.verifyToken(token)
-	.then((_id)=> {
+	.then((me_id)=> {
 		// 检查字段
-		if(checkUtil.isEmtry([fields.comment_id,fields.user_id,fields.vote])) {
+		if(checkUtil.isEmtry([fields.comment_id,fields.vote])) {
 			return res.json(util.Result('信息不完整',1))
 		}
-		CommentUser.findOne({user_id: fields.user_id,comment_id: fields.comment_id},(err,dbBind) => {
+		CommentUser.findOne({user_id: me_id,comment_id: fields.comment_id},(err,dbBind) => {
 			if (!dbBind) {
 				let bind = new CommentUser({
 					comment_id: fields.comment_id,
-					user_id: fields.user_id,
+					user_id: me_id,
 					vote: fields.vote
 				})
 				bind.save()

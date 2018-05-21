@@ -5,8 +5,8 @@
 				<div class="main-header">
 					<ul class="tabs">
 						<li class="tab-item is-active" @click.stop.prevent="changeItem($event,0)"><a href="javascript:void(0)" class="tab-link">动态</a></li>
-						<li class="tab-item" @click.stop.prevent="changeItem($event,1)"><a href="javascript:void(0)" class="tab-link">回答 <span>0</span></a></li>
-						<li class="tab-item" @click.stop.prevent="changeItem($event,2)"><a href="javascript:void(0)" class="tab-link">提问 <span>0</span></a></li>
+						<li class="tab-item" @click.stop.prevent="changeItem($event,1)"><a href="javascript:void(0)" class="tab-link">回答 <span>{{answerSum}}</span></a></li>
+						<li class="tab-item" @click.stop.prevent="changeItem($event,2)"><a href="javascript:void(0)" class="tab-link">提问 <span>{{questionSum}}</span></a></li>
 						<li class="tab-item" @click.stop.prevent="changeItem($event,3)"><a href="javascript:void(0)" class="tab-link">文章 <span>0</span></a></li>
 						<li class="tab-item" @click.stop.prevent="changeItem($event,4)"><a href="javascript:void(0)" class="tab-link">专栏 <span>0</span></a></li>
 						<li class="tab-item" @click.stop.prevent="changeItem($event,5)"><a href="javascript:void(0)" class="tab-link">想法 <span>0</span></a></li>
@@ -15,7 +15,7 @@
 				</div>
 				<content-list v-show="showModule==0"></content-list>
 				<answer-module v-show="showModule==1"></answer-module>
-				<question-module v-show="showModule==2"></question-module>
+				<question-module v-show="showModule==2" :otherUser="otherUser"></question-module>
 				<following-module v-show="showModule==7" :otherUser="otherUser"></following-module>
 			</div>
 		</div>
@@ -36,6 +36,7 @@ import questionModule from 'p_components/question-module.vue'
 import followingModule from 'p_components/following-module.vue' 
 import {mapGetters,mapMutations} from 'vuex'
 import {communicationMixin} from 'common/js/mixin.js'
+import axios from 'axios'
  	export default {
  		props: {
  			otherUser: {
@@ -45,6 +46,14 @@ import {communicationMixin} from 'common/js/mixin.js'
  						info:{}
  					}
  				}
+ 			},
+ 			questionSum: {
+ 				type: Number,
+ 				default: 0
+ 			},
+ 			answerSum: {
+ 				type: Number,
+ 				default: 0
  			}
  		},
  		data() {
@@ -87,6 +96,9 @@ import {communicationMixin} from 'common/js/mixin.js'
  					communicationMixin.$emit('openFollow')
  				})
  			},
+ 			getCountInfo() {
+ 				
+ 			},
  			...mapMutations({
 				setPeopleDropUp: 'SET_PEOPLE_DROPUP'
 			})
@@ -96,10 +108,19 @@ import {communicationMixin} from 'common/js/mixin.js'
 		},
 		created() {
 			this.ListenterFollwer()
+			this.getCountInfo()
+		},
+		watch: {
+			detail_user_id(newval,oldval) {
+				if ( newval != oldval && newval != undefined ) {
+					this.getCountInfo()
+				}
+			}
 		},
 		computed: {
 			...mapGetters([
-				'people_dropup'
+				'people_dropup',
+				'detail_user_id'
 			])
 		},
 		components: {

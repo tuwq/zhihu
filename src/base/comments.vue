@@ -228,7 +228,7 @@ import axios from 'axios'
 			question_id(newval,oldval) {
 				if ( newval != oldval && newval != undefined ) {
 					// 改变收起评论的条数
-					this.$emit('changeCount')
+					this.$emit('changeCommentCount')
 					this.getCommentList(1)
 				}
 			}

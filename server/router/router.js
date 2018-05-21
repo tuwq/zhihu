@@ -43,4 +43,6 @@ module.exports = function (app) {
 	app.post('/user/readApprove',User.readApprove)
 	app.post('/follow/user/fans',Follow.userFans)
 	app.post('/follow/user/follow',Follow.userFollow)
+	app.post('/user/read/answer',User.readUserAnswer)
+	app.post('/user/read/question',User.readUserQuestion)
 }

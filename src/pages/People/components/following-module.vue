@@ -167,7 +167,7 @@ import {communicationMixin,userMixin} from 'common/js/mixin.js'
  								this.getFollowList()
  								// 粉丝列表状态没有同步，也需要刷新
  								this.getFansList()
- 								communicationMixin.$emit('changeCount',0,0)
+ 								communicationMixin.$emit('changeFollowCount',0,0)
  							}
  						}
  					}else{
@@ -177,7 +177,7 @@ import {communicationMixin,userMixin} from 'common/js/mixin.js'
 								// 当我在我的粉丝列表中关注我的粉丝时
 								// 我的关注列表要刷新，同时我的右侧关注数要增加
 								this.getFollowList()
-								communicationMixin.$emit('changeCount',0,1)
+								communicationMixin.$emit('changeFollowCount',0,1)
  							}
  							
  						}else {
@@ -185,7 +185,7 @@ import {communicationMixin,userMixin} from 'common/js/mixin.js'
  							if (this.user._id == this.detail_user_id) {
  								// 当我取消关注我的粉丝时,我的关注列表要刷新，同时我的右侧关注数要减少
 	 							this.getFollowList()
-	 							communicationMixin.$emit('changeCount',0,0)
+	 							communicationMixin.$emit('changeFollowCount',0,0)
  							}
  						}	
  					}
@@ -204,7 +204,7 @@ import {communicationMixin,userMixin} from 'common/js/mixin.js'
 					this.getFansList()
 				})
 				// 当改变用户时，因为缓存，也要刷新一次
-				communicationMixin.$emit('changeUser',()=> {
+				communicationMixin.$on('changeUser',()=> {
 					this.getFollowList()
 					this.getFansList()
 				})
