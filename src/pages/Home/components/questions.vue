@@ -40,7 +40,7 @@
 					page: this.page
 				}).then((res)=> {
 					this.loading = false
-					if(res.data.result.count) {	
+					if(res.data.result.questionSum) {	
 						let data =  mergeData(res.data.result.questions,res.data.result.infos)
 						this.questionList = this.questionList.concat(data)
 						this.page++

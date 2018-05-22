@@ -73,7 +73,6 @@ import axios from 'axios'
 					commentId: commentId
 				}).then((res)=> {
 					this.conversationList = res.data.result.conversation
-					console.log(this.conversationList)
 				})
 			},
 			...mapMutations({

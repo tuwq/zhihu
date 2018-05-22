@@ -53,9 +53,9 @@
 							<title></title><g><path d="M0 15.243c0-.326.088-.533.236-.896l7.98-13.204C8.57.57 9.086 0 10 0s1.43.57 1.784 1.143l7.98 13.204c.15.363.236.57.236.896 0 1.386-.875 1.9-1.955 1.9H1.955c-1.08 0-1.955-.517-1.955-1.9z"></path></g>
 						</svg>{{bad}}</button>
 						</span>
-					<button class="item-action" @click.stop.prevent="openComment($event,item.cCount)">
+					<button class="item-action" @click.stop.prevent="openComment($event,item.commentSum)">
 						<span class=""><!-- &#8203;<svg viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M10.241 19.313a.97.97 0 0 0-.77.2 7.908 7.908 0 0 1-3.772 1.482.409.409 0 0 1-.38-.637 5.825 5.825 0 0 0 1.11-2.237.605.605 0 0 0-.227-.59A7.935 7.935 0 0 1 3 11.25C3 6.7 7.03 3 12 3s9 3.7 9 8.25-4.373 9.108-10.759 8.063z"></path></svg> -->
-						{{item.cCount}}条评论</span>
+						{{item.commentSum}}条评论</span>
 					</button>
 					<button class="item-action">
 						<span class="">&#8203;<svg viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M2.931 7.89c-1.067.24-1.275 1.669-.318 2.207l5.277 2.908 8.168-4.776c.25-.127.477.198.273.39L9.05 14.66l.927 5.953c.18 1.084 1.593 1.376 2.182.456l9.644-15.242c.584-.892-.212-2.029-1.234-1.796L2.93 7.89z"></path></svg>分享</span>
@@ -75,7 +75,13 @@
 					</button>
 				</div>
 				</div>
-			<comments class="comments" fromType="answer" v-if="loadComment" :cCount="item.cCount" :index="index" :answer_id="item._id" 
+			<comments 
+			class="comments" 
+			v-if="loadComment"
+			fromType="answer" 
+			:commentSum="item.commentSum" 
+			:index="index" 
+			:answer_id="item._id" 
 			:question_id="question._id">
 			</comments>
 			</div>
@@ -87,7 +93,7 @@
 import comments from 'base/comments.vue';
 import {periodWrap,makeExpandingArea} from 'common/js/common.js';
 import {userMixin} from 'common/js/mixin'
-import {mapMutations,mapGetters,mapActions} from 'vuex';
+import {mapMutations,mapActions} from 'vuex';
 import moment from 'moment'  
 import axios from 'axios'
 	export default {
@@ -99,6 +105,10 @@ import axios from 'axios'
 			},
 			index: {
 				type: Number,
+				default: 0
+			},
+			question: {
+				type: Object,
 				default: 0
 			}
 		},
@@ -142,9 +152,9 @@ import axios from 'axios'
 					}
 				})
 			},
-			openComment(e,cCount) {
-				this.loadComment = true
-				$(e.target).text().trim()=='收起评论'?$(e.target).text(cCount+'条评论'):$(e.target).text('收起评论')
+			openComment(e,commentSum) {
+				this.loadComment = !this.loadComment
+				$(e.target).text().trim()=='收起评论'?$(e.target).text(commentSum+'条评论'):$(e.target).text('收起评论')
 				$(e.target).parents('.list-item').find('.comments').toggle()
 			},
 			scrollText(e) {
@@ -163,11 +173,6 @@ import axios from 'axios'
 		},
 		components: {
 			comments
-		},
-		computed: {
-			...mapGetters([
-				'question',
-			])
 		}
 	}
 </script>

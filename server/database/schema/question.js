@@ -25,7 +25,7 @@ var QuestionSchema = new Schema({
 	    required: false,
 	    type: String
 	},
-	cCount: {
+	commentSum: {
 		type: Number,
 		default: 0
 	},

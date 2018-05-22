@@ -2,7 +2,8 @@
  	<div id="item">
 		<div class="list-item">
 			<div class="ContentItem">
-				<div class="Content-title "><a href="">{{item.questionTitle}}</a></div>
+				<div class="Content-title ">
+					<router-link :to="{path:`/question/${item.question_id}` }">{{item.questionTitle}}?</router-link></div>
 				<div class="Content-meta">
 					<div class="authorInfo">
 						<span class="avatarLink"><img :src="base+uInfo.avatar" width="38" height="38" class="Avatar"></span>

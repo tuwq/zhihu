@@ -58,6 +58,8 @@
 					</div>
 					<comments v-show="commentsStatus"></comments>
 				</div>
+				<!--  动态列表数据模板不一致	 -->
+				
 			</div>
 		</div>
 	</div>
@@ -100,5 +102,5 @@ import {periodWrap} from 'common/js/common.js';
 </script>
 
 <style lang="less" rel="stylesheet/less" type="text/less">
-	@import url('../cpLess/content-list.less');
+	@import url('../cpLess/dynamic-list.less');
 </style>

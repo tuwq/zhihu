@@ -1,11 +1,9 @@
 <template>
   <div id="home" @click.stop="clsModal">
-    <z-header></z-header>
+      <z-header></z-header>   
     <br>
     <div class="main">
-      <keep-alive>
         <router-view></router-view>
-      </keep-alive>
     </div>
     <div class="special">
       <put-question></put-question>
@@ -24,14 +22,25 @@ import zDrop from 'z_components/zDrop.vue';
 import {mapMutations} from 'vuex';
 import remindList from 'base/remind-list.vue';
 import axios from 'axios'
-  export default {
+  export default {  
     methods: {
         clsModal() {
           this.setIndexDropDown(false)
         },
+        getNowUser() {
+          // 获得用户头像信息
+          axios.post('/user/getNowUserInfo')
+          .then((res)=> {
+            this.setUser(res.data.result)
+          })
+        },
         ...mapMutations({
           setIndexDropDown: 'SET_INDEX_DROPDOWN',
+          setUser: 'SET_USER'
         })
+      },
+      created() {
+        this.getNowUser()
       },
       components: {
         ZHeader,
@@ -40,6 +49,7 @@ import axios from 'axios'
         zDrop,
         remindList
       }
+    
   }
 </script>
 

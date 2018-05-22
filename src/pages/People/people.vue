@@ -1,12 +1,12 @@
 <template>
 	<div id="people" @click.stop="clsDrop">
-		<p-header></p-header>
+		<p-header></p-header>	
 		<div class="main">	
 			<router-view></router-view>
 		</div>
 		<remind-list :reminds="['suggest','toTop']"></remind-list>
-		 <z-drop></z-drop>
-		 <cutAvatar></cutAvatar>	
+		<z-drop></z-drop>
+		<cutAvatar></cutAvatar>	
 	</div>
 </template>
 
@@ -27,6 +27,13 @@
 			'cutAvatar': cutAvatar
 		},
 		methods: {
+			getNowUser() {
+	          // 获得用户头像信息
+	          axios.post('/user/getNowUserInfo')
+	          .then((res)=> {
+	            this.setUser(res.data.result)
+	          })
+	        },
 			clsDrop() {
 				this.setPeopleDropUp(false)
 				this.setIndexDropDown(false)
@@ -34,9 +41,12 @@
 			...mapMutations({
 				setPeopleDropUp: 'SET_PEOPLE_DROPUP',
 				setIndexDropDown: 'SET_INDEX_DROPDOWN',
-			})
+				setUser: 'SET_USER'
+			}),
 		},
-		
+		created() {
+			this.getNowUser()
+		}
 	}
 </script>
 

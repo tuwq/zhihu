@@ -123,9 +123,9 @@ exports.read = function (req,res) {
 		.skip(skip)
 		.sort({'meta.updatedAt': -1})
 		.exec((err,comments)=> {
-			Comment.count({answer_id: fields.answer_id},(err,count)=> {
+			Comment.count({answer_id: fields.answer_id},(err,commentSum)=> {
 				getVote(comments,_id,(comments,infos)=> {
-					return res.json(util.Result({comments: comments,infos: infos,count: count}))
+					return res.json(util.Result({comments: comments,infos: infos,commentSum}))
 				})
 			})
 		})
@@ -175,9 +175,9 @@ exports.readToQuestion = function (req,res) {
 		.skip(skip)
 		.sort({'meta.updatedAt': -1})
 		.exec((err,comments)=> {
-			Comment.count({question_id: fields.question_id,answer_id: undefined},(err,count)=> {
+			Comment.count({question_id: fields.question_id,answer_id: undefined},(err,commentSum)=> {
 				getVote(comments,_id,(comments,infos)=> {
-					return res.json(util.Result({comments: comments,infos: infos,count: count}))
+					return res.json(util.Result({comments: comments,infos: infos,commentSum}))
 				})
 			})
 		})

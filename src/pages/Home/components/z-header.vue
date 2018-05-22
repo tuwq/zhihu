@@ -1,5 +1,5 @@
 <template>
-  <div class="header-wrapper">
+  <div class="header-wrapper" v-if="user">
   	<div class="center">	
   		<router-link to="/" class="logo-link">
   			<svg viewBox="0 0 200 91" width="64" height="30">
@@ -28,7 +28,7 @@
 	  			</svg>
 	  			<span class="count-tag message-count">8</span>
 	  		</button></div></div>
-	  		<div class="profile" v-if="user" v-show="loginStatus==1">
+	  		<div class="profile" v-if="user">
 	  			<div class="Popover header-menu">
 	  				<button  v-if="user.avatar" @click.stop.prevent="openDrop" class="Button button profileEntry button--plain" type="button">
 	  					<img :src="base+user.avatar" width="34" height="34" class="Avatar header-avatar">
@@ -47,7 +47,7 @@ import {mapMutations,mapGetters} from 'vuex';
 import axios from 'axios'
 import {communicationMixin} from 'common/js/mixin'
 	export default {
-		mixins: [communicationMixin],
+		name: 'zHeader',
 		data() {
 			return {
 				loginStatus: 0,
@@ -58,27 +58,8 @@ import {communicationMixin} from 'common/js/mixin'
 			openDrop() {
 				this.setIndexDropDown(true);
 			},
-			getNowUserInfo() {
-				// 获得用户头像信息
-				axios.post('/user/getNowUserInfo')
-				.then((res)=> {
-					this.setUser(res.data.result)
-					console.log(' head set user ')
-					this.$emit('setUser',this.user)
-					this.loginStatus = 1
-				})
-			},
-			ChangeUser() {
-				communicationMixin.$on('changeUser',()=> {
-					// 更换用户登录,重新加载当前用户信息
-					console.log(' change User the ')
-					this.loginStatus = 0
-					this.getNowUserInfo()
-				})
-			},
 			...mapMutations({
 				setIndexDropDown: 'SET_INDEX_DROPDOWN',
-				setUser: 'SET_USER'
 			})
 		},
 		computed: {
@@ -86,10 +67,6 @@ import {communicationMixin} from 'common/js/mixin'
 				'index_dropdown',
 				'user'
 			])
-		},
-		created() {
-			this.getNowUserInfo()
-			this.ChangeUser()
 		},
 		components: {
 			'search-bar' : searchBar

@@ -17,9 +17,9 @@ Vue.use(Router)
 
 var router = new Router({
   linkActiveClass: 'active',
-  canReuse: function (transition) {
-    return false
-  },
+  // canReuse: function (transition) {
+  //   return false
+  // },
   routes: [
    	{
    		path: '/',
@@ -32,8 +32,10 @@ var router = new Router({
         {
           path: '',
           component: ZIndex,
+          name: 'zIndex',
           meta: {
               requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的,有子路由时需要写在子路由中
+              keepAlive: false // 需要被缓存
           }
         },{
           path: 'test',
@@ -58,14 +60,21 @@ var router = new Router({
     {
       path: '/question/:question_id',
       name: 'question_detail',
-      component: Detail
+      component: Detail,
+      meta: {
+        keepAlive: true // 需要被缓存
+      }
     },
     {
       path: '/people',
       component: People,  //拥有子路由的父路由无法取name
+      meta: {
+        keepAlive: false // 需要被缓存
+      },
       children: [{
         path: 'edit',     // 详细路由写前面
         component: Edit,
+        name: 'edit',
         meta: {
             requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
         }

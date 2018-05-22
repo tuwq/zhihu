@@ -38,9 +38,9 @@
 								<title></title><g><path d="M0 15.243c0-.326.088-.533.236-.896l7.98-13.204C8.57.57 9.086 0 10 0s1.43.57 1.784 1.143l7.98 13.204c.15.363.236.57.236.896 0 1.386-.875 1.9-1.955 1.9H1.955c-1.08 0-1.955-.517-1.955-1.9z"></path></g>
 							</svg>{{item.bad}}</button>
 						</span>
-						<button class="item-action" @click.stop.prevent="openComment($event,item.cCount)">
+						<button class="item-action" @click.stop.prevent="openComment($event,item.commentSum)">
 							<span class="">
-							{{item.cCount||0}}条问题评论</span>
+							{{item.commentSum||0}}条问题评论</span>
 						</button>
 						<button class="item-action">
 							<span class="">&#8203;<svg fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M2.931 7.89c-1.067.24-1.275 1.669-.318 2.207l5.277 2.908 8.168-4.776c.25-.127.477.198.273.39L9.05 14.66l.927 5.953c.18 1.084 1.593 1.376 2.182.456l9.644-15.242c.584-.892-.212-2.029-1.234-1.796L2.93 7.89z"></path></svg>分享</span>
@@ -56,8 +56,14 @@
 						</button>
 					</div>
 				</div>
-				<comments :question_id="item._id" fromType="question" @incrCount="item.cCount++" :cCount="item.cCount" class="comment" 
-				v-if="loadComment"></comments>
+				<comments 
+				class="comment"
+				v-if="loadComment"
+				@incrQuestionCommentSum="item.commentSum++"
+				fromType="question"
+				:question_id="item._id" 
+				:commentSum="item.commentSum"  
+				></comments>
 			</div>
 		</div>
 	</div>
@@ -137,9 +143,9 @@
 					$(e.target).text('阅读全文')
 				}
 			},
-			openComment(e,cCount) {
-				this.loadComment = true
-				$(e.target).text().trim()=='收起评论'?$(e.target).text(cCount+'条问题评论'):$(e.target).text('收起评论')
+			openComment(e,commentSum) {
+				this.loadComment = !this.loadComment
+				$(e.target).text().trim()=='收起评论'?$(e.target).text(commentSum+'条问题评论'):$(e.target).text('收起评论')
 				$(e.target).parents('.question').find('.comment').toggle();
 			}
 		},

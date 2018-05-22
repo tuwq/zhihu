@@ -29,7 +29,7 @@ var AnswerSchema = new Schema({
 		type: Number,
 		default: 0
 	},
-	cCount: {
+	commentSum: {
 		type: Number,
 		default: 0
 	},

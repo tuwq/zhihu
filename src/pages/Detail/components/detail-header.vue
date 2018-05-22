@@ -1,14 +1,14 @@
 <template>
- 	<div class="detail-header-wrapper">
+ 	<div class="detail-header-wrapper" v-if="question">
  		<div>
 	 		<div class="header-content">
 	 			<div class="left-main">
-	 				<div class="main-tags" v-if="question.category">
-	 					<div class="main-topics">
+	 				<div class="main-tags">
+	 					<div class="main-topics" v-if="question.category">
 	 						<div class="tag">
 	 							<span class="tag-content"><a class="topicLink" href="javascript:void(0)">
 	 								<div class="popover">
-	 									<div class="popover-item">{{question.category.content}}</div>
+	 									<div class="popover-item" >{{question.category.content}}</div>
 	 								</div>
 	 							</a></span>
 	 						</div>
@@ -46,9 +46,13 @@
 	 			<div class="footer-inner">
 	 				<div class="inner-main">
 	 					<div class="button-group">
-	 						<button class="button button1" type="button" v-show="attentionStatus==0" @click.stop.prevent="attention(question._id,1)">关注问题</button>
-	 						<button class="button button1 cancel" v-show="attentionStatus==1" type="button" 
-							@mouseenter="enter($event)" @mouseleave="leave($event)"
+	 						<button class="button button1" type="button" 
+	 						v-show="attentionStatus==0" 
+	 						@click.stop.prevent="attention(question._id,1)">关注问题</button>
+	 						<button class="button button1 cancel" 
+	 						v-show="attentionStatus==1" type="button" 
+							@mouseenter="enter($event)" 
+							@mouseleave="leave($event)"
 	 						@click.stop.prevent="attention(question._id,0)" 
 	 						style="color: #fff;background-color: #8590a6;">已关注</button>
 	 						<button class="button button2" @click.stop.prevent="openAdd"><svg viewBox="0 0 12 12" width="14" height="16" class="icon"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z"></path></g></svg>写回答</button>
@@ -60,7 +64,7 @@
 	 									<path d="M10.241 19.313a.97.97 0 0 0-.77.2 7.908 7.908 0 0 1-3.772 1.482.409.409 0 0 1-.38-.637 5.825 5.825 0 0 0 1.11-2.237.605.605 0 0 0-.227-.59A7.935 7.935 0 0 1 3 11.25C3 6.7 7.03 3 12 3s9 3.7 9 8.25-4.373 9.108-10.759 8.063z"></path>
 	 								</svg>
 	 							</span>
-	 							{{question.cCount}}条问题评论</button>
+	 							{{question.commentSum}}条问题评论</button>
 	 						</div>
 	 						<div class="share-menu">
 	 							<div>
@@ -95,9 +99,14 @@
 	 			</div>
 	 		</div>
 	 		<div class="comments-wrapper">
-				<comments :question_id="question._id" fromType="question" @incrCount="question.cCount++" :cCount="question.cCount" class="comment" 
+				<comments 
+				class="comment" 
 				v-if="loadComment"
+				@incrQuestionCommentSum="incrQuestionCommentSum"
 				@changeCommentCount="changeCommentCount"
+				fromType="question" 
+				:question_id="question._id" 
+				:commentSum="question.commentSum" 	
 				ref="comment"></comments>
 	 		</div>
 	 	</div>
@@ -124,6 +133,10 @@ import {communicationMixin} from 'common/js/mixin'
 			browseSum: {
 				type: Number,
 				default: 0
+			},
+			question: {
+				type: Object,
+				default: null
 			}
 		},
 		data() {
@@ -140,6 +153,7 @@ import {communicationMixin} from 'common/js/mixin'
 				e.target.innerText = '已关注'
 			},
 			attention(question_id,status) {
+				// 添加问题关注
 				axios.post('/attention/question/add',{
 					user_id: this.user._id,
 					question_id: question_id,
@@ -149,19 +163,24 @@ import {communicationMixin} from 'common/js/mixin'
 				})
 			},
 			openAttention(question_id) {
+				// 打开关注列表
 				communicationMixin.$emit('openAttention',question_id)
 				this.setAttentionQuestionModal(true)
 			},
 			openAdd() {
+				// 打开添加回答面板
 				this.setAddAnswerStatus(!this.add_answer_status)
 			},
+			incrQuestionCommentSum() {
+				communicationMixin.$emit('incrDetailQuestionCommentSum')
+			},
 			openComment(e) {
-				this.loadComment = true
-				$(e.target).text().trim()=='收起评论'?$(e.target).text(this.question.cCount+'条问题评论'):$(e.target).text('收起评论')
+				this.loadComment = !this.loadComment
+				$(e.target).text().trim()=='收起评论'?$(e.target).text(this.question.commentSum+'条问题评论'):$(e.target).text('收起评论')
 				$(e.target).parents('.detail-header-wrapper').find('.comment').toggle()
 			},
 			changeCommentCount() {
-				this.$refs.commentCount.innerText = this.question.cCount+'条问题评论'
+				this.$refs.commentCount.innerText = this.question.commentSum+'条问题评论'
 				$('.detail-header-wrapper').find('.comment').hide()
 			},
 			...mapMutations({
@@ -175,7 +194,6 @@ import {communicationMixin} from 'common/js/mixin'
 		},
 		computed: {
 			...mapGetters([
-				'question',
 				'add_answer_status',
 				'user'
 			])

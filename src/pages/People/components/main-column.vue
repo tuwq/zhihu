@@ -13,7 +13,7 @@
 						<li class="tab-item" ref="more" @click.stop.prevent="getMore"><a href="javascript:void(0)" class="tab-link"><button class="more">更多<svg viewBox="0 0 10 6" width="10" height="16"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button></a></li>
 					</ul>
 				</div>
-				<content-list v-show="showModule==0"></content-list>
+				<dynamic-list v-show="showModule==0"></dynamic-list>
 				<answer-module v-show="showModule==1"></answer-module>
 				<question-module v-show="showModule==2" :otherUser="otherUser"></question-module>
 				<following-module v-show="showModule==7" :otherUser="otherUser"></following-module>
@@ -30,7 +30,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-import contentList from 'p_components/content-list.vue'
+import dynamicList from 'p_components/dynamic-list.vue'
 import answerModule from 'p_components/answer-module.vue'
 import questionModule from 'p_components/question-module.vue'
 import followingModule from 'p_components/following-module.vue' 
@@ -126,7 +126,7 @@ import axios from 'axios'
 			])
 		},
 		components: {
-			'content-list': contentList,
+			'dynamic-list': dynamicList,
 			'answer-module': answerModule,
 			'question-module': questionModule,
 			'following-module': followingModule

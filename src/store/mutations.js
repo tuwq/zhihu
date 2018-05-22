@@ -29,20 +29,17 @@ const mutations = {
 	[types.SET_CUT_AVATAR_MASK](state,isDispaly) {
 		state.cut_avatar_mask = isDispaly
 	},
-	[types.SET_QUESTION](state,question) {
-		state.question = question
-	},
 	[types.SET_ADD_ANSWER_STATUS](state,isDispaly) {
 		state.add_answer_status = isDispaly
-	},
-	[types.SET_ANSWERS](state,answers) {
-		state.answers = answers
 	},
 	[types.SET_CONVERSATION_MASK](state,isDispaly) {
 		state.conversation_mask = isDispaly
 	},
 	[types.SET_ATTENTION_QUESTION_MODAL] (state,isDispaly) {
 		state.attention_question_modal = isDispaly
+	},
+	[types.SET_QUESTION_USER] (state,target) {
+		state.question_user = target
 	}
 }
 export default mutations

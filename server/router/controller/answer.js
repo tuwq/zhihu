@@ -46,7 +46,6 @@ exports.insert = function (req,res) {
 
 exports.read = function (req,res) {
 
-
 	var token = req.headers.token
 	tokenUtil.verifyToken(token)
 	.then((_id)=> {
@@ -61,12 +60,11 @@ exports.read = function (req,res) {
 		.sort({'meta.updatedAt': -1})
 		.exec((err,answers)=> {
 			// 获得每个回答下的评论数量
-			getCommentCount(answers,(answers)=> {
+			getCommentSum(answers,(answers)=> {
 				// 获取该问题下的回答数量
-				Answer.count({question_id: fields.question_id},(err,sum)=> {
+				Answer.count({question_id: fields.question_id},(err,answerSum)=> {
 					getVote(answers,_id,(answers,infos)=> {
-						let count = answers.length
-						return res.json(util.Result({answers: answers,infos: infos,count: count,sum: sum}))
+						return res.json(util.Result({answers: answers,infos: infos,answerSum: answerSum}))
 					})
 				})
 			})
@@ -95,14 +93,14 @@ function getVote(answers,me_id,callback) {
 }
 
 
-function getCommentCount(answers,callback) {
+function getCommentSum(answers,callback) {
 	(function iterator(i){
 		if (i == answers.length) {
 			callback(answers)
 			return 
 		}
-		Comment.count({answer_id: answers[i]._id},(err,cCount)=> {
-			answers[i].cCount = cCount
+		Comment.count({answer_id: answers[i]._id},(err,commentSum)=> {
+			answers[i].commentSum = commentSum
 			iterator(i+1)
 		})
 	})(0)

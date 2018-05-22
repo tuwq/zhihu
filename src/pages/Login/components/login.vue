@@ -82,9 +82,9 @@ import axios from 'axios'
 				// 去首页之前，存储token放入本地
 				this.setToken(res.data.result.token,{ expires: 365 })
 				// 有用户登录了,第一次发送时,zheader还没有创建这个监听
-				communicationMixin.$emit('changeUser')
-				this.$router.push(this.$route.query.redirect || '/')
+				// communicationMixin.$emit('changeUser')
 				// 去之前的页面或者去首页
+				this.$router.push(this.$route.query.redirect || '/')
 			},
 			changeData(formData) {
 				this.formData = formData

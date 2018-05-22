@@ -48,11 +48,11 @@ import axios from 'axios'
 				communicationMixin.$emit('changeMainIndex',index)
 			},
 			getInfo() {
-				// axios.post('/user/getInfoById',{
-				// 	_id: this.detail_user_id
-				// }).then((res)=> {
-				// 	this.avatar = res.data.result.userInfo.avatar
-				// })
+				axios.post('/user/getInfoById',{
+					_id: this.detail_user_id
+				}).then((res)=> {
+					this.avatar = res.data.result.userInfo.avatar
+				})
 			}
  		},	
  		computed: {

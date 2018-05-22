@@ -60,9 +60,9 @@ exports.attentionQuestionRed = function (req,res) {
 		.populate('user_id')
 		.sort({'meta.updatedAt': -1})
 		.exec((err,binds)=> {
-			let sum = binds.length 
+			let attentionSum= binds.length 
 			getUserListInfo(binds,_id,(users,infos)=> {
-				return res.json(util.Result({sum: sum,users: users,infos: infos}))
+				return res.json(util.Result({attentionSum,users: users,infos: infos}))
 			})
 		})
 
@@ -80,14 +80,14 @@ function getUserListInfo(binds,_id,callback) {
 		}
 		var user = binds[i].user_id
 		// 寻找该用户的回答数和粉丝数
-		Answer.count({user_id: user._id},(err,count)=> {
+		Answer.count({user_id: user._id},(err,answerSum)=> {
 			User.findById(user._id)
 			.select('fans')
 			.exec((err,dbUser)=> {
 				// 寻找当前用户和目标用户的关注关系
 				Follow.getUserBind(user._id,_id,(status)=> {
 					infos.push(new Info({
-						answerSum: count,
+						answerSum: answerSum,
 						fansLength: dbUser.fans.length,
 						followStatus: status
 					}))

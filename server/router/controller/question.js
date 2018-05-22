@@ -2,7 +2,9 @@ var mongoose = require('mongoose')
 var Question = mongoose.model('Question')
 var Category = mongoose.model('Category')
 var Comment = mongoose.model('Comment')
+var Answer = mongoose.model('Answer')
 var Attention = require('./attention.js')
+var Follow = require('./follow.js')
 const util = require('../../common/util.js');
 var Vote = require('./vote.js')
 const checkUtil = require('../../common/checkUtil.js')
@@ -60,35 +62,33 @@ exports.read = function (req,res) {
 		var limit = fields.limit
 		var page = fields.page
 		var skip = limit*(page-1)
-		Question.count((err,ct)=> {
-			Question.find({})
-			.populate('category')
-			.populate('user_id')
-			.limit(limit)
-			.skip(skip)
-			.sort({'meta.updatedAt': -1})
-			.exec((err,questions)=> {
-				getCommentCount(questions,(questions)=> {
-					getVote(questions,_id,(questions,infos)=>{
-						let count = questions.length;
-						return res.json(util.Result({questions: questions,infos: infos,count: count}))
-					})
+		Question.find({})
+		.populate('category')
+		.populate('user_id')
+		.limit(limit)
+		.skip(skip)
+		.sort({'meta.updatedAt': -1})
+		.exec((err,questions)=> {
+			getCommentSum(questions,(questions)=> {
+				getVote(questions,_id,(questions,infos)=>{
+					let questionSum = questions.length;
+					return res.json(util.Result({questions: questions,infos: infos,questionSum: questionSum}))
 				})
 			})
-		})		
+		})	
 	}).catch((err)=> {
 		return res.json(util.Result(401))
 	})
 }
 
-function getCommentCount(questions,callback) {
+function getCommentSum(questions,callback) {
 	(function iterator(i){
 		if (i == questions.length) {
 			callback(questions)
 			return 
 		}
-		Comment.count({question_id: questions[i]._id,answer_id: undefined},(err,cCount)=> {
-			questions[i].cCount = cCount
+		Comment.count({question_id: questions[i]._id,answer_id: undefined},(err,commentSum)=> {
+			questions[i].commentSum = commentSum
 			iterator(i+1)
 		})
 	})(0)
@@ -133,14 +133,42 @@ exports.detail = function (req,res) {
 				if (!question) {
 					return res.json(util.Result(1))
 				}
-				Comment.count({question_id: question._id,answer_id: undefined},(err,cCount)=> {
-						question.cCount = cCount
+				Comment.count({question_id: question._id,answer_id: undefined},(err,commentSum)=> {
+						question.commentSum = commentSum
 						// 寻找关注状态信息
 						Attention.getAttentionQuestion(_id,question._id,({followSum,attentionStatus})=> {
 						return res.json(util.Result({question,followSum,attentionStatus}))
 					})
 				})
 			})
+	}).catch((err)=> {
+		return res.json(util.Result(401))
+	})
+}
+
+exports.detailUser = function (req,res) {
+	// 寻找提出问题用户信息
+	var token = req.headers.token
+	tokenUtil.verifyToken(token)
+	.then((_id)=> {
+		let fields = req.body
+		let question_id = fields.question_id
+		Question.findById(question_id)
+		.populate({
+			path: 'user_id',
+			select: '_id info avatar username fans'
+		})
+		.exec((err,question)=>{
+			let target = question.user_id
+			Follow.getUserBind(target._id,_id,(status)=> {
+				Question.count({user_id: target._id},(err,questionSum)=> {
+					Answer.count({user_id: target.id},(err,answerSum)=> {
+						let info = {status,questionSum,answerSum,fansSum: target.fans.length}
+						return res.json(util.Result({targetUser: target,info}))
+					})
+				})
+			})
+		})
 	}).catch((err)=> {
 		return res.json(util.Result(401))
 	})

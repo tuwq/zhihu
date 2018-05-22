@@ -154,6 +154,12 @@
 	import axios from 'axios'
 	export default {
 		mixins: [communicationMixin],
+		props: {
+			question: {
+				type: Object,
+				default: null
+			}
+		},
 		data() {
 			return {
 				base: '../../../../static/avatar/38/',
@@ -195,7 +201,6 @@
 		},
 		computed: {
 			...mapGetters([
-				'question',
 				'user',
 				'add_answer_status'
 			])

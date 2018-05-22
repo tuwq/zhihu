@@ -64,10 +64,6 @@ import {mapMutations,mapGetters} from 'vuex';
 				type: String,
 				default: ''
 			},
-			count: {
-				type: Number,
-				default: 0
-			},
 			fromType: {
 				type: String,
 				default: ''

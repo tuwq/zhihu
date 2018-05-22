@@ -160,7 +160,6 @@ import {communicationMixin,userMixin} from 'common/js/mixin.js'
  						if (action==1) {
  							this.follows[index].flowerStatus = 1
  						}else {
- 							this.follows[index].flowerStatus = 0
  							// 当在本人主页修改关注信息时
  							if (this.user._id == this.detail_user_id) {
  								// 当我取消关注了后我的关注列表要刷新，同时我的右侧关注数要减少 
@@ -168,25 +167,26 @@ import {communicationMixin,userMixin} from 'common/js/mixin.js'
  								// 粉丝列表状态没有同步，也需要刷新
  								this.getFansList()
  								communicationMixin.$emit('changeFollowCount',0,0)
+ 							}else {
+ 								this.follows[index].flowerStatus = 0
  							}
  						}
  					}else{
  						if (action==1) {
- 							this.fans[index].flowerStatus = 1
  							if (this.user._id == this.detail_user_id) {
 								// 当我在我的粉丝列表中关注我的粉丝时
 								// 我的关注列表要刷新，同时我的右侧关注数要增加
 								this.getFollowList()
 								communicationMixin.$emit('changeFollowCount',0,1)
  							}
- 							
+ 							this.fans[index].flowerStatus = 1
  						}else {
- 							this.fans[index].flowerStatus = 0
  							if (this.user._id == this.detail_user_id) {
  								// 当我取消关注我的粉丝时,我的关注列表要刷新，同时我的右侧关注数要减少
 	 							this.getFollowList()
 	 							communicationMixin.$emit('changeFollowCount',0,0)
  							}
+ 							this.fans[index].flowerStatus = 0
  						}	
  					}
  				})

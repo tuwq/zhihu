@@ -1,5 +1,5 @@
 <template>
- 	<div class="scroll-header-wrapper">
+ 	<div class="scroll-header-wrapper" v-if="question">
  		<div class="content">
  			<div class="content-left">
  				<h1 class="title">{{question.title}}</h1>
@@ -29,11 +29,14 @@ import axios from 'axios'
 			attentionStatus: {
 				type: Number,
 				default: 0
+			},
+			question: {
+				type: Object,
+				default: null
 			}
 		},
 		computed: {
 			...mapGetters([
-				'question',
 				'user'
 			])
 		},

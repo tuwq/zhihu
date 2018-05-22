@@ -8,7 +8,7 @@
 					<div class="Modal-content" >
 						<div class="VoteList">
 							<div class="topbar">
-								<div class="topbar-title"><span>{{sum}}人关注了</span></div>
+								<div class="topbar-title"><span>{{attentionSum}}人关注了</span></div>
 							</div>
 							<div class="content">
 								<div class="list-item" v-for="(item,index) in users">
@@ -69,7 +69,7 @@ import axios from 'axios'
 				base: '../../../../static/avatar/60/',
 				loading: true,
 				users: [],
-				sum: 0
+				attentionSum: 0
 			}
 		},
 		methods: {
@@ -116,7 +116,7 @@ import axios from 'axios'
 				axios.post('/attention/question/read',{
 					question_id: question_id
 				}).then((res)=> {
-					this.sum = res.data.result.sum
+					this.attentionSum = res.data.result.attentionSum
 					this.users = this.mergeData(res.data.result.users,res.data.result.infos)	
 					this.loading = false
 				})
