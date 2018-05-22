@@ -241,15 +241,15 @@ exports.readApprove = function (req,res) {
 		User.findById(fields.detail_id)
 		.select('fans followers approve')
 		.exec((err,user)=> {
-			let fansCount = user.fans.length 
-			let followerCount = user.followers.length 
-			let approveCount = user.approve 
+			let fansSum = user.fans.length 
+			let followerSum = user.followers.length 
+			let approveSum = user.approve 
 			Question.count({user_id: fields.detail_id},(err,questionSum)=> {
 				Answer.count({user_id: fields.detail_id},(err,answerSum)=> {
 					return res.json(util.Result({
-						fansCount,
-						followerCount,
-						approveCount,
+						fansSum,
+						followerSum,
+						approveSum,
 						questionSum,
 						answerSum
 					}))
