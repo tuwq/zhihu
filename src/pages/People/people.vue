@@ -27,13 +27,6 @@
 			'cutAvatar': cutAvatar
 		},
 		methods: {
-			getNowUser() {
-	          // 获得用户头像信息
-	          axios.post('/user/getNowUserInfo')
-	          .then((res)=> {
-	            this.setUser(res.data.result)
-	          })
-	        },
 			clsDrop() {
 				this.setPeopleDropUp(false)
 				this.setIndexDropDown(false)
@@ -41,11 +34,7 @@
 			...mapMutations({
 				setPeopleDropUp: 'SET_PEOPLE_DROPUP',
 				setIndexDropDown: 'SET_INDEX_DROPDOWN',
-				setUser: 'SET_USER'
 			}),
-		},
-		created() {
-			this.getNowUser()
 		}
 	}
 </script>

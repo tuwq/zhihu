@@ -45,10 +45,16 @@
  							</a>
  						</div>
  					</div>
- 					<div class="MemberButtonGroup" v-show="question_user._id!=user._id">
- 						<div class="followButton" v-show="question_user.status==0"><span>关注他</span></div>
- 						<div class="followButton cancel" v-show="question_user.status==1"><span>取消关注</span></div>
- 						<div class="privateButton"><span>发私信</span></div>
+ 					<div class="MemberButtonGroup" v-if="question_user.info" v-show="question_user._id!=user._id">
+ 						<button class="followButton" 
+ 						v-show="question_user.status==0"
+ 						@click.stop.prevent="followPeople(question_user._id,1)"><span>
+ 						关注{{question_user.info.gender==0?'他':question_user.info.gender==1?'他':'她'}}</span></button>
+ 						<button class="followButton cancel" v-show="question_user.status==1"
+ 						@click.stop.prevent="followPeople(question_user._id,0)"
+ 						@mouseenter="enter($event)" 
+	 					@mouseleave="leave($event)"><span>取消关注</span></button>
+ 						<button class="privateButton"><span>发私信</span></button>
  					</div>
  				</div>
  			</div>
@@ -58,6 +64,8 @@
 
 <script type="text/ecmascript-6">
 import {mapMutations,mapGetters} from 'vuex';
+import {copyObj} from 'common/js/util.js'
+import axios from 'axios'
 import {communicationMixin,userMixin} from 'common/js/mixin.js'
 	export default {
 		mixins: [userMixin],
@@ -65,6 +73,30 @@ import {communicationMixin,userMixin} from 'common/js/mixin.js'
 			return {
 				base: '../../../../static/avatar/60/'
 			}
+		},
+		methods: {
+			enter(e) {
+ 				e.target.innerText = '取消关注'
+ 			},
+ 			leave(e) {
+ 				e.target.innerText = '已关注'
+ 			},
+			followPeople(target_id,action) {
+ 				axios.post('/follow/followTarget',{
+ 					target_id: target_id,
+ 					action: action
+ 				}).then((res)=> {
+ 					if (res.data.status) {
+ 						alert(res.data.result.msg)
+ 					}
+ 					let _question_user = copyObj(this.question_user)
+ 					action==1?_question_user.status=1:_question_user.status=0
+ 					this.setQuestionUser(_question_user)
+ 				})
+ 			},
+ 			...mapMutations({
+				setQuestionUser: 'SET_QUESTION_USER'
+			})
 		},
 		computed: {
 			...mapGetters([

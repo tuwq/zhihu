@@ -20,6 +20,9 @@
 	import author from 'z_components/author.vue';
 	import myInfo from 'z_components/myInfo.vue';
 	export default {
+		created() {
+			console.log(' z-index ')
+		},
 		components: {
 			questions,
 			sends,

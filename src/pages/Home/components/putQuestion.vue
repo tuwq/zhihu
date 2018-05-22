@@ -90,6 +90,9 @@
 				setPutQuestionDisPlay: 'SET_PUT_QUESTION_MASK'
 			}),
 		},
+		created() {
+			console.log(' put ')
+		},
 		mounted() {
 			makeExpandingArea(this.$refs.question_title);
 			makeExpandingArea(this.$refs.question_topic);

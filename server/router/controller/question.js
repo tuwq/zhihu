@@ -10,6 +10,8 @@ var Vote = require('./vote.js')
 const checkUtil = require('../../common/checkUtil.js')
 const tokenUtil = require('../../common/token.js')
 
+const self = this
+
 exports.insert = function (req,res) {
 	// 检查登录
 	var token = req.headers.token
@@ -137,7 +139,10 @@ exports.detail = function (req,res) {
 						question.commentSum = commentSum
 						// 寻找关注状态信息
 						Attention.getAttentionQuestion(_id,question._id,({followSum,attentionStatus})=> {
-						return res.json(util.Result({question,followSum,attentionStatus}))
+						// 寻找提出问题用户信息
+						self.detailUser(question_id,_id,({targetUser,info})=> {
+							return res.json(util.Result({question,followSum,attentionStatus,targetUser,info}))
+						})
 					})
 				})
 			})
@@ -146,30 +151,22 @@ exports.detail = function (req,res) {
 	})
 }
 
-exports.detailUser = function (req,res) {
-	// 寻找提出问题用户信息
-	var token = req.headers.token
-	tokenUtil.verifyToken(token)
-	.then((_id)=> {
-		let fields = req.body
-		let question_id = fields.question_id
-		Question.findById(question_id)
-		.populate({
-			path: 'user_id',
-			select: '_id info avatar username fans'
-		})
-		.exec((err,question)=>{
-			let target = question.user_id
-			Follow.getUserBind(target._id,_id,(status)=> {
-				Question.count({user_id: target._id},(err,questionSum)=> {
-					Answer.count({user_id: target.id},(err,answerSum)=> {
-						let info = {status,questionSum,answerSum,fansSum: target.fans.length}
-						return res.json(util.Result({targetUser: target,info}))
-					})
+exports.detailUser = function (question_id,me_id,callback) {
+	Question.findById(question_id)
+	.populate({
+		path: 'user_id',
+		select: '_id info avatar username fans'
+	})
+	.exec((err,question)=>{
+		let target = question.user_id
+		Follow.getUserBind(target._id,me_id,(status)=> {
+			Question.count({user_id: target._id},(err,questionSum)=> {
+				Answer.count({user_id: target.id},(err,answerSum)=> {
+					let info = {status,questionSum,answerSum,fansSum: target.fans.length}
+					callback({targetUser: target,info})
 				})
 			})
 		})
-	}).catch((err)=> {
-		return res.json(util.Result(401))
 	})
+
 }

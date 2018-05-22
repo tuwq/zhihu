@@ -27,20 +27,12 @@ import axios from 'axios'
         clsModal() {
           this.setIndexDropDown(false)
         },
-        getNowUser() {
-          // 获得用户头像信息
-          axios.post('/user/getNowUserInfo')
-          .then((res)=> {
-            this.setUser(res.data.result)
-          })
-        },
         ...mapMutations({
           setIndexDropDown: 'SET_INDEX_DROPDOWN',
-          setUser: 'SET_USER'
         })
       },
       created() {
-        this.getNowUser()
+        console.log('  home ')
       },
       components: {
         ZHeader,

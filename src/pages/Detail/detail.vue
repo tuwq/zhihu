@@ -18,7 +18,7 @@
 			 		:question="question"
 			 		></scroll-header>
 		 		</d-header>
-	 		<div class="main-content" v-show="questionUser_loading">
+	 		<div class="main-content">
 	 			<detail-main 
 	 			:answerSum="answerSum" 
 	 			:question="question"
@@ -71,8 +71,7 @@
 				attentionSum: 0,
 				attentionStatus: 0,
 				detail_loading: false,
-				browseSum: 0,
-				questionUser_loading: false
+				browseSum: 0
 			}
 		},
 		components: {
@@ -102,19 +101,12 @@
 					if (res.data.status) {
 						// 转到404
 					}
+					let questionUser = extend(res.data.result.targetUser,res.data.result.info)
+					this.setQuestionUser(questionUser)
 					this.question = res.data.result.question
 					this.attentionSum =  res.data.result.followSum
 					this.attentionStatus =  res.data.result.attentionStatus
 					this.detail_loading = true
-				})
-			},
-			getQuestionUser() {
-				axios.post('/question/detailUser',{
-					question_id: this.question_id
-				}).then((res)=> {
-					let questionUser = extend(res.data.result.targetUser,res.data.result.info)
-					this.setQuestionUser(questionUser)
-					this.questionUser_loading = true
 				})
 			},
 			getAnswers() {
@@ -165,36 +157,25 @@
 		            }
 				})
 			},
-			getNowUser() {
-				// 获得用户头像信息
-				axios.post('/user/getNowUserInfo')
-				.then((res)=> {
-					this.setUser(res.data.result)
-				})
-			},
 			...mapMutations({
 				setIndexDropDown: 'SET_INDEX_DROPDOWN',
-				setUser: 'SET_USER',
 				setQuestionUser: 'SET_QUESTION_USER'
 			})
 		},
 		created() {
-			this.loading = true
-			this.getNowUser()
+			console.log('  detail ')
+			
 			this.getDetail()
-			this.getQuestionUser()
 			readBrowseCount(this.question_id)
 			this.getAnswers()
 			this.listenData()
 		},
 		watch: {
 			question_id(newval,oldval) {
-				if (newval != oldval && newval!=undefined) {
-					this.no_more_data = false
+				if (newval != oldval && newval != undefined ) {
 					this.loading = true
 					this.detail_loading = false
 					this.getDetail()
-					this.getQuestionUser()
 					readBrowseCount(this.question_id)
 					this.answerList = []
 					this.page = 1

@@ -145,6 +145,9 @@ import {communicationMixin} from 'common/js/mixin'
 				loadComment: false
 			}
 		},
+		creadted() {
+			console.log(' detail-header ')
+		},
 		methods: {
 			enter(e) {
 				e.target.innerText = '取消关注'

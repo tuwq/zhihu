@@ -45,5 +45,4 @@ module.exports = function (app) {
 	app.post('/follow/user/follow',Follow.userFollow)
 	app.post('/user/read/answer',User.readUserAnswer)
 	app.post('/user/read/question',User.readUserQuestion)
-	app.post('/question/detailUser',Question.detailUser)
 }

@@ -58,9 +58,21 @@ import {communicationMixin} from 'common/js/mixin'
 			openDrop() {
 				this.setIndexDropDown(true);
 			},
+			getNowUser() {
+				// 获得用户头像信息
+				axios.post('/user/getNowUserInfo')
+				.then((res)=> {
+					this.setUser(res.data.result)
+				})
+			},
 			...mapMutations({
+				setUser: 'SET_USER',
 				setIndexDropDown: 'SET_INDEX_DROPDOWN',
 			})
+		},
+		created() {
+			console.log(' z-header  ')
+			this.getNowUser()
 		},
 		computed: {
 			...mapGetters([
