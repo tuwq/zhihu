@@ -61,15 +61,12 @@
 		                this.getQuestionList()
 		            }
 				})
-				
+				// 添加新的问题后
 				communicationMixin.$on('addQuestion',()=> {
 					this.questionList = []
 					this.page = 1
 					this.loading = true
 					this.getQuestionList()
-				})
-				communicationMixin.$on('changeUser',()=> {
-					
 				})
 			}
 		},
@@ -77,7 +74,17 @@
 			this.getQuestionList(1)
 			// 瀑布流监听滚动事件更新数据
 			this.loadData()
-		}
+		},
+		// watch: {
+		//     '$route' (to, from) {
+		// 	   if ( to.path == '/home' && from.path != to.path ) {
+		// 	   		this.questionList = []
+		// 	   		this.loading = true
+		// 	   		this.page = 1
+		// 	   		this.getQuestionList()
+		// 	   }
+		// 	}
+		// }
 	}
 </script>
 

@@ -20,7 +20,7 @@
  				</div>
  			</h4>
  		</div>
- 		<div v-show="listIndex==0">
+ 		<div v-if="listIndex==0">
  			<div class="list-item" v-for="(item,index) in follows" :key="item._id">
  				<div class="list-item">
  					<div class="item-main">
@@ -56,7 +56,7 @@
  				</div>
  			</div>
  		</div>
- 		<div v-show="listIndex==1">
+ 		<div v-if="listIndex==1">
  			<div class="list-item">
  				<div class="list-item" v-for="(fan,fIndex) in fans" :key="fan._id">
  					<div class="item-main">
@@ -90,7 +90,7 @@
  				</div>
  			</div>
  		</div>
- 		<div v-show="listIndex==2"></div>
+ 		<div v-if="listIndex==2"></div>
  	</div>
 </template>
 
@@ -127,10 +127,12 @@ import {communicationMixin,userMixin} from 'common/js/mixin.js'
 				e.target.innerText = '已关注'
 			},
 			changeItem(e,index) {
+				// 改变显示状态
 				$(e.target).addClass('is-active').siblings().removeClass('is-active')
 				this.listIndex = index	
 			},
 			getFansList() {
+				// 获得粉丝列表
 				axios.post('/follow/user/fans',{
 					detail_id: this.detail_user_id
 				}).then((res)=> {
@@ -140,6 +142,7 @@ import {communicationMixin,userMixin} from 'common/js/mixin.js'
 				})
 			},
 			getFollowList() {
+				// 获得关注列表
 				axios.post('/follow/user/follow',{
 					detail_id: this.detail_user_id
 				}).then((res)=> {
@@ -149,6 +152,7 @@ import {communicationMixin,userMixin} from 'common/js/mixin.js'
 				})
 			},
 			followPeople(target_id,action,index,from) {
+				// 关注列表和粉丝列表的及时更新
 				axios.post('/follow/followTarget',{
  					target_id: target_id,
  					action: action
@@ -191,28 +195,26 @@ import {communicationMixin,userMixin} from 'common/js/mixin.js'
  					}
  				})
 			},
-			openList() {
+			ListenerUpdate() {
+				// 监听右侧栏点击
 				communicationMixin.$on('openFollw',()=> {
 					this.listIndex = 0
 					$('.sub-item').eq(0).addClass('is-active').siblings().removeClass('is-active')
 				})
+				// 监听右侧栏点击
 				communicationMixin.$on('openFans',()=> {
 					this.listIndex = 1
 					$('.sub-item').eq(1).addClass('is-active').siblings().removeClass('is-active')
 				})
+				// 监听是否重新加载关注列表
 				communicationMixin.$on('reloadFollwer',()=> {
 					this.getFansList()
-				})
-				// 当改变用户时，因为缓存，也要刷新一次
-				communicationMixin.$on('changeUser',()=> {
-					
 				})
 			}
 		},
 		created() {
-			this.openList()
+			this.ListenerUpdate()
 			this.getFollowList()
-			this.getFansList()
 		},
 		computed: {
 			detail_user_id() {
@@ -223,11 +225,16 @@ import {communicationMixin,userMixin} from 'common/js/mixin.js'
 			])
 		},
 		watch: {
+			listIndex(newval) {
+				if ( newval == 1 ) {
+					this.getFansList()
+				}
+			},
 			detail_user_id(newval,oldval) {
 				if ( newval != oldval && newval != undefined ) {
 					// 更改查看用户时，回到动态第一页
-					communicationMixin.$emit('changeMainIndex',0)
-					communicationMixin.$emit('changeScrollIndex',0)
+					// communicationMixin.$emit('changeMainIndex',0)
+					// communicationMixin.$emit('changeScrollIndex',0)
 				}
 			}
 		}

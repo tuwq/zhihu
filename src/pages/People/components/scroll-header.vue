@@ -36,24 +36,19 @@ import axios from 'axios'
  		},
  		methods: {
  			getMore() {
+ 				// 打开更多菜单栏
  				$('.content-arrow-top').css('top',scroll().top+80)
  				$('#content-arrow').addClass('content-arrow-top').removeClass('content-arrow');
  				this.setPeopleDropUp(true);
  			},
- 			...mapMutations({
-				setPeopleDropUp: 'SET_PEOPLE_DROPUP'
-			}),
 			changeItem(e,index) {
+				// 改变显示状态
 				$(e.target).parent().addClass('is-active').siblings().removeClass('is-active')
 				communicationMixin.$emit('changeMainIndex',index)
 			},
-			getInfo() {
-				axios.post('/user/getInfoById',{
-					_id: this.detail_user_id
-				}).then((res)=> {
-					this.avatar = res.data.result.userInfo.avatar
-				})
-			}
+			...mapMutations({
+				setPeopleDropUp: 'SET_PEOPLE_DROPUP'
+			})
  		},	
  		computed: {
  			detail_user_id() {
@@ -64,24 +59,23 @@ import axios from 'axios'
 			])
 		},
 		created() {
+			// 改变显示信息
 			communicationMixin.$on('changeScrollIndex',(index)=> {
 				$('.top-tab-item').eq(index).addClass('is-active').siblings('.top-tab-item').removeClass('is-active')
 			})
+			// 打开关注列表改变显示状态
 			communicationMixin.$on('openFollow',()=> {
 				$(this.$refs.more).addClass('is-active').siblings().removeClass('is-active')
 			})
+			// 获得问题数和回答数
 			communicationMixin.$on('ChangeScrollCount',({questionSum,answerSum})=> {
 				this.questionSum = questionSum
 				this.answerSum = answerSum
 			})
-			this.getInfo()
-		},
-		watch: {
-			detail_user_id(newval,oldval) {
-				if ( newval != oldval && newval != undefined ) {
-					this.getInfo()
-				}
-			}
+			// 获得头像信息
+			communicationMixin.$on('setScrollHeaderAvatar',(detail_user)=> {
+				this.avatar = detail_user.avatar 
+			})
 		}
 	}
 </script>

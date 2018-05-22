@@ -13,10 +13,10 @@
 						<li class="tab-item" ref="more" @click.stop.prevent="getMore"><a href="javascript:void(0)" class="tab-link"><button class="more">更多<svg viewBox="0 0 10 6" width="10" height="16"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button></a></li>
 					</ul>
 				</div>
-				<dynamic-list v-show="showModule==0"></dynamic-list>
-				<answer-module v-show="showModule==1"></answer-module>
-				<question-module v-show="showModule==2" :otherUser="otherUser"></question-module>
-				<following-module v-show="showModule==7" :otherUser="otherUser"></following-module>
+				<dynamic-list v-if="showModule==0"></dynamic-list>
+				<answer-module v-if="showModule==1"></answer-module>
+				<question-module v-if="showModule==2" :otherUser="otherUser"></question-module>
+				<following-module v-if="showModule==7" :otherUser="otherUser"></following-module>
 			</div>
 		</div>
 		<div class="content-arrow" v-show="people_dropup" id="content-arrow" ref="content_arrow"> 
@@ -63,13 +63,21 @@ import axios from 'axios'
  			}
  		},
  		methods: {
+ 			getMore() {
+ 				// 打开更多导航栏
+ 				$(this.$refs.content_arrow).css('top',258)
+ 				$(this.$refs.content_arrow).addClass('content-arrow').removeClass('content-arrow-top');
+ 				this.setPeopleDropUp(true);
+ 			},
  			changeItem(e,index) {
+ 				// 改变显示状态
  				$(e.target).addClass('is-active').siblings().removeClass('is-active')
  				$(e.target).parent('li').addClass('is-active').siblings().removeClass('is-active')
  				this.showModule = index;
  				communicationMixin.$emit('changeScrollIndex',index)
  			},
  			listenHeaderModule() {
+ 				// 监听scrollHeader的点击显示状态
  				communicationMixin.$on('changeMainIndex',(index) => {
  					$('.tab-item').eq(index).addClass('is-active').siblings().removeClass('is-active')
  					this.showModule = index;
@@ -78,26 +86,20 @@ import axios from 'axios'
  					window.scrollTo(0,targetY)
  				})
  			},
- 			getMore() {
- 				$(this.$refs.content_arrow).css('top',258)
- 				$(this.$refs.content_arrow).addClass('content-arrow').removeClass('content-arrow-top');
- 				this.setPeopleDropUp(true);
- 			},
  			openFollowingModule() {
+ 				// 打开关注列表
  				this.setPeopleDropUp(false);
  				this.showModule = 7
  				$(this.$refs.more).addClass('is-active').siblings('.tab-item').removeClass('is-active')
  				communicationMixin.$emit('openFollow')
  			},
  			ListenterFollwer() {
+ 				// 监听scrollHeader打开关注列表
  				communicationMixin.$on('showFollwer',()=> {
  					this.showModule = 7
  					$(this.$refs.more).addClass('is-active').siblings('.tab-item').removeClass('is-active')
  					communicationMixin.$emit('openFollow')
  				})
- 			},
- 			getCountInfo() {
- 				
  			},
  			...mapMutations({
 				setPeopleDropUp: 'SET_PEOPLE_DROPUP'
@@ -108,14 +110,6 @@ import axios from 'axios'
 		},
 		created() {
 			this.ListenterFollwer()
-			this.getCountInfo()
-		},
-		watch: {
-			detail_user_id(newval,oldval) {
-				if ( newval != oldval && newval != undefined ) {
-					this.getCountInfo()
-				}
-			}
 		},
 		computed: {
 			detail_user_id() {

@@ -11,8 +11,8 @@
 				<main-column :otherUser="otherUser" 
 				:questionSum="questionSum" :answerSum="answerSum"></main-column>
 				<side-column :detail_user_id="detail_user_id"
-				:fansCount="fansCount" :followerCount="followerCount"
-				:approveCount="approveCount"
+				:fansSum="fansSum" :followerSum="followerSum"
+				:approveSum="approveSum"
 				></side-column>
 			</div>
 		</div>
@@ -39,9 +39,9 @@ import {communicationMixin} from 'common/js/mixin'
   				loading: true,
   				detail_loading: false,
   				fllowerStatus: 0,
-  				fansCount: 0,
-  				followerCount: 0,
-  				approveCount: 0,
+  				fansSum: 0,
+  				followerSum: 0,
+  				approveSum: 0,
   				questionSum: 0,
   				answerSum: 0
   			}
@@ -60,12 +60,14 @@ import {communicationMixin} from 'common/js/mixin'
 						this.loading = false
 						this.index_type = 1
 						this.detail_loading = true
+						communicationMixin.$emit('setScrollHeaderAvatar',this.user)
 					}else {
 						axios.post('/user/getInfoById',{
 							_id: this.detail_user_id
 						}).then((res)=> {
 							this.loading = false
 							this.otherUser = res.data.result.userInfo
+							communicationMixin.$emit('setScrollHeaderAvatar',this.otherUser)
 							if (res.data.status) {
 								// 404
 							}else {
@@ -90,9 +92,9 @@ import {communicationMixin} from 'common/js/mixin'
  				axios.post('/user/readApprove',{
  					detail_id: this.detail_user_id
  				}).then((res)=> {
- 					this.fansCount = res.data.result.fansCount
- 					this.followerCount = res.data.result.followerCount
- 					this.approveCount = res.data.result.approveCount
+ 					this.fansSum = res.data.result.fansSum
+ 					this.followerSum = res.data.result.followerSum
+ 					this.approveSum = res.data.result.approveSum
  					this.answerSum = res.data.result.answerSum
  					this.questionSum = res.data.result.questionSum
  					communicationMixin.$emit('ChangeScrollCount',{questionSum: this.questionSum,answerSum: this.answerSum})
@@ -123,10 +125,6 @@ import {communicationMixin} from 'common/js/mixin'
 			this.init()
 			this.updateCountInfo()
 			this.listenerFollowChange()
-			// 退出用户后再次登录后index_type不会被改变，无法init,所以要监听改变用户
-			communicationMixin.$on('changeUser',()=> {
-				
-			})
 		},
 		computed: {
 			detail_user_id() {
@@ -137,9 +135,10 @@ import {communicationMixin} from 'common/js/mixin'
 			])
 		},
 		watch: {
-			detail_user_id (newval,oldval) {
-				if ( newval != oldval && newval != undefined ) {
-					this.detail_loading = false
+		    '$route' (to, from) {
+			      // 对路由变化作出响应...
+			   if ( this.detail_user_id != undefined ) {
+				    this.detail_loading = false
 					this.init()
 					this.updateCountInfo()
 				}

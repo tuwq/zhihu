@@ -1,5 +1,5 @@
 <template>
-  <div class="header-wrapper" v-if="user">
+  <div class="header-wrapper">
   	<div class="center">	
   		<router-link to="/" class="logo-link">
   			<svg viewBox="0 0 200 91" width="64" height="30">
@@ -13,7 +13,7 @@
 	  		<a href="#" class="nav-item">话题</a>
 	  	</nav>
 	  	<search-bar></search-bar>
-	  	<div class="userinfo">
+	  	<div class="userinfo" v-if="loadStatus==1">
 	  		<div class="Popover notifications">
 	  			<button class="notifications-btn">
 	  				<svg viewBox="0 0 20 22" class="Icon" width="20" height="20">
@@ -50,7 +50,7 @@ import {communicationMixin} from 'common/js/mixin'
 		name: 'zHeader',
 		data() {
 			return {
-				loginStatus: 0,
+				loadStatus: 0,
 				base: '../../../../static/avatar/34/',
 			}
 		},
@@ -63,6 +63,7 @@ import {communicationMixin} from 'common/js/mixin'
 				axios.post('/user/getNowUserInfo')
 				.then((res)=> {
 					this.setUser(res.data.result)
+					this.loadStatus = 1
 				})
 			},
 			...mapMutations({
@@ -71,7 +72,6 @@ import {communicationMixin} from 'common/js/mixin'
 			})
 		},
 		created() {
-			console.log(' z-header  ')
 			this.getNowUser()
 		},
 		computed: {
@@ -79,6 +79,15 @@ import {communicationMixin} from 'common/js/mixin'
 				'index_dropdown',
 				'user'
 			])
+		},
+		watch: {
+		    '$route' (to, from) {
+			   // 对路由变化作出响应...
+			   if ( from.path.indexOf('/login') !=-1 ) {
+			   		this.loadStatus = 0
+			   		this.getNowUser()
+			   }
+			}
 		},
 		components: {
 			'search-bar' : searchBar

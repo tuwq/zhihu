@@ -1,23 +1,23 @@
 <template>
  	<div id="Detail" @click.stop="clsModal" >
- 		<loading v-show="loading"></loading>
-	    <div v-show="detail_loading">
-	    		<d-header class="d-header" ref="dHeader" v-if="question">
-		 			<z-header slot="z-header"></z-header>
-			 		<detail-header slot="detail-header"
-			 		v-show="detail_loading" 
-			 		@changeAttention="changeAttention" 
-			 		:attentionSum="attentionSum" 
-			 		:attentionStatus="attentionStatus" 
-			 		:browseSum="browseSum"
-			 		:question="question"
-			 		 ></detail-header>
-			 		<scroll-header slot="scroll-header" 
-			 		@changeAttention="changeAttention"
-			 		:attentionStatus="attentionStatus" 
-			 		:question="question"
-			 		></scroll-header>
-		 		</d-header>
+ 		<loading v-show="total_loading"></loading>
+	    <div>
+    		<d-header class="d-header" ref="dHeader" v-if="question">
+	 			<z-header slot="z-header"></z-header>
+		 		<detail-header slot="detail-header"
+		 		v-show="!total_loading" 
+		 		@changeAttention="changeAttention" 
+		 		:attentionSum="attentionSum" 
+		 		:attentionStatus="attentionStatus" 
+		 		:browseSum="browseSum"
+		 		:question="question"
+		 		 ></detail-header>
+		 		<scroll-header slot="scroll-header" 
+		 		@changeAttention="changeAttention"
+		 		:attentionStatus="attentionStatus" 
+		 		:question="question"
+		 		></scroll-header>
+	 		</d-header>
 	 		<div class="main-content">
 	 			<detail-main 
 	 			:answerSum="answerSum" 
@@ -67,10 +67,12 @@
 				no_more_data: false, // 没有更多数据了
 				answerList: [],
 				answerSum: 0,
+				// 加载回答列表数据
 				loading: true,
 				attentionSum: 0,
 				attentionStatus: 0,
-				detail_loading: false,
+				// 加载问题详情数据
+				total_loading: true,
 				browseSum: 0
 			}
 		},
@@ -94,7 +96,7 @@
 			clsModal() {
 	          this.setIndexDropDown(false)
 	        },
-			getDetail(user) {
+			getDetail() {
 				axios.post('/question/detail',{
 					question_id: this.question_id
 				}).then((res)=> {
@@ -106,7 +108,7 @@
 					this.question = res.data.result.question
 					this.attentionSum =  res.data.result.followSum
 					this.attentionStatus =  res.data.result.attentionStatus
-					this.detail_loading = true
+					this.getAnswers()
 				})
 			},
 			getAnswers() {
@@ -122,6 +124,7 @@
 						this.answerList = this.answerList.concat(data)
 						this.page++
 						this.loading = false
+						this.total_loading = false
 					}else{
 						this.no_more_data = true
 					}
@@ -164,24 +167,34 @@
 		},
 		created() {
 			console.log('  detail ')
-			
 			this.getDetail()
 			readBrowseCount(this.question_id)
-			this.getAnswers()
 			this.listenData()
 		},
 		watch: {
-			question_id(newval,oldval) {
-				if (newval != oldval && newval != undefined ) {
-					this.loading = true
-					this.detail_loading = false
-					this.getDetail()
-					readBrowseCount(this.question_id)
+			'$route' (to, from) {
+			      // 对路由变化作出响应...
+			   if ( this.question_id != undefined && to.path != from.path ) {
+			   		this.no_more_data = false
+				    this.loading = true
+					this.total_loading = true
 					this.answerList = []
 					this.page = 1
-					this.getAnswers()
+					this.getDetail()
+					readBrowseCount(this.question_id)
 				}
-			}
+			},
+			// question_id(newval,oldval) {
+			// 	if (newval != oldval && newval != undefined ) {
+			// 		this.loading = true
+			// 		this.detail_loading = false
+			// 		this.getDetail()
+			// 		readBrowseCount(this.question_id)
+			// 		this.answerList = []
+			// 		this.page = 1
+			// 		this.getAnswers()
+			// 	}
+			// },
 		},
 		computed: {
 			question_id() {
