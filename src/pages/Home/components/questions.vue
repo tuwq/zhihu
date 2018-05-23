@@ -25,7 +25,8 @@
 				pend: false, // 加载工作中
 				no_more_data: false, // 没有更多数据了
 				page: 1,
-				loading: true
+				loading: true,
+				first: true
 			}
 		},
 		components: {
@@ -39,11 +40,13 @@
 					limit: this.limit,
 					page: this.page
 				}).then((res)=> {
-					this.loading = false
-					if(res.data.result.questionSum) {	
+					console.log('questioRemainingCount ',res.data.result.RemainingCount)
+					if(res.data.result.RemainingCount) {	
 						let data =  mergeData(res.data.result.questions,res.data.result.infos)
 						this.questionList = this.questionList.concat(data)
 						this.page++
+						this.first = false
+						this.loading = false
 					}else{
 						this.no_more_data = true
 					}
@@ -55,7 +58,7 @@
 				var $win = $(window)
 				$win.on('scroll',()=> {
 					if($win.scrollTop()-($(document).height()-$win.height())>-30){
-		                if (this.pend||this.no_more_data) {
+		                if (this.pend||this.no_more_data||this.first) {
 		                	return
 		                }
 		                this.getQuestionList()
@@ -71,9 +74,9 @@
 			}
 		},
 		created() {
-			this.getQuestionList(1)
 			// 瀑布流监听滚动事件更新数据
 			this.loadData()
+			this.getQuestionList(1)
 		},
 		// watch: {
 		//     '$route' (to, from) {

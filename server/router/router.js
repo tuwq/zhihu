@@ -6,6 +6,7 @@ var Comment = require('./controller/comment.js')
 var Vote = require('./controller/vote.js')
 var Attention = require('./controller/attention.js')
 var Follow = require('./controller/follow.js')
+var Dynamic = require('./controller/dynamic.js')
 
 module.exports = function (app) {
 	app.post('/user/phoneLogin',User.phoneLogin)
@@ -45,4 +46,6 @@ module.exports = function (app) {
 	app.post('/follow/user/follow',Follow.userFollow)
 	app.post('/user/read/answer',User.readUserAnswer)
 	app.post('/user/read/question',User.readUserQuestion)
+	app.get('/dynamic/test',Dynamic.test)
+	app.post('/dynamic/readSend',Dynamic.readSend)
 }

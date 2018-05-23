@@ -60,6 +60,7 @@ import {communicationMixin} from 'common/js/mixin'
 						this.loading = false
 						this.index_type = 1
 						this.detail_loading = true
+						this.updateCountInfo()
 						communicationMixin.$emit('setScrollHeaderAvatar',this.user)
 					}else {
 						axios.post('/user/getInfoById',{
@@ -78,6 +79,7 @@ import {communicationMixin} from 'common/js/mixin'
 									this.fllowerStatus = res.data.result.fllowerStatus
 									this.index_type = 2
 									this.detail_loading = true
+									this.updateCountInfo()
 								})
 							}
 						})
@@ -107,15 +109,15 @@ import {communicationMixin} from 'common/js/mixin'
  				communicationMixin.$on('changeFollowCount',(from,action)=> {
  					if (from==0) {
  						if (action==1) {
- 							this.followerCount++
+ 							this.followerSum++
  						}else {
- 							this.followerCount--
+ 							this.followerSum--
  						}
  					}else {
  						if (action==1) {
- 							this.fansCount++
+ 							this.fansSum++
  						}else {
- 							this.fansCount--
+ 							this.fansSum--
  						}
  					}
  				})
@@ -123,7 +125,6 @@ import {communicationMixin} from 'common/js/mixin'
 		},
 		created() {
 			this.init()
-			this.updateCountInfo()
 			this.listenerFollowChange()
 		},
 		computed: {
@@ -137,10 +138,9 @@ import {communicationMixin} from 'common/js/mixin'
 		watch: {
 		    '$route' (to, from) {
 			      // 对路由变化作出响应...
-			   if ( this.detail_user_id != undefined ) {
+			   if ( this.detail_user_id != undefined && to.name == 'people_url' ) {
 				    this.detail_loading = false
 					this.init()
-					this.updateCountInfo()
 				}
 			}
 		}

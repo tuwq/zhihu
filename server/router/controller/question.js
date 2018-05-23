@@ -5,8 +5,9 @@ var Comment = mongoose.model('Comment')
 var Answer = mongoose.model('Answer')
 var Attention = require('./attention.js')
 var Follow = require('./follow.js')
-const util = require('../../common/util.js');
 var Vote = require('./vote.js')
+const questionKue = require('../../kue/question.js')
+const util = require('../../common/util.js')
 const checkUtil = require('../../common/checkUtil.js')
 const tokenUtil = require('../../common/token.js')
 
@@ -49,6 +50,8 @@ exports.insert = function (req,res) {
 			var c_id = category._id;
 			question.category = c_id;
 			question.save()
+			// 发送 一条动态
+			questionKue.questionAdd({question_id: question._id,user_id: _id})
 			return res.json(util.Result(question))
 		})
 	}).catch((err)=> {
@@ -73,8 +76,8 @@ exports.read = function (req,res) {
 		.exec((err,questions)=> {
 			getCommentSum(questions,(questions)=> {
 				getVote(questions,_id,(questions,infos)=>{
-					let questionSum = questions.length;
-					return res.json(util.Result({questions: questions,infos: infos,questionSum: questionSum}))
+					let RemainingCount = questions.length;
+					return res.json(util.Result({questions: questions,infos: infos,RemainingCount}))
 				})
 			})
 		})	

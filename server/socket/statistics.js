@@ -30,6 +30,7 @@ var sum = 100
 
   io.listen(4000);
 })()
+module.exports = io
 
 
 

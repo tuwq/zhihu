@@ -3,6 +3,7 @@ var Answer = mongoose.model('Answer')
 var Question = mongoose.model('Question')
 var Comment = mongoose.model('Comment')
 var Vote = require('./vote.js')
+const answerKue = require('../../kue/answer.js')
 const util = require('../../common/util.js');
 const checkUtil = require('../../common/checkUtil.js')
 const tokenUtil = require('../../common/token.js')
@@ -35,6 +36,12 @@ exports.insert = function (req,res) {
 						anonymousStatus: fields.anonymousStatus
 					})
 					answer.save()
+					// 添加一条动态
+					answerKue.answerAdd({
+						question_id: fields.question_id,
+						answer_id: answer._id,
+						user_id: _id
+					})
 					return res.json(util.Result(0))
 				}
 			})
@@ -64,7 +71,8 @@ exports.read = function (req,res) {
 				// 获取该问题下的回答数量
 				Answer.count({question_id: fields.question_id},(err,answerSum)=> {
 					getVote(answers,_id,(answers,infos)=> {
-						return res.json(util.Result({answers: answers,infos: infos,answerSum: answerSum}))
+						let RemainingCount = answers.length
+						return res.json(util.Result({answers: answers,infos: infos,answerSum: answerSum,RemainingCount}))
 					})
 				})
 			})

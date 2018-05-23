@@ -73,7 +73,8 @@
 				attentionStatus: 0,
 				// 加载问题详情数据
 				total_loading: true,
-				browseSum: 0
+				browseSum: 0,
+				first: true
 			}
 		},
 		components: {
@@ -108,6 +109,7 @@
 					this.question = res.data.result.question
 					this.attentionSum =  res.data.result.followSum
 					this.attentionStatus =  res.data.result.attentionStatus
+					readBrowseCount(this.question_id)
 					this.getAnswers()
 				})
 			},
@@ -119,12 +121,14 @@
 					page: this.page
 				}).then((res)=> {
 					this.answerSum = res.data.result.answerSum
-					if(res.data.result.answerSum) {
+					console.log('answerRemainingCount  ',res.data.result.RemainingCount)
+					if(res.data.result.RemainingCount) {
 						let data = mergeData(res.data.result.answers,res.data.result.infos)
 						this.answerList = this.answerList.concat(data)
 						this.page++
 						this.loading = false
 						this.total_loading = false
+						this.first = false
 					}else{
 						this.no_more_data = true
 					}
@@ -153,7 +157,7 @@
 				var $win = $(window)
 				$win.on('scroll',()=> {
 					if($win.scrollTop()-($(document).height()-$win.height())>-30){
-		                if (this.pend||this.no_more_data) {
+		                if (this.pend||this.no_more_data||this.first) {
 		                	return
 		                }
 		                this.getAnswers()
@@ -166,35 +170,24 @@
 			})
 		},
 		created() {
-			console.log('  detail ')
-			this.getDetail()
-			readBrowseCount(this.question_id)
+			console.log(' created ')
 			this.listenData()
+			this.getDetail()
 		},
 		watch: {
 			'$route' (to, from) {
 			      // 对路由变化作出响应...
-			   if ( this.question_id != undefined && to.path != from.path ) {
+			   if ( this.question_id != undefined && to.name == 'question_detail' ) {
+			   	    console.log(' 进入了 ')
 			   		this.no_more_data = false
 				    this.loading = true
 					this.total_loading = true
+					this.first = true
 					this.answerList = []
 					this.page = 1
 					this.getDetail()
-					readBrowseCount(this.question_id)
 				}
-			},
-			// question_id(newval,oldval) {
-			// 	if (newval != oldval && newval != undefined ) {
-			// 		this.loading = true
-			// 		this.detail_loading = false
-			// 		this.getDetail()
-			// 		readBrowseCount(this.question_id)
-			// 		this.answerList = []
-			// 		this.page = 1
-			// 		this.getAnswers()
-			// 	}
-			// },
+			}
 		},
 		computed: {
 			question_id() {

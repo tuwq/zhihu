@@ -2,15 +2,15 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 const { ObjectId, Mixed } = Schema.Types
 
-var DynamicsSchema = new Schema({
+var DynamicSchema = new Schema({
 	// 动态类型
-	// 1:问题相关	2:回答相关	3:评论相关
+	// 1:问题相关 2:回答相关	3:评论相关
 	type: {					
 		type: Number,
 		default: 0
 	},
 	// 动作类型
-	// 1:提出	2:回答 3:关注	4:点赞
+	// 1:提出	2:关注	3:点赞
 	action: {
 		type: Number,
 		default: 0	
@@ -44,7 +44,7 @@ var DynamicsSchema = new Schema({
 })
 
 
-DynamicsSchema.pre('save', function (next) {
+DynamicSchema.pre('save', function (next) {
   if (this.isNew) {
     this.meta.createdAt = this.meta.updatedAt = Date.now()
   } else {
@@ -53,4 +53,4 @@ DynamicsSchema.pre('save', function (next) {
   next()
 })
 
-module.exports = DynamicsSchema
+module.exports = DynamicSchema

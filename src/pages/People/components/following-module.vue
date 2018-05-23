@@ -229,13 +229,6 @@ import {communicationMixin,userMixin} from 'common/js/mixin.js'
 				if ( newval == 1 ) {
 					this.getFansList()
 				}
-			},
-			detail_user_id(newval,oldval) {
-				if ( newval != oldval && newval != undefined ) {
-					// 更改查看用户时，回到动态第一页
-					// communicationMixin.$emit('changeMainIndex',0)
-					// communicationMixin.$emit('changeScrollIndex',0)
-				}
 			}
 		}
 	}

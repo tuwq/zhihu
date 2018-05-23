@@ -35,9 +35,6 @@ import {scroll} from 'common/js/common.js';
 				})
 			}
 		},
-		created() {
-			console.log(' d-header ')
-		},
 		mounted () {
 			$('#content-arrow').addClass('content-arrow').removeClass('content-arrow-top');
 			this.$nextTick().then(()=> {

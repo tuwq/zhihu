@@ -98,7 +98,12 @@ const util = {
           iterator(i+1);   
         });
       })(0);
-  } 
+  },
+  copyObj : function (initalObj) {
+      let obj = {};
+      obj = JSON.parse(JSON.stringify(initalObj));
+      return obj;
+  }
 } 
 module.exports = util
 

@@ -31,9 +31,6 @@ import axios from 'axios'
           setIndexDropDown: 'SET_INDEX_DROPDOWN',
         })
       },
-      created() {
-        console.log('  home ')
-      },
       components: {
         ZHeader,
         PutQuestion,

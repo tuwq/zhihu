@@ -103,14 +103,14 @@ var UserSchema = new Schema({
 		type: Number,
 		default: 0
 	},
-  sendFeed: {
+  sendFeed: [{
     type: ObjectId,
-    ref: 'Feed'
-  },
-  receiveFeed: {
+    ref: 'Dynamic'
+  }],
+  receiveFeed: [{
     type: ObjectId,
-    ref: 'Feed'
-  },
+    ref: 'Dynamic'
+  }],
 	meta: {
 	    createdAt: {
 	      type: Date,

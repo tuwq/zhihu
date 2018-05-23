@@ -9,6 +9,7 @@ var bodyParser = require('body-parser');
 var mongoStore = require('connect-mongo')(session);
 var mime = require('mime');
 var statistics  = require('./socket/statistics')
+var kue = require('./kue/init.js')
 
 app.use(bodyParser.json());
 //post处理需要body-parser

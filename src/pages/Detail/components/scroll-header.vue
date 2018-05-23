@@ -56,6 +56,12 @@ import axios from 'axios'
 					this.$emit('changeAttention',res.data.status==1?1:0)
 				})
 			}
+		},
+		watch: {
+			'$route' (to, from) {
+			      // 对路由变化作出响应...
+			   
+			}
 		}
 	}
 </script>

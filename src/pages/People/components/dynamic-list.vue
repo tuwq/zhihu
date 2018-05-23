@@ -58,7 +58,24 @@
 					</div>
 					<comments v-show="commentsStatus"></comments>
 				</div>
-				<!--  动态列表数据模板不一致	 -->
+				<!--  动态列表数据模板不一致
+					// 动态类型
+					// 1:问题相关 2:回答相关	3:评论相关
+					// 动作类型
+					// 1:提出	2:关注	3:点赞
+					赞同回答(2,3)和回答了问题(2,1)相同
+					赞同问题(1,3)和关注问题(1,2)和添加了问题(1,1)相同
+					 -->
+				<div class="list-item">
+					<div class="item-meta-box">
+						<div class="item meta-inner">
+							<span class="meta-title">关注了问题</span><span>1 个月前</span>
+						</div>
+					</div>
+					<div class="item-answer-box">
+						<h2 class="answer-title-box"><div><a href="javascript:void(0)" target="_blank">C# 的前景如何？</a></div></h2>
+					</div>
+				</div>
 				
 			</div>
 		</div>
@@ -66,8 +83,9 @@
 </template>
 
 <script type="text/ecmascript-6">
-import comments from 'base/comments.vue';
-import {periodWrap} from 'common/js/common.js';
+import comments from 'base/comments.vue'
+import {periodWrap} from 'common/js/common.js'
+import axios from 'axios'
  	export default {
 		components: {
 			'comments': comments
@@ -91,9 +109,22 @@ import {periodWrap} from 'common/js/common.js';
 			},
 			switchCommentsStatus() {
 				this.commentsStatus = !this.commentsStatus;
+			},
+			init(){
+				axios.post('/dynamic/readSend',{
+					detail_id: this.detail_user_id
+				}).then((res)=>{
+					console.log(res.data)
+				})
 			}
 		},
+		created() {
+			this.init()
+		},
 		computed: {
+			detail_user_id() {
+				return this.$route.params.user_url
+			},
 			overflowStatusText() {
 				return this.overflowStatus?'收起':'阅读全文'
 			}
