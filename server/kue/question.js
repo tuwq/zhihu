@@ -40,7 +40,7 @@ queues.process('attentionQuestion', (job, done)=> {
  	// 是否是两次相同行为的动态
  	// 这里有个问题，新增的粉丝无法看到被取消后又被点击的赞
  	// 及时清理最近动态可解决，或者记录一下当前用户状态
- 	// 当粉丝数更新时，也可添加
+ 	// 当粉丝数更新时，进行更新
  	Dynamic.find({
  		type: 1,
  		action: 2,

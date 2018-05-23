@@ -100,9 +100,9 @@ exports.answerAdd = function ({question_id,answer_id,user_id}) {
 	}).save()
 }
 
-exports.praiseAnswer = function ({question_id,sender,receiver}) {
+exports.praiseAnswer = function ({answer_id,sender,receiver}) {
 	let job = queues.create("praiseAnswer",{
-		question_id,sender,receiver
+		answer_id,sender,receiver
 	}).save()
 }
 

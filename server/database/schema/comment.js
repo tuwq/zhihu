@@ -1,9 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 const { ObjectId, Mixed } = Schema.Types
-const moment = require('moment')
-
-// console.log(moment(Date.now()).format('YYYY-MM-DD'))
 
 var CommentSchema = new Schema({
 	content: {

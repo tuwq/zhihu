@@ -93,23 +93,17 @@ function getUserListInfo(binds,_id,callback) {
 			.exec((err,dbUser)=> {
 				// 寻找当前用户和目标用户的关注关系
 				Follow.getUserBind(user._id,_id,(status)=> {
-					infos.push(new Info({
+					infos.push({
 						answerSum: answerSum,
 						fansLength: dbUser.fans.length,
 						followStatus: status
-					}))
+					})
 					users.push(user)
 					iterator(i+1)	
 				})	
 			})
 		})
 	})(0)
-}
-
-function Info({answerSum,fansLength,followStatus}) {
-	this.answerSum = answerSum
-	this.fansLength = fansLength
-	this.followStatus = followStatus
 }
 
 exports.getAttentionQuestion = function(user_id,question_id,callback) {

@@ -151,22 +151,17 @@ function getFansData(fans,_id,callback) {
 		self.getUserBind(fans[i]._id,_id,(flowerStatus)=> {
 			Answer.count({user_id: fans[i]._id})
 			.exec((err,answerSum)=> {
-				infos.push(new FansInfo({
+				infos.push({
 					answerSum: answerSum,
 					followSum: fans[i].followers.length,
 					flowerStatus
-				}))
+				})
 				iterator( i+1 )
 			})
 		})
 	})(0)
 }
 
-function FansInfo({answerSum,followSum,flowerStatus}) {
-	this.answerSum = answerSum
-	this.followSum  = followSum
-	this.flowerStatus = flowerStatus
-}
 
 exports.userFollow = function (req,res) {
 	var token = req.headers.token
@@ -205,12 +200,12 @@ function getFollowsData (followers,_id,callback) {
 				.exec((err,questions)=> {
 					// 遍历问题，寻找每个问题下有多少个回答
 					getAnsweredSum(questions,(answeredSum)=> {
-						infos.push(new FollowerInfo({
+						infos.push({
 							answerSum,
 							questionSum: questions.length,
 							answeredSum,
 							flowerStatus
-						}))
+						})
 						iterator( i+1 )
 					})
 				})
@@ -232,9 +227,3 @@ function getAnsweredSum(questions,callback) {
 	})(0)
 }
 
-function FollowerInfo({answerSum,questionSum,answeredSum,flowerStatus}) {
-	this.answerSum = answerSum
-	this.questionSum = questionSum
-	this.answeredSum = answeredSum
-	this.flowerStatus = flowerStatus
-}
