@@ -156,6 +156,7 @@ import {communicationMixin} from 'common/js/mixin'
 				e.target.innerText = '已关注'
 			},
 			attention(question_id,status) {
+				console.log(' head ')
 				// 添加问题关注
 				axios.post('/attention/question/add',{
 					user_id: this.user._id,

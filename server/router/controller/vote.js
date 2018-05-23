@@ -6,6 +6,7 @@ var Comment = mongoose.model('Comment')
 var QuestionUser = mongoose.model('QuestionUser')
 var AnswerUser = mongoose.model('AnswerUser')
 var CommentUser = mongoose.model('CommentUser')
+const baseKue = require('../../kue/base.js')
 const util = require('../../common/util.js')
 const checkUtil = require('../../common/checkUtil.js')
 const tokenUtil = require('../../common/token.js')
@@ -50,24 +51,24 @@ exports.voteQuestion = function (req,res) {
 				})
 				bind.save()
 				// 处理问题所属用户的赞同数
-				self.handleTargetVote(0,fields.question_id,fields.vote,0)
+				self.handleTargetVote(0,fields.question_id,fields.vote,0,me_id)
 				return res.json(util.Result(0))
 			}
 			if (dbBind.vote == fields.vote) {
-				self.handleTargetVote(0,fields.question_id,0,dbBind.vote)
+				self.handleTargetVote(0,fields.question_id,0,dbBind.vote,me_id)
 				//取消了赞踩
 				dbBind.vote = 0
 				dbBind.save()
 				return res.json(util.Result(-1))
 			}
 			if (dbBind.vote == 0) {
-				self.handleTargetVote(0,fields.question_id,fields.vote,0)
+				self.handleTargetVote(0,fields.question_id,fields.vote,0,me_id)
 				// 第一次添加赞或踩
 				dbBind.vote = fields.vote
 				dbBind.save()
 				return res.json(util.Result(0))
 			}
-			self.handleTargetVote(0,fields.question_id,fields.vote,dbBind.vote)
+			self.handleTargetVote(0,fields.question_id,fields.vote,dbBind.vote,me_id)
 			// 改变了
 			dbBind.vote  = fields.vote
 			dbBind.save()
@@ -98,16 +99,16 @@ exports.voteAnswer = function (req,res) {
 				})
 				bind.save()
 				// 处理回答所属用户的赞同数
-				self.handleTargetVote(1,fields.answer_id,fields.vote,0)
+				self.handleTargetVote(1,fields.answer_id,fields.vote,0,me_id)
 				return res.json(util.Result(0))
 			}
 			if (dbBind.vote == fields.vote) {
-				self.handleTargetVote(1,fields.answer_id,0,dbBind.vote)
+				self.handleTargetVote(1,fields.answer_id,0,dbBind.vote,me_id)
 				// 取消了赞踩
 				dbBind.remove()
 				return res.json(util.Result(-1))
 			}
-			self.handleTargetVote(1,fields.answer_id,fields.vote,dbBind.vote)
+			self.handleTargetVote(1,fields.answer_id,fields.vote,dbBind.vote,me_id)
 			// 改变了
 			dbBind.vote  = fields.vote
 			dbBind.save()
@@ -136,15 +137,15 @@ exports.voteComment = function (req,res) {
 				})
 				bind.save()
 				// 处理评论所属用户的赞同数
-				self.handleTargetVote(2,fields.comment_id,fields.vote,0)
+				self.handleTargetVote(2,fields.comment_id,fields.vote,0,me_id)
 				return res.json(util.Result(0))
 			}
 			if (dbBind.vote == fields.vote) {
-				self.handleTargetVote(2,fields.comment_id,0,dbBind.vote)
+				self.handleTargetVote(2,fields.comment_id,0,dbBind.vote,me_id)
 				dbBind.remove()
 				return res.json(util.Result(-1))
 			}
-			self.handleTargetVote(2,fields.comment_id,fields.vote,dbBind.vote)
+			self.handleTargetVote(2,fields.comment_id,fields.vote,dbBind.vote,me_id)
 			dbBind.vote  = fields.vote
 			dbBind.save()
 			return res.json(util.Result(1))
@@ -227,7 +228,7 @@ exports.getVoteComment = function (comment_id,me_id,callback) {
 
 // 处理被点赞目标用户的赞踩问题
 // type, 0:问题  1:回答 2:评论
-exports.handleTargetVote = function(type,target_id,now,pre) {
+exports.handleTargetVote = function(type,target_id,now,pre,me_id) {
 	if ( type == 0 ) {
 		// 寻找提出这个问题所属的用户
 		Question.findById(target_id)
@@ -236,7 +237,7 @@ exports.handleTargetVote = function(type,target_id,now,pre) {
 			User.findById(question.user_id)
 			.select('approve')
 			.exec((err,targetUser)=> {
-				self.handleTargetUser(targetUser,now,pre)
+				self.handleTargetUser(targetUser,now,pre,me_id,0,target_id)
 			})
 		})
 	}else if ( type == 1 ) {
@@ -247,7 +248,7 @@ exports.handleTargetVote = function(type,target_id,now,pre) {
 			User.findById(answer.user_id)
 			.select('approve')
 			.exec((err,targetUser)=> {
-				self.handleTargetUser(targetUser,now,pre)
+				self.handleTargetUser(targetUser,now,pre,me_id,1,target_id)
 			})
 		})
 	}else if( type== 2 ) {
@@ -264,10 +265,12 @@ exports.handleTargetVote = function(type,target_id,now,pre) {
 	}
 }
 // 处理被点赞用户的赞踩问题
-exports.handleTargetUser = function(targetUser,now,pre) {
+exports.handleTargetUser = function(targetUser,now,pre,me_id,type,target_id) {
 	if ( now == 1 ) {
 		// 被点了一个赞
 		targetUser.approve++
+		// 发送动态  当前用户发送了一个赞 目标用户收到了一个赞
+		baseKue.praise(type,target_id,me_id,targetUser._id)
 	}else if( now ==  0 && pre != 2){
 		// 这次取消的上一次不是踩
 		targetUser.approve--

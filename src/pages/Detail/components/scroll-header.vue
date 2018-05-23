@@ -22,7 +22,6 @@
 </template>
 
 <script type="text/ecmascript-6">
-import {mapMutations,mapGetters} from 'vuex'
 import axios from 'axios'
 	export default {
 		props: {
@@ -35,11 +34,6 @@ import axios from 'axios'
 				default: null
 			}
 		},
-		computed: {
-			...mapGetters([
-				'user'
-			])
-		},
 		methods: {
 			enter(e) {
 				e.target.innerText = '取消关注'
@@ -48,19 +42,13 @@ import axios from 'axios'
 				e.target.innerText = '已关注'
 			},
 			attention(question_id,status) {
+				console.log( 'scroll' )
 				axios.post('/attention/question/add',{
-					user_id: this.user._id,
 					question_id: question_id,
 					status: status
 				}).then((res)=> {
 					this.$emit('changeAttention',res.data.status==1?1:0)
 				})
-			}
-		},
-		watch: {
-			'$route' (to, from) {
-			      // 对路由变化作出响应...
-			   
 			}
 		}
 	}

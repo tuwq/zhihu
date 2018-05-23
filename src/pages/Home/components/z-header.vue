@@ -80,15 +80,15 @@ import {communicationMixin} from 'common/js/mixin'
 				'user'
 			])
 		},
-		watch: {
-		    '$route' (to, from) {
-			   // 对路由变化作出响应...
-			   if ( from.path.indexOf('/login') !=-1 ) {
-			   		this.loadStatus = 0
-			   		this.getNowUser()
-			   }
-			}
-		},
+		// watch: {
+		//     '$route' (to, from) {
+		// 	   // 对路由变化作出响应...
+		// 	   if ( from.path.indexOf('/login') !=-1 ) {
+		// 	   		this.loadStatus = 0
+		// 	   		this.getNowUser()
+		// 	   }
+		// 	}
+		// },
 		components: {
 			'search-bar' : searchBar
 		}

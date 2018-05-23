@@ -40,13 +40,12 @@
 					limit: this.limit,
 					page: this.page
 				}).then((res)=> {
-					console.log('questioRemainingCount ',res.data.result.RemainingCount)
+					this.first = false
+					this.loading = false
 					if(res.data.result.RemainingCount) {	
 						let data =  mergeData(res.data.result.questions,res.data.result.infos)
 						this.questionList = this.questionList.concat(data)
-						this.page++
-						this.first = false
-						this.loading = false
+						this.page++	
 					}else{
 						this.no_more_data = true
 					}
@@ -77,17 +76,7 @@
 			// 瀑布流监听滚动事件更新数据
 			this.loadData()
 			this.getQuestionList(1)
-		},
-		// watch: {
-		//     '$route' (to, from) {
-		// 	   if ( to.path == '/home' && from.path != to.path ) {
-		// 	   		this.questionList = []
-		// 	   		this.loading = true
-		// 	   		this.page = 1
-		// 	   		this.getQuestionList()
-		// 	   }
-		// 	}
-		// }
+		}
 	}
 </script>
 

@@ -4,6 +4,7 @@ const QuestionUser = mongoose.model('QuestionUser')
 const User = mongoose.model('User')
 const Answer = mongoose.model('Answer')
 const Follow = require('./follow.js')
+const questionKue = require('../../kue/question.js')
 const checkUtil = require('../../common/checkUtil.js')
 const tokenUtil = require('../../common/token.js')
 
@@ -15,17 +16,17 @@ exports.attentionQuestionAdd = function (req,res) {
 	tokenUtil.verifyToken(token)
 	.then((_id)=> {
 		// 检查字段
-		if(checkUtil.isEmtry([fields.question_id,fields.user_id,fields.status])) {
+		if(checkUtil.isEmtry([fields.question_id,fields.status])) {
 			return res.json(util.Result('信息不完整',1))
 		}
 		// 没有关注过这个问题
 		// 关注这个问题
 		// 需要关系表
-		QuestionUser.findOne({question_id: fields.question_id,user_id: fields.user_id},(err,dbBind)=> {
+		QuestionUser.findOne({question_id: fields.question_id,user_id: _id},(err,dbBind)=> {
 			if (!dbBind) {
 				let questionUser = new QuestionUser({
 					question_id: fields.question_id,
-					user_id: fields.user_id,
+					user_id: _id,
 					attentionStatus: fields.status
 				})
 				questionUser.save()
@@ -33,9 +34,15 @@ exports.attentionQuestionAdd = function (req,res) {
 				dbBind.attentionStatus = fields.status
 				dbBind.save()
 			}
-			if (fields.status==1) {	
+			if (fields.status == 1 ) {	
+				// 发送一条动态
+				questionKue.attentionQuestion({
+					question_id: fields.question_id,
+					user_id: _id
+				})
 				return res.json(util.Result(1))
 			}else {
+				// 取消关注了问题
 				return res.json(util.Result(0))
 			}
 		})

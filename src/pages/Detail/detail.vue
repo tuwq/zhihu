@@ -120,15 +120,14 @@
 					limit: this.limit,
 					page: this.page
 				}).then((res)=> {
-					this.answerSum = res.data.result.answerSum
-					console.log('answerRemainingCount  ',res.data.result.RemainingCount)
+					this.loading = false
+					this.total_loading = false
+					this.first = false
 					if(res.data.result.RemainingCount) {
 						let data = mergeData(res.data.result.answers,res.data.result.infos)
 						this.answerList = this.answerList.concat(data)
+						this.answerSum = res.data.result.answerSum
 						this.page++
-						this.loading = false
-						this.total_loading = false
-						this.first = false
 					}else{
 						this.no_more_data = true
 					}
@@ -170,24 +169,8 @@
 			})
 		},
 		created() {
-			console.log(' created ')
 			this.listenData()
 			this.getDetail()
-		},
-		watch: {
-			'$route' (to, from) {
-			      // 对路由变化作出响应...
-			   if ( this.question_id != undefined && to.name == 'question_detail' ) {
-			   	    console.log(' 进入了 ')
-			   		this.no_more_data = false
-				    this.loading = true
-					this.total_loading = true
-					this.first = true
-					this.answerList = []
-					this.page = 1
-					this.getDetail()
-				}
-			}
 		},
 		computed: {
 			question_id() {

@@ -10,36 +10,34 @@ let self = this
 // 动作类型
 // 1:提出	2:关注	3:点赞
 
-;(async () => {
-	// 提出回答
-	queues.process('answerAdd', (job, done)=> {
-	 	let data = job.data
-	 	let dynamic = new Dynamic({
-	 		type: 2,
-	 		action: 1,
-	 		user_id: data.user_id,
-	 		question_id: data.question_id,
-	 		answer_id: data.answer_id
-	 	})
-	 	dynamic.save()
-	 	// 放入用户Feed中
-	 	User.findById(data.user_id)
-	 	.select('sendFeed fans')
-	 	.exec((err,user)=> {
-	 		// 本人发Feed添加记录
-	 		user.sendFeed.push(dynamic._id)
-	 		user.save()
-	 		// 粉丝收Feed添加记录
-	 		self.fansReceiveDynamic(user.fans,dynamic._id,done)
-	 	})
-	}); 
+// 提出回答
+queues.process('answerAdd', (job, done)=> {
+ 	let data = job.data
+ 	let dynamic = new Dynamic({
+ 		type: 2,
+ 		action: 1,
+ 		user_id: data.user_id,
+ 		question_id: data.question_id,
+ 		answer_id: data.answer_id
+ 	})
+ 	dynamic.save()
+ 	// 放入用户Feed中
+ 	User.findById(data.user_id)
+ 	.select('sendFeed fans')
+ 	.exec((err,user)=> {
+ 		// 本人发Feed添加记录
+ 		user.sendFeed.push(dynamic._id)
+ 		user.save()
+ 		// 粉丝收Feed添加记录
+ 		self.fansReceiveDynamic(user.fans,dynamic._id,done)
+ 	})
+}); 
 
-})()
 
 exports.answerAdd = function ({question_id,answer_id,user_id}) {
 	let job = queues.create("answerAdd",{
 		question_id,answer_id,user_id
-	}).priority('high').attempts(5).save()
+	}).save()
 }
 
 exports.fansReceiveDynamic = function (fans,dynamic_id,done) {

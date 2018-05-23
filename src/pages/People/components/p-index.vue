@@ -1,7 +1,7 @@
 <template>
 	<div>
-		<loading v-show="loading||!detail_loading"></loading>
-		<div v-show="detail_loading">
+		<loading v-show="total_loading"></loading>
+		<div v-show="!total_loading">
 			<div class="header" v-show="user||otherUser">
 				<my-profile v-if="index_type == 1 " :user="user"></my-profile>
 				<other-profile v-if="index_type == 2" :otherUser="otherUser" :fllowerStatus="fllowerStatus"
@@ -36,8 +36,7 @@ import {communicationMixin} from 'common/js/mixin'
   				preFrom: '',
   				preNext: '',
   				otherUser: null,
-  				loading: true,
-  				detail_loading: false,
+  				total_loading: true,
   				fllowerStatus: 0,
   				fansSum: 0,
   				followerSum: 0,
@@ -57,31 +56,22 @@ import {communicationMixin} from 'common/js/mixin'
 			init(callback) {
 				axios.post('/user/getIdByToken').then((res)=>{
 					if (res.data.result._id == this.detail_user_id ) {
-						this.loading = false
 						this.index_type = 1
-						this.detail_loading = true
 						this.updateCountInfo()
-						communicationMixin.$emit('setScrollHeaderAvatar',this.user)
+						
 					}else {
 						axios.post('/user/getInfoById',{
 							_id: this.detail_user_id
 						}).then((res)=> {
-							this.loading = false
 							this.otherUser = res.data.result.userInfo
-							communicationMixin.$emit('setScrollHeaderAvatar',this.otherUser)
-							if (res.data.status) {
-								// 404
-							}else {
-								// 当前用户是否关注目标用户
-								axios.post('/follow/userBind',{
-									detail_id: this.detail_user_id
-								}).then((res)=> {
-									this.fllowerStatus = res.data.result.fllowerStatus
-									this.index_type = 2
-									this.detail_loading = true
-									this.updateCountInfo()
-								})
-							}
+							// 当前用户是否关注目标用户
+							axios.post('/follow/userBind',{
+								detail_id: this.detail_user_id
+							}).then((res)=> {
+								this.fllowerStatus = res.data.result.fllowerStatus
+								this.index_type = 2
+								this.updateCountInfo()
+							})
 						})
 					}
 				})
@@ -99,7 +89,9 @@ import {communicationMixin} from 'common/js/mixin'
  					this.approveSum = res.data.result.approveSum
  					this.answerSum = res.data.result.answerSum
  					this.questionSum = res.data.result.questionSum
+ 					this.total_loading = false
  					communicationMixin.$emit('ChangeScrollCount',{questionSum: this.questionSum,answerSum: this.answerSum})
+ 					communicationMixin.$emit('setScrollHeaderAvatar',this.user)
  				})
 			},
 			listenerFollowChange() {
@@ -134,15 +126,6 @@ import {communicationMixin} from 'common/js/mixin'
 			...mapGetters([
 				'user',
 			])
-		},
-		watch: {
-		    '$route' (to, from) {
-			      // 对路由变化作出响应...
-			   if ( this.detail_user_id != undefined && to.name == 'people_url' ) {
-				    this.detail_loading = false
-					this.init()
-				}
-			}
 		}
 	}
 </script>
