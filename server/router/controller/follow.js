@@ -104,6 +104,7 @@ exports.userBind = function (req,res) {
 }
 
 exports.getUserBind = function(target_id,me_id,callback) {
+	
 	User.findById(target_id)
 	.select('fans')
 	.exec((err,target)=> {
@@ -117,6 +118,28 @@ exports.getUserBind = function(target_id,me_id,callback) {
 			}
 		})
 	})
+}
+
+
+function getFansData(fans,_id,callback) {
+	var infos = [];
+	(function iterator(i){
+		if ( i == fans.length ) {
+			return callback(infos)
+		}
+		// 当前用户是否关注过该粉丝列表中的用户
+		self.getUserBind(fans[i]._id,_id,(flowerStatus)=> {
+			Answer.count({user_id: fans[i]._id})
+			.exec((err,answerSum)=> {
+				infos.push({
+					answerSum: answerSum,
+					followSum: fans[i].followers.length,
+					flowerStatus
+				})
+				iterator( i+1 )
+			})
+		})
+	})(0)
 }
 
 exports.userFans = function(req,res) {
@@ -140,28 +163,6 @@ exports.userFans = function(req,res) {
 		return res.json(util.Result(1))
 	})
 }
-
-function getFansData(fans,_id,callback) {
-	var infos = [];
-	(function iterator(i){
-		if ( i == fans.length ) {
-			return callback(infos)
-		}
-		// 当前用户是否关注过该粉丝列表中的用户
-		self.getUserBind(fans[i]._id,_id,(flowerStatus)=> {
-			Answer.count({user_id: fans[i]._id})
-			.exec((err,answerSum)=> {
-				infos.push({
-					answerSum: answerSum,
-					followSum: fans[i].followers.length,
-					flowerStatus
-				})
-				iterator( i+1 )
-			})
-		})
-	})(0)
-}
-
 
 exports.userFollow = function (req,res) {
 	var token = req.headers.token

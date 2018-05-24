@@ -4,6 +4,7 @@ var Answer = mongoose.model('Answer')
 var Question = mongoose.model('Question')
 var Comment = mongoose.model('Comment')
 var Vote = require('./vote.js')
+var Follow = require('./follow.js')
 var Attention = require('./attention.js')
 const util = require('../../common/util.js');
 const checkUtil = require('../../common/checkUtil.js')
@@ -148,14 +149,14 @@ exports.getIdByToken = function (req,res) {
 		return res.json(util.Result(401))
 	})
 }
-exports.getInfoById = function (req,res) {
-	User.findById(req.body._id)
+exports.getInfoById = function (target_id,callback) {
+	User.findById(target_id)
 		.select('_id username avatar hobby info')
 		.exec((err,dbUser)=> {
 			if(!dbUser) {
-				return res.json(util.Result(1))
+				callback(null)
 			}
-			return res.json(util.Result({userInfo: dbUser}))
+			callback(dbUser)
 		})
 }
 
@@ -233,32 +234,25 @@ exports.cut = function (req,res) {
 	})
 }
 
-exports.readApprove = function (req,res) {
-	var token = req.headers.token;
-	tokenUtil.verifyToken(token)
-	.then((_id)=> {
-		let fields = req.body
-		User.findById(fields.detail_id)
-		.select('fans followers approve')
-		.exec((err,user)=> {
-			let fansSum = user.fans.length 
-			let followerSum = user.followers.length 
-			let approveSum = user.approve 
-			Question.count({user_id: fields.detail_id},(err,questionSum)=> {
-				Answer.count({user_id: fields.detail_id},(err,answerSum)=> {
-					return res.json(util.Result({
-						fansSum,
-						followerSum,
-						approveSum,
-						questionSum,
-						answerSum
-					}))
-				})
+exports.readApprove = function (user,callback) {
+	// 读取粉丝数，关注数，赞同数，问题数，提问数，回答数
+	User.findById(user._id)
+	.select('fans followers approve')
+	.exec((err,dbUser)=> {
+		let fansSum = dbUser.fans.length 
+		let followerSum = dbUser.followers.length 
+		let approveSum = dbUser.approve 
+		Question.count({user_id: user._id},(err,questionSum)=> {
+			Answer.count({user_id: user._id},(err,answerSum)=> {
+				user.fansSum = fansSum
+				user.followerSum = followerSum
+				user.approveSum = approveSum
+				user.questionSum = questionSum
+				user.answerSum = answerSum
+				callback(user)
 			})
 		})
-	}).catch((err)=> {
-		return res.json(util.Result(401))
-	})	
+	})
 }
 
 exports.readUserAnswer = function (req,res) {
@@ -272,15 +266,11 @@ exports.readUserAnswer = function (req,res) {
 	tokenUtil.verifyToken(token)
 	.then((_id)=> {
 		let fields = req.body
-		User.findById(fields.detail_id)
-		.select('username info avatar')
-		.exec((err,target)=> {
-			Answer.find({user_id: fields.detail_id},(err,answers)=> {
-				self.getAnswersInfo(answers,_id,(answers,infos)=>{
-					return res.json(util.Result({answers,infos,user: target}))
-				})
+		Answer.find({user_id: fields.detail_id},(err,answers)=> {
+			self.getAnswersInfo(answers,_id,(answers,infos)=>{
+				return res.json(util.Result({answers,infos}))
 			})
-		})			
+		})
 	}).catch((err)=> {
 		return res.json(util.Result(401))
 	})
@@ -340,14 +330,53 @@ exports.getQuestionInfo = function (questions,me_id,callback) {
 			return callback(questions,infos)
 		}
 		Answer.count({question_id: questions[i]._id},(err,answerSum)=> {
-			Attention.getAttentionQuestion(me_id,questions[i]._id,({followSum,attentionStatus})=> {
+			Attention.getAttentionQuestion(me_id,questions[i]._id,({attentionSum,attentionStatus})=> {
 				infos.push({
-					answerSum,followSum,attentionStatus
+					answerSum,attentionSum,attentionStatus
 				})
 				iterator( i+1 )
 			})
 		}) 
 	})(0)
+}
+
+
+
+
+exports.detail = function (req,res) {
+	let fields = req.body
+	var token = req.headers.token;
+	tokenUtil.verifyToken(token)
+	.then((me_id)=> {
+		let people_type = 0
+		let fields = req.body
+		if ( me_id === fields.detail_id ) {
+			// 是我本人的主页
+			people_type = 1 
+			self.getInfoById(me_id,(user)=>{
+				// 数量相关信息
+				let people_detail_user = util.copyObj(user)
+				self.readApprove(people_detail_user,(people_detail_user)=>{
+					return res.json(util.Result({people_detail_user,people_type}))
+				})
+			})
+		}else {
+			people_type = 2
+			// 不是我本人首页，我是否关注了该用户
+			Follow.getUserBind(fields.detail_id,me_id,(followStatus)=>{
+				// 获得信息
+				self.getInfoById(fields.detail_id,(user)=>{
+					let people_detail_user = util.copyObj(user)
+					self.readApprove(people_detail_user,(people_detail_user)=>{
+						people_detail_user.followStatus = followStatus
+						return res.json(util.Result({people_detail_user,people_type}))
+					})
+				})
+			})
+		}
+	}).catch((err)=> {
+		return res.json(util.Result(401))
+	})
 }
 
 

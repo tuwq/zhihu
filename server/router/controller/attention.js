@@ -107,13 +107,13 @@ function getUserListInfo(binds,_id,callback) {
 }
 
 exports.getAttentionQuestion = function(user_id,question_id,callback) {
-	QuestionUser.count({question_id: question_id,attentionStatus: 1},(err,followSum)=> {
+	QuestionUser.count({question_id: question_id,attentionStatus: 1},(err,attentionSum)=> {
 		// 当前用户是否关注了这个问题
 		QuestionUser.findOne({question_id: question_id,user_id: user_id},(err,bind)=> {
 			if (!bind) {
-				return callback({followSum,attentionStatus: 0})
+				return callback({attentionSum,attentionStatus: 0})
 			}
-			return callback({followSum,attentionStatus: bind.attentionStatus})
+			return callback({attentionSum,attentionStatus: bind.attentionStatus})
 		})
 	})
 }

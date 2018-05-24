@@ -128,23 +128,26 @@ exports.test = function (req,res) {
 exports.detail = function (req,res) {
 	var token = req.headers.token
 	tokenUtil.verifyToken(token)
-	.then((_id)=> {
+	.then((me_id)=> {
 		let fields = req.body
 		let question_id = fields.question_id
 		Question.findById(question_id)
 			.populate('category')
-			.populate('user_id')
 			.exec((err,question)=> {
 				if (!question) {
 					return res.json(util.Result(1))
 				}
+				// 深拷贝一份对象
+				let detail_question = util.copyObj(question)
 				Comment.count({question_id: question._id,answer_id: undefined},(err,commentSum)=> {
-						question.commentSum = commentSum
 						// 寻找关注状态信息
-						Attention.getAttentionQuestion(_id,question._id,({followSum,attentionStatus})=> {
+						Attention.getAttentionQuestion(me_id,question._id,({attentionSum,attentionStatus})=> {
 						// 寻找提出问题用户信息
-						self.detailUser(question_id,_id,({targetUser,info})=> {
-							return res.json(util.Result({question,followSum,attentionStatus,targetUser,info}))
+						self.detailUser(detail_question,me_id,(detail_question)=> {
+							detail_question.commentSum = commentSum
+							detail_question.attentionStatus = attentionStatus
+							detail_question.attentionSum = attentionSum
+							return res.json(util.Result({detail_question}))
 						})
 					})
 				})
@@ -154,19 +157,23 @@ exports.detail = function (req,res) {
 	})
 }
 
-exports.detailUser = function (question_id,me_id,callback) {
-	Question.findById(question_id)
+exports.detailUser = function (detail_question,me_id,callback) {
+	Question.findById(detail_question._id)
 	.populate({
 		path: 'user_id',
 		select: '_id info avatar username fans'
 	})
 	.exec((err,question)=>{
 		let target = question.user_id
-		Follow.getUserBind(target._id,me_id,(status)=> {
+		detail_question.user = util.copyObj(target)
+		Follow.getUserBind(target._id,me_id,(followStatus)=> {
 			Question.count({user_id: target._id},(err,questionSum)=> {
 				Answer.count({user_id: target.id},(err,answerSum)=> {
-					let info = {status,questionSum,answerSum,fansSum: target.fans.length}
-					callback({targetUser: target,info})
+					detail_question.user.followStatus = followStatus
+					detail_question.user.questionSum = questionSum
+					detail_question.user.answerSum = answerSum
+					detail_question.user.fansSum = target.fans.length
+					callback(detail_question)
 				})
 			})
 		})

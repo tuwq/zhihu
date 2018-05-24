@@ -70,9 +70,8 @@ exports.read = function (req,res) {
 			getCommentSum(answers,(answers)=> {
 				// 获取该问题下的回答数量
 				Answer.count({question_id: fields.question_id},(err,answerSum)=> {
-					getVote(answers,_id,(answers,infos)=> {
-						let RemainingCount = answers.length
-						return res.json(util.Result({answers: answers,infos: infos,answerSum: answerSum,RemainingCount}))
+					getVote(answers,_id,(_answers)=> {
+						return res.json(util.Result({answers: _answers,answerSum}))
 					})
 				})
 			})
@@ -83,18 +82,18 @@ exports.read = function (req,res) {
 }
 
 function getVote(answers,me_id,callback) {
-	let infos = [];
+	let _answers = [];
 	(function iterator(i){
 		if (i == answers.length) {
-			callback(answers,infos)
+			callback(_answers)
 			return 
 		}
 		Vote.getVoteAnswer(answers[i]._id,me_id,({good,bad,voteStatus})=> {
-			answers[i].good = good
-			answers[i].bad = bad
-			infos.push({
-				voteStatus: voteStatus
-			})
+			let _answer = util.copyObj(answers[i])
+			_answer.good = good
+			_answer.bad = bad
+			_answer.voteStatus = voteStatus
+			_answers.push(_answer)
 			iterator(i+1)
 		})
 	})(0)

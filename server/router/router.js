@@ -1,7 +1,6 @@
 var User = require('./controller/user.js');
 var Question = require('./controller/question.js')
 var Answer = require('./controller/answer.js')
-var Index = require('./controller/index.js')
 var Comment = require('./controller/comment.js')
 var Vote = require('./controller/vote.js')
 var Attention = require('./controller/attention.js')
@@ -17,7 +16,6 @@ module.exports = function (app) {
 	app.post('/user/getNowUserInfo',User.getNowUserInfo)
 	app.post('/user/saveInfo',User.saveInfo)
 	app.get('/user/test',User.test)
-	app.post('/user/getInfoById',User.getInfoById)
 	app.post('/user/setAvatar',User.setAvatar)
 	app.post('/user/cut',User.cut)
 	app.post('/user/test2',User.test2)
@@ -41,11 +39,11 @@ module.exports = function (app) {
 	app.post('/attention/question/read',Attention.attentionQuestionRed)
 	app.post('/follow/followTarget',Follow.followTarget)
 	app.post('/follow/userBind',Follow.userBind)
-	app.post('/user/readApprove',User.readApprove)
 	app.post('/follow/user/fans',Follow.userFans)
 	app.post('/follow/user/follow',Follow.userFollow)
 	app.post('/user/read/answer',User.readUserAnswer)
 	app.post('/user/read/question',User.readUserQuestion)
 	app.get('/dynamic/test',Dynamic.test)
 	app.post('/dynamic/readSend',Dynamic.readSend)
+	app.post('/user/detail',User.detail)
 }
