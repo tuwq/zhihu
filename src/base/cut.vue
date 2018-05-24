@@ -1,7 +1,7 @@
 <template>  
   <div id="demo" v-show="path">  
     <!-- 遮罩层 -->  
-    <div class="container" v-show="panel&&path">  
+    <div class="container" v-show=" panel && path ">  
       <div>  
         <img id="image" :src="url" alt="Picture" width="500" height="500">  
       </div>  

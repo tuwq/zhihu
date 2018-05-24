@@ -17,7 +17,6 @@
 	import {prepend,mergeData} from 'common/js/common'
 	import {communicationMixin} from 'common/js/mixin'
 	export default {
-		mixins: [communicationMixin],
 		data() {
 			return {
 				limit: 5,
@@ -52,7 +51,7 @@
 					this.pend = false	// 可以继续工作
 				})
 			},
-			loadData() {
+			Listener() {
 				// 加载更多数据
 				var $win = $(window)
 				$win.on('scroll',()=> {
@@ -74,7 +73,7 @@
 		},
 		created() {
 			// 瀑布流监听滚动事件更新数据
-			this.loadData()
+			this.Listener()
 			this.getQuestionList(1)
 		}
 	}

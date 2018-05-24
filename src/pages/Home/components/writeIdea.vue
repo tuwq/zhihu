@@ -8,7 +8,7 @@
       </div>
       <form class="idea-commit" enctype="multipart/form-data">
         <div class="idea-main">
-          <span class="idea-avatar"><img src="../../../common/image/header/avatar.png" width="30" height="30"></span>
+          <span class="idea-avatar" v-if="user.avatar"><img :src="base+user.avatar" width="30" height="30"></span>
           <textarea class="idea-content" placeholder="分享你的想法" ref="idea_content"></textarea>
         </div>
         <div class="idea-footer">
@@ -27,6 +27,11 @@
   import {mapGetters,mapMutations} from 'vuex';
   import {makeExpandingArea} from 'common/js/common.js';
   export default {
+    data() {
+      return {
+        base: '../../../../static/avatar/34/',
+      }
+    },
     methods: {
       cls_mask() {
         this.setIdeaDisplay(false);
@@ -40,7 +45,8 @@
     },
     computed: {
       ...mapGetters([
-        'write_idea_mask'
+        'write_idea_mask',
+        'user'
       ])
     },
   }

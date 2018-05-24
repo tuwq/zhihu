@@ -80,15 +80,6 @@ import {communicationMixin} from 'common/js/mixin'
 				'user'
 			])
 		},
-		// watch: {
-		//     '$route' (to, from) {
-		// 	   // 对路由变化作出响应...
-		// 	   if ( from.path.indexOf('/login') !=-1 ) {
-		// 	   		this.loadStatus = 0
-		// 	   		this.getNowUser()
-		// 	   }
-		// 	}
-		// },
 		components: {
 			'search-bar' : searchBar
 		}
@@ -96,7 +87,7 @@ import {communicationMixin} from 'common/js/mixin'
 </script>
 
 <style scoped lang="less" rel="stylesheet/less" type="text/less">
-  @import url('../cpLess/z-header.less');
+  @import url('./baseLess/mainHeader.less');
   [v-cloak] {
   	display: none !important;
   }

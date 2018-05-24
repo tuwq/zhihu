@@ -1,5 +1,5 @@
 <template>
-	<div id="myProFile" v-show="user">
+	<div id="myProFile" v-show="people_detail_user">
 		<div class="Card">
 			<div class="top-upload">
 				<div class="upload-inner">
@@ -9,30 +9,31 @@
 			</div>
 			<div class="bottom-userinfo">
 				<div class="userinfo-box">
-					<div v-show="user.avatar">
+					<div v-show="people_detail_user.avatar">
 						<div class="avatar-box" @click.stop="selectFile">
-							<div class="avatar-inner" v-if="user.avatar">
-								<img :src="base+user.avatar" id="avatar-img" 
-								width="160" height="160" class="avatar-img">
+							<div class="avatar-inner" v-if="people_detail_user.avatar">
+								<img :src="base+people_detail_user.avatar" id="avatar-img" 
+								width="160" height="160" class="avatar-img" ref="avatarImg">
 							</div>	
 							<div class="avatar-edit-mask" >
 								<div class="mask-inner"></div>
 								<div class="mask-content"><svg viewBox="0 0 24 24"><path d="M20.094 6S22 6 22 8v10.017S22 20 19 20H4.036S2 20 2 18V7.967S2 6 4 6h3s1-2 2-2h6c1 0 2 2 2 2h3.094zM12 16a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7zm0 1.5a5 5 0 1 0-.001-10.001A5 5 0 0 0 12 17.5zm7.5-8a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"></path></svg><div class="modify">修改我的头像</div></div>
 							</div>
-							<input type="file" name="avatar" id="avatar-upload" accept="image/png,image/jpeg" style="display: none;">'
+							<input type="file" name="avatar" id="avatar-upload" accept="image/png,image/jpeg" style="display: none;"
+							ref="avatarUpload">
 						</div>
 					</div>
-					<div class="info" v-if="user.info">
+					<div class="info" v-if="people_detail_user.info">
 						<div class="info-header"><h1 class="header-title">
-							<span class="name">{{user.username}}</span>
-							<span class="intro">{{user.info.intro}}</span>
+							<span class="name">{{people_detail_user.username}}</span>
+							<span class="intro">{{people_detail_user.info.intro}}</span>
 							</h1>
 						</div>
 						<div class="info-body">
-							<div class="related-info" v-if="user.info"> 
-								<div v-if="user.info.industry">
+							<div class="related-info" v-if="people_detail_user.info"> 
+								<div v-if="people_detail_user.info.industry">
 									<span class="related-icon"><svg viewBox="0 0 20 18" width="13" height="16"><title></title><g><path d="M15 3.998v-2C14.86.89 13.98 0 13 0H7C5.822 0 5.016.89 5 2v2l-3.02-.002c-1.098 0-1.97.89-1.97 2L0 16c0 1.11.882 2 1.98 2h16.033c1.1 0 1.98-.89 1.987-2V6c-.007-1.113-.884-2.002-1.982-2.002H15zM7 4V2.5s-.004-.5.5-.5h5c.5 0 .5.5.5.5V4H7z"></path></g></svg></span>
-									<span>{{user.info.industry}}</span>
+									<span>{{people_detail_user.info.industry}}</span>
 								</div>
 							</div>
 						</div>
@@ -52,17 +53,6 @@ import {mapGetters,mapMutations,mapActions} from 'vuex';
 import {communicationMixin} from 'common/js/mixin'
 import {copyObj} from 'common/js/util'
  	export default {
- 		mixins: [communicationMixin],
- 		props: {
- 			user: {
- 				type: Object,
- 				default() {
- 					return {
- 						info:{}
- 					}
- 				}
- 			}
- 		},
  		data() {
  			return {
  				img_size: 0,
@@ -71,12 +61,12 @@ import {copyObj} from 'common/js/util'
  		},
  		methods: {
  			onChangUpload() {
-				$('#avatar-upload').on('change',()=> {
+				$(this.$refs.avatarUpload).on('change',()=> {
  					this.ajaxUpload()
  				})
  			},
  			selectFile() {
- 				$('#avatar-upload').click();
+ 				$(this.$refs.avatarUpload).click();
  			},
  			ajaxUpload() {
  				var me = this;
@@ -84,7 +74,9 @@ import {copyObj} from 'common/js/util'
 				    type: "POST",  
 				    url: "/user/setAvatar",  
 				    //要传到后台的参数，没有可以不写  
-				    data:{avatar_size: this.img_size,username: this.user.username,_id: this.user._id},
+				    data:{
+				    	avatar_size: this.img_size,username: this.user.username,_id: this.user._id
+				    },
 				    secureuri : false,//是否启用安全提交，默认为false  
 				    fileElementId:'avatar-upload',//文件选择框的id属性  
 				    dataType: 'json',//服务器返回的格式  
@@ -106,15 +98,15 @@ import {copyObj} from 'common/js/util'
 				   	},
 				   	complete: ()=> {
 				   		// 内部递归解决change只触发一次的bug
-					 	$("#avatar-upload").replaceWith('<input type="file" name="avatar" id="avatar-upload" accept="image/png,image/jpeg" style="display: none;">') 
-				   		$('#avatar-upload').on('change',(e)=> {
+					 	$(this.$refs.avatarUpload).replaceWith('<input type="file" name="avatar" id="avatar-upload" accept="image/png,image/jpeg" style="display: none;" ref="avatarUpload">') 
+				   		$(this.$refs.avatarUpload).on('change',(e)=> {
 							this.ajaxUpload()
 						}) 
 					}
 				});
  			},
  			initData() {	
- 				this.img_size = $('#avatar-img').attr('width')
+ 				this.img_size = $(this.$refs.avatarImg).attr('width')
  			},
  			cutOver() {
  				communicationMixin.$on('cutOver',(newPath)=> {
@@ -126,11 +118,14 @@ import {copyObj} from 'common/js/util'
  			...mapMutations({
 				setCutAvatarMask: 'SET_CUT_AVATAR_MASK',
 				setUser: 'SET_USER'
-			}),
-			...mapActions([
-				'changeAvatar'
-			])
+			})
  		},
+ 		computed: {
+			...mapGetters([
+				'people_detail_user',
+				'user'
+			])
+		},
  		mounted() {
  			this.initData();
  			this.onChangUpload()

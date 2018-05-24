@@ -33,7 +33,7 @@ import verificationCode from 'base/verificationCode.vue';
 		props: {
 			tipMsg: {
 				type: String,
-				default: '验证码'
+				default: ''
 			}
 		},
 		data() {
@@ -47,6 +47,7 @@ import verificationCode from 'base/verificationCode.vue';
 		methods: {
 			toPhoneLogin() {
 				this.$emit('toPhoneLogin');
+				this.clearData()
 			},
 			switchVisible() { 
 				$('#password').attr('type') == 'password'?$('#password').attr('type','text'):$('#password').attr('type','password');
@@ -56,6 +57,12 @@ import verificationCode from 'base/verificationCode.vue';
 			},
 			changeTip() {
 				this.$emit('changeTip','')
+			},
+			clearData() {
+				this.telphone = ''
+				this.password = ''
+				this.validateCode = ''
+				this.userCode = ''
 			}
 		},
 		computed: {

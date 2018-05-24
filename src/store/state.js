@@ -9,12 +9,13 @@ const state = {
 	form_type: 0,					//0: 注册 1:登录
 	people_dropup: false,
 	user: {},
-	question_user: {},
+	detail_question: {},
 	token: _getToken()||'',
 	cut_avatar_mask: false,
 	add_answer_status: false,
 	conversation_mask: false,
-	attention_question_modal: false
+	attention_question_modal: false,
+	people_detail_user: {}
 }
 
 export default state;

@@ -1,11 +1,12 @@
 <template>
 	<div id="">
-		<div class="side-column" v-show="detail_user_id">
+		<div class="side-column">
 			<div class="Card achievement-box">
 				<div class="header-title"><div class="text">个人成就</div></div>
 				<div class="side-items">
 					<div class="side-item">
-						<div class="approve"><div class="text"><svg fill="#8590a6" viewBox="0 0 20 18" width="16" height="16"><title></title><g><path d="M.718 7.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.65.718.65h1.45c.916 0 .847-.65.847-.65V7.793c-.09-.88-.853-.79-.846-.79l-2.446.02zm11.727-.05S13.2 5.396 13.6 2.89C13.765.03 11.55-.6 10.565.53c-1.014 1.232 0 2.056-4.45 5.83C5.336 6.965 5 8.01 5 8.997v6.998c-.016 1.104.49 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.91c1.047-3.516-1.95-3.704-1.95-3.704l-5.387.007z"></path></g></svg></div>获得{{approveSum}}次赞同</div>
+						<div class="approve"><div class="text"><svg fill="#8590a6" viewBox="0 0 20 18" width="16" height="16"><title></title><g><path d="M.718 7.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.65.718.65h1.45c.916 0 .847-.65.847-.65V7.793c-.09-.88-.853-.79-.846-.79l-2.446.02zm11.727-.05S13.2 5.396 13.6 2.89C13.765.03 11.55-.6 10.565.53c-1.014 1.232 0 2.056-4.45 5.83C5.336 6.965 5 8.01 5 8.997v6.998c-.016 1.104.49 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.91c1.047-3.516-1.95-3.704-1.95-3.704l-5.387.007z"></path></g></svg></div>
+						获得{{people_detail_user.approveSum}}次赞同</div>
 						<div class="collection">获得0次感谢,0次收藏</div>
 					</div>
 				</div>
@@ -15,13 +16,13 @@
 					<a href="javascript:void(0)" class="NumberBtn" @click.stop.prevent="openFollow">
 						<div class="item-inner">
 							<div class="itemName">关注了</div>
-							<strong class="itemValue">{{followerSum}}</strong>
+							<strong class="itemValue">{{people_detail_user.followerSum}}</strong>
 						</div>
 					</a>
 					<a href="javascript:void(0)" class="NumberBtn" @click.stop.prevent="openFans">
 						<div class="item-inner">
 							<div class="itemName">关注者</div>
-							<strong class="itemValue">{{fansSum}}</strong>
+							<strong class="itemValue">{{people_detail_user.fansSum}}</strong>
 						</div>
 					</a>
 				</div>
@@ -84,25 +85,8 @@
 <script type="text/ecmascript-6">
 import axios from 'axios'
 import {communicationMixin} from 'common/js/mixin.js'
+import {mapGetters,mapMutations} from 'vuex'
  	export default {
- 		props: {
- 			detail_user_id: {
- 				type: String,
- 				default: ''
- 			},
- 			followerSum: {
- 				type: Number,
- 				default: 0
- 			},
- 			fansSum: {
- 				type: Number,
- 				default: 0
- 			},
- 			approveSum: {
- 				type: Number,
- 				default: 0
- 			}
- 		},
  		methods: {
  			openFollow() {
  				communicationMixin.$emit('showFollwer')
@@ -111,8 +95,13 @@ import {communicationMixin} from 'common/js/mixin.js'
  			openFans() {
  				communicationMixin.$emit('showFollwer')
  				communicationMixin.$emit('openFans')
- 			}
- 		}
+ 			},
+ 		},
+		computed: {
+			...mapGetters([
+				'people_detail_user'
+			])
+		},
 	}
 </script>
 

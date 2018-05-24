@@ -1,17 +1,17 @@
 <template>
 	<div id="PHeader">
-		<z-header></z-header>
-		<scroll-header></scroll-header>	
+		<main-header ref="mainHeader"></main-header>
+		<scroll-header ref="scrollHeader"></scroll-header>	
 	</div>
 </template>
 
 <script type="text/ecmascript-6">
-	import ZHeader from 'z_components/z-header.vue';
+	import mainHeader from 'base/mainHeader.vue';
 	import ScrollHeader from 'p_components/scroll-header.vue';
 	import {scroll} from 'common/js/common.js';
  	export default {
 		components: {
-			'z-header': ZHeader,
+			'main-header': mainHeader,
 			'scroll-header': ScrollHeader
 		},
 		methods: {

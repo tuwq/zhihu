@@ -1,7 +1,7 @@
 <template>
 	<div class="cls-bubble">
 		<button @click.stop.prevent="closeQuestion">x</button>
-		<z-tag class="z-tag"><p slot="content">不感兴趣</p></z-tag>
+		<z-tag class="z-tag"><p slot="content">{{text}}</p></z-tag>
 	</div>
 </template>
 
@@ -14,6 +14,10 @@
 			},
 			questionList: {
 				type: Array
+			},
+			text: {
+				type: String,
+				default: '不感兴趣'
 			}
 		},
 		components: {

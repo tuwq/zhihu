@@ -1,23 +1,25 @@
 <template>
- 	<div id="detail_right" v-if="question_user">
+ 	<div id="detail_right" v-if="detail_question">
  		<div>
- 			<div class="Card">
+ 			<div class="Card" v-if="detail_question.user">
  				<div class="Card-header">
  					<div class="Card-headerText">关于提问者</div>
  				</div>
  				<div class="Card-section">
  					<div class="AuswerAuthor-user">
- 						<div class="AnswerAuthor-user-avatar" v-if="question_user.avatar">
- 							<a href="" 
- 							@click.stop.prevent="toUser(question_user)"><img :src="base+question_user.avatar" width="60" height="60"></a>
+ 						<div class="AnswerAuthor-user-avatar" v-if="detail_question.user.avatar">
+							<router-link :to="{path:`/people/${detail_question.user._id}` }">
+								<img :src="base+detail_question.user.avatar" width="60" height="60">
+							</router-link>
  						</div>
  						<div class="AnswerAuthor-user-content">
  							<div class="AnswerAuthor-user-name">
- 								<a href=""
- 								@click.stop.prevent="toUser(question_user)">{{question_user.username}}</a>
+ 								<router-link :to="{path:`/people/${detail_question.user._id}` }">
+									{{detail_question.user.username}}
+ 								</router-link>
  							</div>
- 							<div class="AnswerAuthor-user-headline" v-if="question_user.info">
- 								<div class="ztext">{{question_user.info.intro}}</div>
+ 							<div class="AnswerAuthor-user-headline" v-if="detail_question.user.info">
+ 								<div class="ztext">{{detail_question.user.info.intro}}</div>
  							</div>
  						</div>
  					</div>
@@ -28,30 +30,30 @@
  							<a class="NumberBoared-item">
  								<span class="NumberBoard-itemInner">
  									<div class="NumberBoard-itemName">回答</div>
- 									<span class="NumberBoard-itemValue">{{question_user.answerSum}}</span>
+ 									<span class="NumberBoard-itemValue">{{detail_question.user.answerSum}}</span>
  								</span>
  							</a>
  							<a class="NumberBoared-item">
  								<span class="NumberBoard-itemInner">
  									<div class="NumberBoard-itemName">提问</div>
- 									<span class="NumberBoard-itemValue">{{question_user.questionSum}}</span>
+ 									<span class="NumberBoard-itemValue">{{detail_question.user.questionSum}}</span>
  								</span>
  							</a>
  							<a class="NumberBoared-item">
  								<span class="NumberBoard-itemInner">
  									<div class="NumberBoard-itemName">关注者</div>
- 									<span class="NumberBoard-itemValue">{{question_user.fansSum}}</span>
+ 									<span class="NumberBoard-itemValue">{{detail_question.user.fansSum}}</span>
  								</span>
  							</a>
  						</div>
  					</div>
- 					<div class="MemberButtonGroup" v-if="question_user.info" v-show="question_user._id!=user._id">
+ 					<div class="MemberButtonGroup" v-if="detail_question.user.info" v-show="detail_question.user._id!=user._id">
  						<button class="followButton" 
- 						v-show="question_user.status==0"
- 						@click.stop.prevent="followPeople(question_user._id,1)"><span>
- 						关注{{question_user.info.gender==0?'他':question_user.info.gender==1?'他':'她'}}</span></button>
- 						<button class="followButton cancel" v-show="question_user.status==1"
- 						@click.stop.prevent="followPeople(question_user._id,0)"
+ 						v-show="detail_question.user.followStatus==0"
+ 						@click.stop.prevent="followPeople(detail_question.user._id,1)"><span>
+ 						关注{{detail_question.user.info.gender==0?'他':detail_question.user.info.gender==1?'他':'她'}}</span></button>
+ 						<button class="followButton cancel" v-show="detail_question.user.followStatus==1"
+ 						@click.stop.prevent="followPeople(detail_question.user._id,0)"
  						@mouseenter="enter($event)" 
 	 					@mouseleave="leave($event)"><span>取消关注</span></button>
  						<button class="privateButton"><span>发私信</span></button>
@@ -66,9 +68,7 @@
 import {mapMutations,mapGetters} from 'vuex';
 import {copyObj} from 'common/js/util.js'
 import axios from 'axios'
-import {communicationMixin,userMixin} from 'common/js/mixin.js'
 	export default {
-		mixins: [userMixin],
 		data() {
 			return {
 				base: '../../../../static/avatar/60/'
@@ -86,21 +86,28 @@ import {communicationMixin,userMixin} from 'common/js/mixin.js'
  					target_id: target_id,
  					action: action
  				}).then((res)=> {
+ 					// 更改关注变化
  					if (res.data.status) {
  						alert(res.data.result.msg)
  					}
- 					let _question_user = copyObj(this.question_user)
- 					action==1?_question_user.status=1:_question_user.status=0
- 					this.setQuestionUser(_question_user)
+ 					let _detail_question = copyObj(this.detail_question)
+ 					if ( action === 1 ) {
+ 						_detail_question.user.followStatus = 1
+ 						_detail_question.user.fansSum++
+ 					}else {
+ 						_detail_question.user.followStatus = 0
+ 						_detail_question.user.fansSum--
+ 					}
+ 					this.setDetailQuestion(_detail_question)
  				})
  			},
  			...mapMutations({
-				setQuestionUser: 'SET_QUESTION_USER'
+				setDetailQuestion: 'SET_DETAIL_QUESTION'
 			})
 		},
 		computed: {
 			...mapGetters([
-				'question_user',
+				'detail_question',
 				'user'
 			])
 		}

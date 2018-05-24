@@ -22,14 +22,14 @@
  					<button class="pageButton" v-show="page!=1" @click.stop.prevent="getCommentList(page-1)">上一页</button>
 					<div style="display: inline-block;">
 						<!--少于 4 页 1 2 3 4-->
-						<div v-if="pageSum<4" style="display: inline-block;" class="mod">
+						<div v-if="pageSum<=4" style="display: inline-block;" class="mod">
 							<button @click.stop.prevent="getCommentList(item)" class="pageButton" v-for="item in pageSum" type="button" ref="btn">{{item}}</button>
 						</div>
 
 						<div v-else style="display: inline-block;" class="mod">
 							<!--三种情况 1-->
 							<!-- 1 2 3 4 ... 17 -->
-							<div v-if="page<=4" class="p1">
+							<div v-if="page<4" class="p1">
 								<button  @click.stop.prevent="getCommentList(item)" class="pageButton" v-for="item in [1,2,3,4]" type="button" ref="btn">{{item}}
 							 	</button>
 								<span class="PaginationButton">...</span>
@@ -85,10 +85,6 @@ import axios from 'axios'
 				type: Number,
 				default: 0
 			},
-			index: {
-				type: Number,
-				default: 0
-			},
 			answer_id: {
 				type: String,
 				default: ''
@@ -138,7 +134,7 @@ import axios from 'axios'
 					}).then((res)=> {
 						this.content = ''
 						this.getCommentList(1)
-						communicationMixin.$emit('incrAnswerCommentSum',this.index)
+						this.$emit('incrAnswerCommentSum')
 					})					
 				}
 			},
@@ -155,9 +151,7 @@ import axios from 'axios'
 						let data = mergeData(res.data.result.comments,res.data.result.infos)
 						this.commentList = data
 						this.pageSum = Math.ceil(this.commentSum/this.limit)
-						this.$nextTick().then(()=> {
-							this.currentClass(page)
-						})
+						this.currentClass(page)
 					})
 				} else if ( this.fromType  == 'question' ) {
 					axios.post('/comment/read/question',{
@@ -170,9 +164,7 @@ import axios from 'axios'
 						let data = mergeData(res.data.result.comments,res.data.result.infos)
 						this.commentList = data
 						this.pageSum = Math.ceil(this.commentSum/this.limit)
-						this.$nextTick().then(()=> {
-							this.currentClass(page)
-						})
+						this.currentClass(page)	
 					})
 				}
 			},
@@ -192,12 +184,9 @@ import axios from 'axios'
 				if (this.from == 'question') {
 					this.$emit('incrQuestionCommentSum')
 				}else {
-					communicationMixin.$emit('incrAnswerCommentSum',this.index)
+					this.$emit('incrAnswerCommentSum')
 				}
-			},
-		    ...mapMutations({
-				setAnswers: 'SET_ANSWERS'
-			}),
+			}
 		},
 		mounted() {
 			makeExpandingArea(this.$refs.comment_input)
@@ -211,18 +200,8 @@ import axios from 'axios'
 		},
 		computed: {
 			...mapGetters([
-				'user',
-				'answers'
+				'user'
 			])
-		},
-		watch: {
-			question_id(newval,oldval) {
-				if ( newval != oldval && newval != undefined ) {
-					// 改变收起评论的条数
-					this.$emit('changeCommentCount')
-					this.getCommentList(1)
-				}
-			}
 		}
 	}
 </script>

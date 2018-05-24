@@ -23,10 +23,10 @@
 				<div class="line"></div>
 				<div class="content">
 					<div class="content-inner">
-						<span class="rich-text">{{item.desc}}</span>
-						<span class="overflow-text"></span>
-						<button class="content-more" @click.stop.prevent="more($event)">阅读全文<!-- <svg viewBox="0 0 10 6" width="10" height="16" v-show="!overflowStatus"><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>
-					<svg v-show="overflowStatus" viewBox="0 0 10 6" width="10" height="16" style="transform: rotate(180deg);"><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg> -->
+						<span class="rich-text" ref="contentText">{{item.desc}}</span>
+						<span class="overflow-text" ref="allText"></span>
+						<button class="content-more" 
+						@click.stop.prevent="more($event)">阅读全文
 						</button>
 					</div>
 					<div class="content-actions">
@@ -38,9 +38,9 @@
 								<title></title><g><path d="M0 15.243c0-.326.088-.533.236-.896l7.98-13.204C8.57.57 9.086 0 10 0s1.43.57 1.784 1.143l7.98 13.204c.15.363.236.57.236.896 0 1.386-.875 1.9-1.955 1.9H1.955c-1.08 0-1.955-.517-1.955-1.9z"></path></g>
 							</svg>{{item.bad}}</button>
 						</span>
-						<button class="item-action" @click.stop.prevent="openComment($event,item.commentSum)">
+						<button class="item-action" @click.stop.prevent="openComment($event)">
 							<span class="">
-							{{item.commentSum||0}}条问题评论</span>
+							{{item.commentSum||0}} 条问题评论</span>
 						</button>
 						<button class="item-action">
 							<span class="">&#8203;<svg fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M2.931 7.89c-1.067.24-1.275 1.669-.318 2.207l5.277 2.908 8.168-4.776c.25-.127.477.198.273.39L9.05 14.66l.927 5.953c.18 1.084 1.593 1.376 2.182.456l9.644-15.242c.584-.892-.212-2.029-1.234-1.796L2.93 7.89z"></path></svg>分享</span>
@@ -57,10 +57,9 @@
 					</div>
 				</div>
 				<comments 
-				class="comment"
-				v-if="loadComment"
-				@incrQuestionCommentSum="item.commentSum++"
+				v-if="CommentsLoadStatus"
 				fromType="question"
+				@incrQuestionCommentSum="item.commentSum++"
 				:question_id="item._id" 
 				:commentSum="item.commentSum"  
 				></comments>
@@ -95,7 +94,7 @@
 		data() {
 			return {
 				base: '../../../../static/avatar/34/',
-				loadComment: false
+				CommentsLoadStatus: false
 			}
 		},
 		methods: {
@@ -131,26 +130,25 @@
 				})
 			},
 			more(e) {	
-				let rich = $(e.target).siblings('.rich-text')	
-				let over = $(e.target).siblings('.overflow-text')	
-				if ($(e.target).text()=='阅读全文') {
-					periodWrap(rich,over)
+				if ($(e.target).text().trim()=='阅读全文') {
 					$(e.target).text('收起')
+					periodWrap($(this.$refs.contentText),$(this.$refs.allText));
 				}else {
-					let text = over.children().text()
-					over.empty()
-					rich.text(text)
-					$(e.target).text('阅读全文')
+					var text = $(this.$refs.allText).children().text();
+					$(this.$refs.contentText).text(text);
+					$(this.$refs.allText).empty();
+				 	$(e.target).text('阅读全文')
 				}
 			},
 			openComment(e,commentSum) {
-				this.loadComment = !this.loadComment
-				$(e.target).text().trim()=='收起评论'?$(e.target).text(commentSum+'条问题评论'):$(e.target).text('收起评论')
-				$(e.target).parents('.question').find('.comment').toggle();
+				$(e.target).text().trim()=='收起评论'
+				?$(e.target).text(this.item.commentSum + ' 条问题评论')
+				:$(e.target).text('收起评论')
+				this.CommentsLoadStatus = !this.CommentsLoadStatus
 			}
 		},
 		components: {
-			'cls-bubble': clsBubble,
+			clsBubble,
 			comments
 		},
 	}

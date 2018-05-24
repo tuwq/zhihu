@@ -1,8 +1,11 @@
 <template>
- 	<div id="answer-module">
+ 	<div id="answer-module" v-if="answers">
  		<div class="list-header">
- 			<h4 class="header-text" v-if="uInfo.info"><span>
- 			{{user._id==detail_user_id?'我':uInfo.info.gender==0?'他':uInfo.info.gender==1?'他':'她'}}的回答</span></h4>
+ 			<h4 class="header-text" 
+ 			v-if="people_detail_user.info"><span>
+ 			{{user._id==detail_user_id?'我'
+ 			:people_detail_user.info.gender==0?'他'
+ 			:people_detail_user.info.gender==1?'他':'她'}}的回答</span></h4>
  			<div class="header-options"><button>按时间排序<span>&#8203;<svg fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M12 16.183l2.716-2.966a.757.757 0 0 1 1.064.001.738.738 0 0 1 0 1.052l-3.247 3.512a.758.758 0 0 1-1.064 0L8.22 14.27a.738.738 0 0 1 0-1.052.758.758 0 0 1 1.063 0L12 16.183zm0-9.365L9.284 9.782a.758.758 0 0 1-1.064 0 .738.738 0 0 1 0-1.052l3.248-3.512a.758.758 0 0 1 1.065 0L15.78 8.73a.738.738 0 0 1 0 1.052.757.757 0 0 1-1.063.001L12 6.818z"></path></svg></span></button></div>
  		</div>
  		<div class="answer-box" v-show="!answers">
@@ -19,7 +22,7 @@
  			</div>
  		</div>
  		<div class="answer-list">
- 			<answer-people v-for="(item,index) in answers" :uInfo="uInfo" :item="item" :index="index" :key="item._id"></answer-people>
+ 			<answer-people v-for="(item,index) in answers" :item="item" :index="index" :key="item._id"></answer-people>
  		</div>
  	</div>
 </template>
@@ -31,42 +34,14 @@ import answerPeople from 'p_components/answer_people.vue'
 import comments from 'base/comments.vue'
 import axios from 'axios'
 	export default {
-		data() {
-			return {
-				uInfo: {
-					info: {}
-				},
-				answers: [],
-				loadComment: false
-			}
-		},
 		methods: {
-			readAll(e) {
-				let rich = $(e.target).siblings('.RichText')	
-				let over = $(e.target).siblings('.over-text')	
-				if ($(e.target).text()=='阅读全文') {
-					periodWrap(rich,over)
-					$(e.target).text('收起')
-				}else {
-					let text = over.children().text()
-					over.empty()
-					rich.text(text)
-					$(e.target).text('阅读全文')
-				}
-			},
 			init() {
 				axios.post('/user/read/answer',{
 					detail_id: this.detail_user_id
 				}).then((res)=> {
 					this.answers = mergeData(res.data.result.answers,res.data.result.infos)
-					this.uInfo = res.data.result.user
 				})
-			},
-			openComment(e,index) {
-				this.loadComment = true
-				$(e.target).text().trim()=='收起评论'?$(e.target).text(cCount+'条评论'):$(e.target).text('收起评论')
-				$('.comments').toggle()
-			},
+			}
 		},
 		created() {
 			this.init()
@@ -77,18 +52,12 @@ import axios from 'axios'
 			},
 			...mapGetters([
 				'user',
+				'people_detail_user'
 			])
 		},
 		components: {
 			comments,
 			answerPeople
-		},
-		watch: {
-			detail_user_id (newval,oldval) {
-				if ( newval != oldval && newval != undefined ) {
-					this.init()
-				}
-			}
 		}
 	}
 </script>

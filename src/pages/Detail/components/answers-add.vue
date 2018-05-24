@@ -153,13 +153,6 @@
 	import {communicationMixin} from 'common/js/mixin'
 	import axios from 'axios'
 	export default {
-		mixins: [communicationMixin],
-		props: {
-			question: {
-				type: Object,
-				default: null
-			}
-		},
 		data() {
 			return {
 				base: '../../../../static/avatar/38/',
@@ -178,7 +171,7 @@
 				axios.post('/answer/insert',{
 					content: this.content,
 					user_id: this.user._id,
-					question_id: this.question._id,
+					question_id: this.detail_question._id,
 					anonymousStatus: this.anonymousStatus
 				}).then((res)=> {
 					if (res.data.status==1) {
@@ -186,6 +179,7 @@
 					}else if(res.data.status==2) {
 						alert(res.data.result.msg)
 					}else{
+						console.log('add ')
 						communicationMixin.$emit('addAnswer')
 						this.setAddAnswerStatus(!this.add_answer_status)
 						this.content = ''
@@ -202,7 +196,8 @@
 		computed: {
 			...mapGetters([
 				'user',
-				'add_answer_status'
+				'add_answer_status',
+				'detail_question'
 			])
 		}
 	}

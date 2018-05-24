@@ -46,12 +46,12 @@
 						<span>
 							<button 
 							:class="{voteBtn:true,up: true,'is-active':item.voteStatus==1}"
-							@click.stop.prevent="vote(1,item.answer_id,index)"><svg viewBox="0 0 20 18" width="9" height="16">
+							@click.stop.prevent="vote(1,item.answer_id)"><svg viewBox="0 0 20 18" width="9" height="16">
 								<title></title><g><path d="M0 15.243c0-.326.088-.533.236-.896l7.98-13.204C8.57.57 9.086 0 10 0s1.43.57 1.784 1.143l7.98 13.204c.15.363.236.57.236.896 0 1.386-.875 1.9-1.955 1.9H1.955c-1.08 0-1.955-.517-1.955-1.9z"></path></g>
 							</svg>{{item.good}}</button>
 							<button 
 							:class="{voteBtn:true,down: true,'is-active':item.voteStatus==2}"
-							@click.stop.prevent="vote(2,item.answer_id,index)"><svg viewBox="0 0 20 18" width="9" height="16">
+							@click.stop.prevent="vote(2,item.answer_id)"><svg viewBox="0 0 20 18" width="9" height="16">
 								<title></title><g><path d="M0 15.243c0-.326.088-.533.236-.896l7.98-13.204C8.57.57 9.086 0 10 0s1.43.57 1.784 1.143l7.98 13.204c.15.363.236.57.236.896 0 1.386-.875 1.9-1.955 1.9H1.955c-1.08 0-1.955-.517-1.955-1.9z"></path></g>
 							</svg>{{item.bad}}</button>
 						</span>
@@ -65,7 +65,7 @@
 			</div>
 			<comments 
 			ref="comments"
-			v-if="CommentLoadStatus"
+			v-if="CommentsLoadStatus"
 			fromType="answer"
 			:commentSum="item.commentSum"
 			:index="index"
@@ -111,10 +111,39 @@ import axios from 'axios'
 			return {
 				base: '../../../static/avatar/38/',
 				updatedAt: moment(this.item.meta.updatedAt).format('YYYY-MM-DD HH:mm:ss'),
-				CommentLoadStatus: false
+				CommentsLoadStatus: false
 			}
 		},
 		methods: {
+			vote(vote,answer_id){
+				axios.post('/vote/answer',{
+					answer_id: answer_id,
+					vote: vote
+				}).then((res)=> {
+					if (res.data.status==1) {
+						// 新建
+						vote==1?this.item.good++:this.item.bad++
+						vote==1?this.item.voteStatus=1:this.item.voteStatus=2
+					}else if(res.data.status === 2){
+						// 取消赞踩
+						this.item.voteStatus = 0
+						vote==1?this.item.good--:this.item.bad--	
+					}else if( res.data.status == 3 ){
+						// 改变
+						if (vote==1) {
+							this.item.good++
+							this.item.bad--
+							this.item.voteStatus=1
+						}else {
+							this.item.bad++
+							this.item.good--
+							this.item.voteStatus=2
+						}
+						this.item.good<0?0:this.item.good
+						this.item.bad<0?0:this.item.bad
+					}
+				})
+			},
 			// 阅读全文
 			more(e) {
 				if ($(e.target).text().trim()=='阅读全文') {
@@ -127,33 +156,12 @@ import axios from 'axios'
 				 	$(e.target).text('阅读全文')
 				}
 			},
-			vote(vote,answer_id,index){
-				axios.post('/vote/answer',{
-					answer_id: answer_id,
-					vote: vote
-				}).then((res)=> {
-					if (res.data.status == 1 ) {
-						// console.log(' new ')
-						// 新建
-						this.$emit('changeVoteStatus',1,index,vote)
-					}else if(res.data.status === 2 ){
-						// console.log( 'cancel' )
-						// 取消赞踩
-						this.$emit('changeVoteStatus',2,index,vote)
-					}else if(res.data.status === 3 ){
-						// console.log( 'change' )
-						// 改变
-						this.$emit('changeVoteStatus',3,index,vote)
-					}
-				})
-			},
 			openComment(e) {
-				console.log(this.$refs.comment)
 				// 打开评论列表
-				$(e.target).text().trim()=='阅读全文'
-				?$(e.target).text('收起评论')
-				:$(e.target).text(this.item.commentSum + ' 条评论' )
-				this.CommentLoadStatus = !this.CommentLoadStatus
+				$(e.target).text().trim()=='收起评论'
+				?$(e.target).text(this.item.commentSum + ' 条评论')
+				:$(e.target).text('收起评论')
+				this.CommentsLoadStatus = !this.CommentsLoadStatus
 			}
 		},
 		components: {

@@ -1,8 +1,7 @@
 <template>
  	<div class="answers-wrapper">
  		<div class="card">
- 			<loading v-show="loading"></loading>
- 			<div class="list" v-if="answerList">
+ 			<div class="list" v-if="answerList.length>0">
  				<div class="list-header">
  					<h4 class="list-headerText"><span>{{answerSum}}个回答</span></h4>
  					<div class="list-headerOptions">
@@ -17,10 +16,11 @@
 						:item="item" 
 						:index="index" 
 						:key="item._id"
-						:question="question"></answer>
+						:question="detail_question"></answer>
  					</div>
  				</div>
  			</div>
+ 			<loading v-show="loading"></loading>
  		</div>
  		<div style="text-align: center;" v-show="no_more_data"><h1>没有更多数据了</h1></div>
  	</div>
@@ -28,31 +28,80 @@
 
 <script type="text/ecmascript-6">
 import answer from 'detail_components/answer.vue'
-import {mapMutations,mapGetters} from 'vuex';
+import {mapMutations,mapGetters} from 'vuex'
+import {mergeData} from 'common/js/common'
 import axios from 'axios'
 import loading from 'base/loading.vue'
+import {communicationMixin} from 'common/js/mixin'
+import {readBrowseCount,MessageListener} from 'socket/browse'
 	export default {
-		props: {
-			answerSum: {
-				type: Number,
-				default: 0
-			},
-			no_more_data: {
-				type: Boolean,
-				default: false
-			},
-			answerList: {
-				type: Array,
-				default: []
-			},
-			loading: {
-				type: Boolean,
-				default: false
-			},
-			question: {
-				type: Object,
-				default: []
+		data() {
+			return {
+				limit: 5,
+				page: 1,
+				pend: false, // 加载工作中
+				no_more_data: false, // 没有更多数据了
+				answerList: [],
+				answerSum: 0,
+				loading: true
 			}
+		},
+		computed: {
+			...mapGetters([
+				'detail_question'
+			])
+		},
+		methods: {
+			getAnswers() {
+				this.pend = true
+				axios.post('/answer/read',{
+					question_id: this.question_id,
+					limit: this.limit,
+					page: this.page
+				}).then((res)=> {
+					this.loading = false
+					if( res.data.result.answers.length > 0 ) {
+						let data = res.data.result.answers
+						this.answerList = this.answerList.concat(data)
+						this.answerSum = res.data.result.answerSum
+						this.page++
+					}else{
+						this.no_more_data = true
+					}
+					this.pend = false
+				})
+			},
+			listenData() {
+				// 当增加问题后
+				communicationMixin.$on('addAnswer',()=> {
+					this.answerList = []
+					this.page = 1
+					this.loading = true
+					this.getAnswers()
+				})
+				// 加载更多数据
+				var $win = $(window)
+				$win.on('scroll',()=> {
+					if($win.scrollTop()-($(document).height()-$win.height())>-30){
+		                if (this.pend||this.no_more_data) {
+		                	return
+		                }
+		                this.getAnswers()
+		            }
+				})
+			}
+		},
+		created() {
+			this.getAnswers()
+			this.listenData()
+		},
+		computed: {
+			question_id() {
+				return this.$route.params.question_id
+			},
+			...mapGetters([
+				'detail_question'
+			])
 		},
 		components: {
 			answer,

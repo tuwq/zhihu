@@ -38,8 +38,11 @@ const mutations = {
 	[types.SET_ATTENTION_QUESTION_MODAL] (state,isDispaly) {
 		state.attention_question_modal = isDispaly
 	},
-	[types.SET_QUESTION_USER] (state,target) {
-		state.question_user = target
+	[types.SET_DETAIL_QUESTION] (state,detail_question) {
+		state.detail_question = detail_question
+	},
+	[types.SET_PEOPLE_DETAIL_USER] (state,people_detail_user) {
+		state.people_detail_user = people_detail_user
 	}
 }
 export default mutations

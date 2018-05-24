@@ -14,7 +14,6 @@ import {mapMutations} from 'vuex';
 			quit() {
 				axios.get('/user/logout').then((res)=> {
 					if (!res.data.result.status) {
-						this.setExistUser(0)
 						this.$router.push('/');
 					}
 				})

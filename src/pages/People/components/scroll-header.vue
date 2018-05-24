@@ -1,12 +1,13 @@
 <template>
 	<div id="ScrollHeader">
 		<div class="scroll-header-box scroll-header-wrapper">
-			<div class="scroll-header-inner" v-if="avatar">
-				<div class="user-avatar" v-if="avatar"><img :src="base+avatar" width="38" height="38" class="Avatar"></div>
+			<div class="scroll-header-inner" v-if="people_detail_user">
+				<div class="user-avatar" v-if="people_detail_user.avatar"><img 
+					:src="base+people_detail_user.avatar" width="38" height="38" class="Avatar"></div>
 				<ul class="tabList">
 					<li class="top-tab-item is-active" @click.stop.prevent="changeItem($event,0)"><a href="javascript:void(0)" class="tab-link is-active">动态</a></li>
-					<li class="top-tab-item" @click.stop.prevent="changeItem($event,1)"><a href="javascript:void(0)" class="tab-link">回答<span class="tab-meta">{{answerSum}}</span></a></li>
-					<li class="top-tab-item" @click.stop.prevent="changeItem($event,2)"><a href="javascript:void(0)" class="tab-link">提问<span class="tab-meta">{{questionSum}}</span></a></li>
+					<li class="top-tab-item" @click.stop.prevent="changeItem($event,1)"><a href="javascript:void(0)" class="tab-link">回答<span class="tab-meta">{{people_detail_user.answerSum}}</span></a></li>
+					<li class="top-tab-item" @click.stop.prevent="changeItem($event,2)"><a href="javascript:void(0)" class="tab-link">提问<span class="tab-meta">{{people_detail_user.questionSum}}</span></a></li>
 					<li class="top-tab-item" @click.stop.prevent="changeItem($event,3)"><a href="javascript:void(0)" class="tab-link">文章<span class="tab-meta">0</span></a></li>
 					<li class="top-tab-item" @click.stop.prevent="changeItem($event,4)"><a href="javascript:void(0)" class="tab-link">专栏<span class="tab-meta">0</span></a></li>
 					<li class="top-tab-item" @click.stop.prevent="changeItem($event,5)"><a href="javascript:void(0)" class="tab-link">想法<span class="tab-meta">0</span></a></li>
@@ -29,9 +30,6 @@ import axios from 'axios'
  		data() {
  			return {
  				base: '../../../../static/avatar/38/',
- 				avatar: '',
- 				questionSum: 0,
- 				answerSum: 0
  			}
  		},
  		methods: {
@@ -42,9 +40,19 @@ import axios from 'axios'
  				this.setPeopleDropUp(true);
  			},
 			changeItem(e,index) {
-				// 改变显示状态
+				// 改变主页显示状态
 				$(e.target).parent().addClass('is-active').siblings().removeClass('is-active')
 				communicationMixin.$emit('changeMainIndex',index)
+			},
+			Listener() {
+				// 改变显示信息
+				communicationMixin.$on('changeScrollIndex',(index)=> {
+					$('.top-tab-item').eq(index).addClass('is-active').siblings('.top-tab-item').removeClass('is-active')
+				})
+				// 打开关注列表改变显示状态
+				communicationMixin.$on('openFollow',()=> {
+					$(this.$refs.more).addClass('is-active').siblings().removeClass('is-active')
+				})
 			},
 			...mapMutations({
 				setPeopleDropUp: 'SET_PEOPLE_DROPUP'
@@ -56,27 +64,12 @@ import axios from 'axios'
 			},
 			...mapGetters([
 				'people_dropup',
+				'people_detail_user'
 			])
 		},
 		created() {
-			// 改变显示信息
-			communicationMixin.$on('changeScrollIndex',(index)=> {
-				$('.top-tab-item').eq(index).addClass('is-active').siblings('.top-tab-item').removeClass('is-active')
-			})
-			// 打开关注列表改变显示状态
-			communicationMixin.$on('openFollow',()=> {
-				$(this.$refs.more).addClass('is-active').siblings().removeClass('is-active')
-			})
-			// 获得问题数和回答数
-			communicationMixin.$on('ChangeScrollCount',({questionSum,answerSum})=> {
-				this.questionSum = questionSum
-				this.answerSum = answerSum
-			})
-			// 获得头像信息
-			communicationMixin.$on('setScrollHeaderAvatar',(detail_user)=> {
-				this.avatar = detail_user.avatar 
-			})
-		}
+			this.Listener()
+		}		
 	}
 </script>
 

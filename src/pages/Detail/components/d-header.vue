@@ -1,16 +1,20 @@
 <template>
  	<div id="d-header-wrapper">
- 		<slot name="z-header" class="z-header"></slot>
- 		<slot name="detail-header" class="detail-header"></slot>
- 		<slot name="scroll-header" class="scroll-header"></slot>
+ 		<main-header></main-header>
+ 		<detail-header></detail-header>
+ 		<scroll-header></scroll-header>
  	</div>
 </template>
 
 <script type="text/ecmascript-6">
+import mainHeader from 'base/mainHeader.vue'
+import detailHeader from 'detail_components/detail-header.vue'
+import scrollHeader from 'detail_components/scroll-header.vue'
 import {scroll} from 'common/js/common.js';
 	export default {
 		methods: {
 			switchHeader() {
+				console.log(' into ')
 				// 当页面滚动时
 				this.sumHeight = 0;
 				// 元素的总高度，包括边框和内边距
@@ -40,6 +44,11 @@ import {scroll} from 'common/js/common.js';
 			this.$nextTick().then(()=> {
 				this.switchHeader();		
 			})
+		},
+		components: {
+			mainHeader,
+			detailHeader,
+			scrollHeader,
 		}
 	}
 </script>

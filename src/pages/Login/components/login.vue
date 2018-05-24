@@ -4,8 +4,17 @@
 			<div class="content-wrapper">
 				<div class="login-header">
 					<form class="login-form">
-						<mail-login :tipMsg="tipMsg" @changeTip="tipMsg=''" @changeData="changeData" v-show="login_type==0" @toPhoneLogin="login_type = 1" ref="mailForm"></mail-login>
-						<phone-login @changeData="changeData" v-show="login_type==1" @toMailLogin="login_type = 0" 
+						<mail-login 
+						v-show="login_type==0" 
+						@changeTip="tipMsg=''" 
+						@changeData="changeData"
+						@toPhoneLogin="login_type = 1"  
+						:tipMsg="tipMsg" 
+						ref="mailForm"></mail-login>
+						<phone-login 
+						v-show="login_type==1" 
+						@changeData="changeData" 
+						@toMailLogin="login_type = 0" 
 						ref="phoneForm"></phone-login>
 						<button class="login-btn" type="submit" @click.stop.prevent="toLogin">登录</button>
 					</form>
@@ -47,6 +56,9 @@ import axios from 'axios'
 		methods: {
 			toRegistForm() {
 				this.setFormType(0);
+				// 清除登录数据
+				this.$refs.mailForm.clearData()
+				this.$refs.phoneForm.clearData()
 			},
 			toLogin() {
 				if(this.login_type==0){
@@ -81,10 +93,11 @@ import axios from 'axios'
 			toIndex(res) {
 				// 去首页之前，存储token放入本地
 				this.setToken(res.data.result.token,{ expires: 365 })
-				// 有用户登录了,第一次发送时,zheader还没有创建这个监听
-				// communicationMixin.$emit('changeUser')
 				// 去之前的页面或者去首页
 				this.$router.push(this.$route.query.redirect || '/')
+				// 清除登录数据
+				this.$refs.mailForm.clearData()
+				this.$refs.phoneForm.clearData()
 			},
 			changeData(formData) {
 				this.formData = formData

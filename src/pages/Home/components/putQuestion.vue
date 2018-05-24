@@ -8,7 +8,7 @@
 					<div class="question-main">
 						<textarea class="question-title" ref="question_title" placeholder="问题标题" @focus="errStatus=false" v-model="title"></textarea>
 						<div style="text-align: center;color: red;">
-							<h1 class="errMsg" v-show="errStatus"></h1>
+							<h1 class="errMsg" v-show="errStatus" ref="errMsg"></h1>
 						</div>
 						<div class="question-topic-box">
 							<textarea class="question-topic" ref="question_topic" placeholder="添加话题" v-model="category"></textarea>
@@ -63,7 +63,7 @@
 		methods: {
 			submit() {
 				if (this.title.length==''||this.category=='') {
-					$('.errMsg').text('标题与话题不能为空')
+					$(this.$refs.errMsg).text('标题与话题不能为空')
 					this.errStatus = true
 				}else{
 					axios.post('/question/insert',{

@@ -76,6 +76,11 @@ import axios from 'axios'
 			},
 			toMailLogin() {
 				this.$emit('toMailLogin');
+				this.clearData()
+			},
+			clearData() {
+				this.telphone = ''
+				this.vCode = ''
 			}
 		}
 	}

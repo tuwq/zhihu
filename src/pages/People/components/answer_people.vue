@@ -6,14 +6,14 @@
 					<router-link :to="{path:`/question/${item.question_id}` }">{{item.questionTitle}}?</router-link></div>
 				<div class="Content-meta">
 					<div class="authorInfo">
-						<span class="avatarLink"><img :src="base+uInfo.avatar" width="38" height="38" class="Avatar"></span>
+						<span class="avatarLink" v-if="people_detail_user.avatar"><img :src="base+people_detail_user.avatar" width="38" height="38" class="Avatar"></span>
 						<div class="author-content">
 							<div class="authorInfo-head">
-								<a class="user-link">{{uInfo.username}}</a>
+								<a class="user-link">{{people_detail_user.username}}</a>
 							</div>
-							<div class="authorInfo-detail" v-if="uInfo.info">
+							<div class="authorInfo-detail" v-if="people_detail_user.info">
 								<div class="authorInfo-badge">
-									<div class="AuthorInfo-badgeText">{{uInfo.info.intro}}</div> 	
+									<div class="AuthorInfo-badgeText">{{people_detail_user.info.intro}}</div> 	
 								</div>
 							</div>
 						</div>
@@ -60,7 +60,12 @@
 					</div>
 				</div>
 			</div>
-			<comments class="comments" fromType="answer" v-if="loadComment" :cCount="item.commentSum" :index="index" :answer_id="item._id" 
+			<comments 
+			v-if="CommentsLoadStatus"
+			fromType="answer" 
+			:commentSum="item.commentSum" 
+			:index="index" 
+			:answer_id="item._id" 
 			:question_id="item.question_id">
 			</comments>
 		</div>
@@ -71,6 +76,7 @@
 import moment from 'moment'  
 import axios from 'axios'
 import comments from 'base/comments.vue';
+import {mapMutations,mapGetters} from 'vuex';
 	export default {
 		props: {
 			item: {
@@ -80,27 +86,20 @@ import comments from 'base/comments.vue';
 			index: {
 				type: Number,
 				default: 0
-			},
-			uInfo: {
-				type: Object,
-				default() {
-					return {
-						info: {}
-					}
-				}
 			}
 		},
 		data() {
 			return {
 				base: '../../../../static/avatar/38/',
-				loadComment: false,
+				CommentsLoadStatus: false,
 			}
 		},
 		methods: {
 			openComment(e,commentSum) {
-				this.loadComment = true
-				$(e.target).text().trim()=='收起评论'?$(e.target).text(commentSum+'条评论'):$(e.target).text('收起评论')
-				$(e.target).parents('.list-item').find('.comments').toggle()
+				$(e.target).text().trim()=='收起评论'
+				?$(e.target).text(this.item.commentSum + ' 条评论')
+				:$(e.target).text('收起评论')
+				this.CommentsLoadStatus = !this.CommentsLoadStatus
 			},
 			vote(vote,answer_id){
 				axios.post('/vote/answer',{
@@ -131,6 +130,11 @@ import comments from 'base/comments.vue';
 					}
 				})
 			},
+		},
+		computed: {
+			...mapGetters([
+				'people_detail_user'
+			])
 		},
 		components: {
 			comments

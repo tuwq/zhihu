@@ -14,17 +14,18 @@
 								<span>&nbsp;</span>
 								<input  type="number" class="input-phone" 
 								v-model="telphone"
-								@blur="placeholderText='请输入正确的手机格式'"  
-								:placeholder="placeholderText" 
 								@focus="tipMsg=''"
-								:id="telphone">
+								@blur="placeholderText='请输入正确的手机格式'"  
+								:id="telphone"
+								:placeholder="placeholderText">
 								<span class="tip-msg" id="tip-msg" v-show="tipMsg!=''">{{tipMsg}}</span>
 							</div>
 							<div class="phone-verification-wrapper">
 								<span class="verification-input-wrapper">
-									<input type="number" v-model="vCode" class="input-verification" 
-									:placeholder="placeholderVcode"
-									@blur="placeholderVcode='请输入短信验证码'">
+									<input type="number"  class="input-verification" 
+									v-model="vCode"
+									@blur="placeholderVcode='请输入短信验证码'"
+									:placeholder="placeholderVcode">
 								</span>
 								<a class="getCode" @click.stop.prevent="getCode">获取短信验证码</a>
 							</div>
@@ -34,7 +35,7 @@
 									class="input-password" 
 									placeholder="请设置您的密码">
 								</span>
-								<a class="getCode" @click.stop.prevent="testClick">获取语音验证码</a>
+								<a class="getCode">获取语音验证码</a>
 							</div>
 							<div class="registBtn-wrapper">
 								<button class="register-btn" @click.stop.prevent="toRegist">注册</button>
@@ -69,6 +70,7 @@ import axios from 'axios'
 		methods: {
 			toLogin() {
 				this.setFormType(1);
+				this.clearData()
 			},
 			toRegist() {
 				if ( this.telphone.length===0||this.vCode.length===0) {
@@ -87,9 +89,7 @@ import axios from 'axios'
 						return;
 					}
 					this.toLogin();
-					this.telphone = ''
-					this.vCode = ''
-					this.password = ''
+					this.clearData()
 				})
 			},
 			getCode() {
@@ -104,10 +104,11 @@ import axios from 'axios'
 					}
 				});
 			},	
-			testClick() {
-				axios.get('/user/test').then((res)=> {
-					
-				})
+			clearData() {
+				this.telphone = ''
+				this.vCode = ''
+				this.password = ''
+				this.tipMsg = ''
 			},
 			...mapMutations({
 				setFormType: 'SET_FORM_TYPE'

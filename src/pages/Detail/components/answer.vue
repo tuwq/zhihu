@@ -12,7 +12,8 @@
 						</span>
 						<div class="info-content">
 							<div class="info-header">
-								<div class="author-name" @click.stop.prevent="toUser(item.anonymousStatus==0?item.user_id:null)">
+								<div class="author-name" 
+								@click.stop.prevent="toUser(item.anonymousStatus==0?item.user_id:null)">
 									<div class="popover">
 										<div><a target="_blank">{{item.anonymousStatus==0?item.user_id.username:'匿名用户'}}</a></div>
 									</div>
@@ -30,30 +31,30 @@
 					</div>
 					<div class="AnswerItem-extraInfo">
 						<span class="voters">
-							<button class="voterBtn" type="button">{{good}}人赞同了该回答</button>
+							<button class="voterBtn" type="button">{{item.good}}人赞同了该回答</button>
 						</span>
 					</div>
 				</div>
 				<div class="RichContent RichContent--unescapable">
 					<div class="richContent-inner">
-						<span class="rich-text">
+						<span class="rich-text" ref="contentText">
 							{{item.content}}
 						</span>
-						<span class="overflow-text"></span>
+						<span class="overflow-text" ref="allText"></span>
 					</div>
 				<div><div class="item-time"><a target="_blank"><span data-tooltip="发布于 2018-04-09 20:04">编辑于 {{updatedAt}}</span></a></div></div>
 				<div class="content-item-actions">
 					<span>
-						<button :class="{up: true,'is-active': voteStatus==1}" 
+						<button :class="{up: true,'is-active': item.voteStatus==1}" 
 						@click.stop.prevent="vote(1,item._id)"><svg viewBox="0 0 20 18" width="9" height="16">
 							<title></title><g><path d="M0 15.243c0-.326.088-.533.236-.896l7.98-13.204C8.57.57 9.086 0 10 0s1.43.57 1.784 1.143l7.98 13.204c.15.363.236.57.236.896 0 1.386-.875 1.9-1.955 1.9H1.955c-1.08 0-1.955-.517-1.955-1.9z"></path></g>
-						</svg>{{good}}</button>
-						<button :class="{down: true,'is-active':voteStatus==2}" 
+						</svg>{{item.good}}</button>
+						<button :class="{down: true,'is-active':item.voteStatus==2}" 
 						@click.stop.prevent="vote(2,item._id)"><svg viewBox="0 0 20 18" width="9" height="16">
 							<title></title><g><path d="M0 15.243c0-.326.088-.533.236-.896l7.98-13.204C8.57.57 9.086 0 10 0s1.43.57 1.784 1.143l7.98 13.204c.15.363.236.57.236.896 0 1.386-.875 1.9-1.955 1.9H1.955c-1.08 0-1.955-.517-1.955-1.9z"></path></g>
-						</svg>{{bad}}</button>
+						</svg>{{item.bad}}</button>
 						</span>
-					<button class="item-action" @click.stop.prevent="openComment($event,item.commentSum)">
+					<button class="item-action" @click.stop.prevent="openComment($event)">
 						<span class="">
 						{{item.commentSum}}条评论</span>
 					</button>
@@ -70,16 +71,16 @@
 						<span class="">&#8203;<svg viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M5 14a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm7 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm7 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"></path></svg></span>
 					</button>
 					<button class="item-action right-button">
-						<span class="open" @click.stop.prevent="scrollText($event)">展开<svg @click.stop.prevent viewBox="0 0 24 24" width="1.2em" height="1.2em" style="transform: rotate(180deg);"><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></svg></span>
-						<span class="close" style="display: none;" @click.stop.prevent="scrollText($event)">收起<svg @click.stop.prevent viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></svg></span>
+						<span class="open" @click.stop.prevent="more($event)">阅读全文<svg @click.stop.prevent viewBox="0 0 24 24" width="1.2em" height="1.2em" style="transform: rotate(180deg);"><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></svg></span>
+						<span class="close" style="display: none;" @click.stop.prevent="more($event)">收起<svg @click.stop.prevent viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></svg></span>
 					</button>
 				</div>
 				</div>
 			<comments 
-			class="comments" 
-			v-if="loadComment"
+			v-if="CommentsLoadStatus"
+			@incrAnswerCommentSum="item.commentSum++"
 			fromType="answer" 
-			:commentSum="item.commentSum" 
+			:commentSum="item.commentSum"  
 			:index="index" 
 			:answer_id="item._id" 
 			:question_id="question._id">
@@ -115,11 +116,8 @@ import axios from 'axios'
 		data() {
 			return {
 				base: '../../../../static/avatar/38/',
-				loadComment: false,
-				good: this.item.good,
-				bad: this.item.bad,
+				CommentsLoadStatus: false,
 				updatedAt: moment(this.item.meta.updatedAt).format('YYYY-MM-DD HH:mm:ss'),
-				voteStatus: this.item.voteStatus
 			}
 		},
 		methods: {
@@ -128,47 +126,46 @@ import axios from 'axios'
 					answer_id: answer_id,
 					vote: vote
 				}).then((res)=> {
-					if (res.data.status==-1) {
-						// 取消赞踩
-						this.voteStatus = 0
-						vote==1?this.good--:this.bad--	
-					}else if(res.data.status === 0){
+					if (res.data.status==1) {
 						// 新建
-						vote==1?this.good++:this.bad++
-						vote==1?this.voteStatus=1:this.voteStatus=2
-					}else {
+						vote==1?this.item.good++:this.item.bad++
+						vote==1?this.item.voteStatus=1:this.item.voteStatus=2
+					}else if(res.data.status === 2){
+						// 取消赞踩
+						this.item.voteStatus = 0
+						vote==1?this.item.good--:this.item.bad--	
+					}else if( res.data.status == 3 ){
 						// 改变
 						if (vote==1) {
-							this.good++
-							this.bad--
-							this.voteStatus=1
+							this.item.good++
+							this.item.bad--
+							this.item.voteStatus=1
 						}else {
-							this.bad++
-							this.good--
-							this.voteStatus=2
+							this.item.bad++
+							this.item.good--
+							this.item.voteStatus=2
 						}
-						this.good<0?0:this.good
-						this.bad<0?0:this.bad
+						this.item.good<0?0:this.item.good
+						this.item.bad<0?0:this.item.bad
 					}
 				})
 			},
-			openComment(e,commentSum) {
-				this.loadComment = !this.loadComment
-				$(e.target).text().trim()=='收起评论'?$(e.target).text(commentSum+'条评论'):$(e.target).text('收起评论')
-				$(e.target).parents('.list-item').find('.comments').toggle()
+			openComment(e) {
+				$(e.target).text().trim()=='收起评论'
+				?$(e.target).text(this.item.commentSum + ' 条评论')
+				:$(e.target).text('收起评论')
+				this.CommentsLoadStatus = !this.CommentsLoadStatus
 			},
-			scrollText(e) {
-				let rich = $(e.target).parents('.list-item').find('.rich-text')
-				let over = $(e.target).parents('.list-item').find('.overflow-text')
-				if ($(e.target).hasClass('open')) {
-					periodWrap(rich,over)	
+			more(e) {
+				if ($(e.target).text().trim()=='阅读全文') {
+					$(e.target).text('收起')
+					periodWrap($(this.$refs.contentText),$(this.$refs.allText));
 				}else {
-					let text = over.children().text()
-					over.empty()
-					rich.text(text)
+					var text = $(this.$refs.allText).children().text();
+					$(this.$refs.contentText).text(text);
+					$(this.$refs.allText).empty();
+				 	$(e.target).text('阅读全文')
 				}
-				$(e.target).hide()
-				$(e.target).siblings('span').show()
 			}
 		},
 		components: {

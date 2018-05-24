@@ -1,8 +1,8 @@
 <template>
  	<div id="question-module">
- 		<div class="list-header" v-if="otherUser">
- 			<h4 class="header-text" v-if="otherUser.info"><span>
- 			{{user._id==detail_user_id?'我':otherUser.info.gender==0?'他':otherUser.info.gender==1?'他':'她'}}的提问</span></h4>
+ 		<div class="list-header" v-if="people_detail_user">
+ 			<h4 class="header-text" v-if="people_detail_user.info"><span>
+ 			{{user._id==people_detail_user?'我':people_detail_user.info.gender==0?'他':people_detail_user.info.gender==1?'他':'她'}}的提问</span></h4>
  			<div class="header-options"><button>按时间排序<span>&#8203;<svg fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M12 16.183l2.716-2.966a.757.757 0 0 1 1.064.001.738.738 0 0 1 0 1.052l-3.247 3.512a.758.758 0 0 1-1.064 0L8.22 14.27a.738.738 0 0 1 0-1.052.758.758 0 0 1 1.063 0L12 16.183zm0-9.365L9.284 9.782a.758.758 0 0 1-1.064 0 .738.738 0 0 1 0-1.052l3.248-3.512a.758.758 0 0 1 1.065 0L15.78 8.73a.738.738 0 0 1 0 1.052.757.757 0 0 1-1.063.001L12 6.818z"></path></svg></span></button></div>
  		</div>
  		<div class="question-box" v-show="!questions">
@@ -27,7 +27,7 @@
 					<div class="ContentItem-status">
 						<span class="status-item"></span>
 						<span class="status-item">{{item.answerSum}} 个回答</span>
-						<span class="status-item">{{item.followSum}} 个关注</span>
+						<span class="status-item">{{item.attentionSum}} 个关注</span>
 					</div>
 				</div> 
 			</div>
@@ -40,16 +40,6 @@ import {periodWrap,mergeData} from 'common/js/common.js'
 import {mapMutations,mapGetters} from 'vuex';
 import axios from 'axios'
 	export default {
-		props: {
-			otherUser: {
- 				type: Object,
- 				default() {
- 					return {
- 						info:{}
- 					}
- 				}
- 			}
-		},
 		data() {
 			return {
 				questions: []
@@ -73,14 +63,8 @@ import axios from 'axios'
 			},
 			...mapGetters([
 				'user',
+				'people_detail_user'
 			])
-		},
-		watch: {
-			detail_user_id (newval,oldval) {
-				if ( newval != oldval && newval != undefined ) {
-					this.init()
-				}
-			}
 		}
 	}
 </script>

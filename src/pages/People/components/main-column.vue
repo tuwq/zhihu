@@ -5,8 +5,8 @@
 				<div class="main-header">
 					<ul class="tabs">
 						<li class="tab-item is-active" @click.stop.prevent="changeItem($event,0)"><a href="javascript:void(0)" class="tab-link">动态</a></li>
-						<li class="tab-item" @click.stop.prevent="changeItem($event,1)"><a href="javascript:void(0)" class="tab-link">回答 <span>{{answerSum}}</span></a></li>
-						<li class="tab-item" @click.stop.prevent="changeItem($event,2)"><a href="javascript:void(0)" class="tab-link">提问 <span>{{questionSum}}</span></a></li>
+						<li class="tab-item" @click.stop.prevent="changeItem($event,1)"><a href="javascript:void(0)" class="tab-link">回答 <span>{{people_detail_user.answerSum}}</span></a></li>
+						<li class="tab-item" @click.stop.prevent="changeItem($event,2)"><a href="javascript:void(0)" class="tab-link">提问 <span>{{people_detail_user.questionSum}}</span></a></li>
 						<li class="tab-item" @click.stop.prevent="changeItem($event,3)"><a href="javascript:void(0)" class="tab-link">文章 <span>0</span></a></li>
 						<li class="tab-item" @click.stop.prevent="changeItem($event,4)"><a href="javascript:void(0)" class="tab-link">专栏 <span>0</span></a></li>
 						<li class="tab-item" @click.stop.prevent="changeItem($event,5)"><a href="javascript:void(0)" class="tab-link">想法 <span>0</span></a></li>
@@ -15,8 +15,10 @@
 				</div>
 				<dynamic-list v-if="showModule==0"></dynamic-list>
 				<answer-module v-if="showModule==1"></answer-module>
-				<question-module v-if="showModule==2" :otherUser="otherUser"></question-module>
-				<following-module v-if="showModule==7" :otherUser="otherUser"></following-module>
+				<question-module v-if="showModule==2"></question-module>
+				<following-module 
+				v-if="showModule==7"
+				@changeFollowCount="changeFollowCount"></following-module>
 			</div>
 		</div>
 		<div class="content-arrow" v-show="people_dropup" id="content-arrow" ref="content_arrow"> 
@@ -35,31 +37,13 @@ import answerModule from 'p_components/answer-module.vue'
 import questionModule from 'p_components/question-module.vue'
 import followingModule from 'p_components/following-module.vue' 
 import {mapGetters,mapMutations} from 'vuex'
+import {copyObj} from 'common/js/util.js'
 import {communicationMixin} from 'common/js/mixin.js'
 import axios from 'axios'
  	export default {
- 		props: {
- 			otherUser: {
- 				type: Object,
- 				default() {
- 					return {
- 						info:{}
- 					}
- 				}
- 			},
- 			questionSum: {
- 				type: Number,
- 				default: 0
- 			},
- 			answerSum: {
- 				type: Number,
- 				default: 0
- 			}
- 		},
  		data() {
  			return {
- 				showModule: 0,
- 				FollowingModuleStatus: false
+ 				showModule: 0
  			}
  		},
  		methods: {
@@ -69,23 +53,6 @@ import axios from 'axios'
  				$(this.$refs.content_arrow).addClass('content-arrow').removeClass('content-arrow-top');
  				this.setPeopleDropUp(true);
  			},
- 			changeItem(e,index) {
- 				// 改变显示状态
- 				$(e.target).addClass('is-active').siblings().removeClass('is-active')
- 				$(e.target).parent('li').addClass('is-active').siblings().removeClass('is-active')
- 				this.showModule = index;
- 				communicationMixin.$emit('changeScrollIndex',index)
- 			},
- 			listenHeaderModule() {
- 				// 监听scrollHeader的点击显示状态
- 				communicationMixin.$on('changeMainIndex',(index) => {
- 					$('.tab-item').eq(index).addClass('is-active').siblings().removeClass('is-active')
- 					this.showModule = index;
- 					// 346
- 					var targetY = $('.main-column')[0].offsetTop 
- 					window.scrollTo(0,targetY)
- 				})
- 			},
  			openFollowingModule() {
  				// 打开关注列表
  				this.setPeopleDropUp(false);
@@ -93,7 +60,21 @@ import axios from 'axios'
  				$(this.$refs.more).addClass('is-active').siblings('.tab-item').removeClass('is-active')
  				communicationMixin.$emit('openFollow')
  			},
- 			ListenterFollwer() {
+ 			changeItem(e,index) {
+ 				// 改变显示状态
+ 				$(e.target).addClass('is-active').siblings().removeClass('is-active')
+ 				$(e.target).parent('li').addClass('is-active').siblings().removeClass('is-active')
+ 				this.showModule = index;
+ 				communicationMixin.$emit('changeScrollIndex',index)
+ 			},
+ 			Listenter() {
+ 				// 监听scrollHeader的点击显示状态
+ 				communicationMixin.$on('changeMainIndex',(index) => {
+ 					$('.tab-item').eq(index).addClass('is-active').siblings().removeClass('is-active')
+ 					this.showModule = index;
+ 					var targetY = $('.main-column')[0].offsetTop 	// 346
+ 					window.scrollTo(0,targetY)
+ 				})
  				// 监听scrollHeader打开关注列表
  				communicationMixin.$on('showFollwer',()=> {
  					this.showModule = 7
@@ -101,29 +82,45 @@ import axios from 'axios'
  					communicationMixin.$emit('openFollow')
  				})
  			},
+ 			changeFollowCount( from , action ) {
+ 				// 改变关注列表数量和粉丝列表数量
+ 				// from， 	0:关注列表  1:粉丝列表
+ 				// action, 	0:关注增加  1；关注减少
+ 				let _people_detail_user = copyObj(this.people_detail_user)
+ 				if (from==0) {
+					if (action==1) {
+						this._people_detail_user.followerSum++
+					}else {
+						this._people_detail_user.followerSum--
+					}
+				}else {
+					if (action==1) {
+						this._people_detail_user.fansSum++
+					}else {
+						this._people_detail_user.fansSum--
+					}
+				}
+				this.setPeopleDetailUser(_people_detail_user)
+ 			},
  			...mapMutations({
-				setPeopleDropUp: 'SET_PEOPLE_DROPUP'
+				setPeopleDropUp: 'SET_PEOPLE_DROPUP',
+				setPeopleDetailUser: 'SET_PEOPLE_DETAIL_USER',
 			})
  		},
-		mounted() {
-			this.listenHeaderModule();
-		},
 		created() {
-			this.ListenterFollwer()
+			this.Listenter()
 		},
 		computed: {
-			detail_user_id() {
-				return this.$route.params.user_url
-			},
 			...mapGetters([
 				'people_dropup',
+				'people_detail_user'
 			])
 		},
 		components: {
-			'dynamic-list': dynamicList,
-			'answer-module': answerModule,
-			'question-module': questionModule,
-			'following-module': followingModule
+			dynamicList,
+			answerModule,
+			questionModule,
+			followingModule
 		}
 	}
 </script>

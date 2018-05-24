@@ -9,4 +9,5 @@ export const cut_avatar_mask = state => state.cut_avatar_mask
 export const add_answer_status = state => state.add_answer_status
 export const conversation_mask = state => state.conversation_mask
 export const attention_question_modal = state => state.attention_question_modal
-export const question_user = state => state.question_user
+export const detail_question = state => state.detail_question
+export const people_detail_user = state => state.people_detail_user
