@@ -8,18 +8,10 @@
 				<div class=""></div>
 			</div>
 			<div class="list">
-				
-			
-				<answerItem></answerItem>
-				<questionItem></questionItem>
-				<!--  动态列表数据模板不一致
-					// 动态类型
-					// 1:问题相关 2:回答相关	3:评论相关
-					// 动作类型
-					// 1:提出	2:关注	3:点赞
-					回答了问题(2,1)和赞同回答(2,3)相同
-					添加了问题(1,1)和关注问题(1,2)和赞同问题(1,3)相同
-					 -->
+				<dynamicItem v-for="( item , index ) in dynamicList" :key="item._id"
+				:item="item"
+				:index="index"
+				@changeVoteStatus="changeVoteStatus"></dynamicItem>
 			</div>
 		</div>
 	</div>
@@ -28,14 +20,12 @@
 <script type="text/ecmascript-6">
 import comments from 'base/comments.vue'
 import {periodWrap} from 'common/js/common.js'
-import answerItem from 'base/answerItem.vue'
-import questionItem from 'base/questionItem.vue'
+import dynamicItem from 'base/dynamicItem.vue'
 import axios from 'axios'
  	export default {
 		components: {
 			'comments': comments,
-			answerItem,
-			questionItem
+			dynamicItem
 		},
 		data(){
 			return {
@@ -45,19 +35,6 @@ import axios from 'axios'
 			}	
 		},
 		methods: {
-			more() {
-				if(!this.overflowStatus) {
-					periodWrap($('.content-text'),$('.all-text'));
-				}else{
-					var text = $('.all-text').children().text();
-					$('.content-text').text(text);
-					$('.all-text').empty();
-				}
-				this.overflowStatus = !this.overflowStatus;	
-			},
-			switchCommentsStatus() {
-				this.commentsStatus = !this.commentsStatus;
-			},
 			init(){
 				axios.post('/dynamic/readSend',{
 					detail_id: this.detail_user_id
@@ -65,6 +42,38 @@ import axios from 'axios'
 					this.dynamicList = res.data.result.dynamics
 					console.log(this.dynamicList)
 				})
+			},
+			changeVoteStatus( type , index , vote ) {
+				// 改变vote状态
+				// type  1: 新建 2:取消 	3:改变
+				if ( type == 1) {
+					if ( vote == 1) {
+						this.dynamicList[index].good++
+						this.dynamicList[index].voteStatus=1
+					}else {
+						this.dynamicList[index].bad++
+						this.dynamicList[index].voteStatus=2
+					}
+				}else if ( type == 2 ) {
+					this.dynamicList[index].voteStatus = 0
+					if ( vote == 1 ) {
+						this.dynamicList[index].good--
+					}else {
+						this.dynamicList[index].bad--
+					}
+				}else if ( type == 3 ) {
+					if ( vote == 1 ) {
+						this.dynamicList[index].bad--
+						this.dynamicList[index].good++
+						this.dynamicList[index].voteStatus=1
+					}else {
+						this.dynamicList[index].good--
+						this.dynamicList[index].bad++
+						this.dynamicList[index].voteStatus=2
+					}
+					this.dynamicList[index].bad<0?0:this.dynamicList[index].bad
+					this.dynamicList[index].good<0?0:this.dynamicList[index].good
+				}
 			}
 		},
 		created() {
@@ -73,9 +82,6 @@ import axios from 'axios'
 		computed: {
 			detail_user_id() {
 				return this.$route.params.user_url
-			},
-			overflowStatusText() {
-				return this.overflowStatus?'收起':'阅读全文'
 			}
 		}
 	}

@@ -93,6 +93,7 @@ exports.handleAnswerDynamic = function (dynamic,me_id,callback) {
 						let _dynamic = util.copyObj(dynamic)
 						_dynamic.title = question.title
 						_dynamic.user  = user
+						_dynamic.content = answer.content
 						_dynamic.good = good
 						_dynamic.bad = bad
 						_dynamic.voteStatus = voteStatus

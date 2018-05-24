@@ -100,19 +100,19 @@ exports.voteAnswer = function (req,res) {
 				bind.save()
 				// 处理回答所属用户的赞同数
 				self.handleTargetVote(1,fields.answer_id,fields.vote,0,me_id)
-				return res.json(util.Result(0))
+				return res.json(util.Result(1))
 			}
 			if (dbBind.vote == fields.vote) {
 				self.handleTargetVote(1,fields.answer_id,0,dbBind.vote,me_id)
 				// 取消了赞踩
 				dbBind.remove()
-				return res.json(util.Result(-1))
+				return res.json(util.Result(2))
 			}
 			self.handleTargetVote(1,fields.answer_id,fields.vote,dbBind.vote,me_id)
 			// 改变了
 			dbBind.vote  = fields.vote
 			dbBind.save()
-			return res.json(util.Result(1))
+			return res.json(util.Result(3))
 		})
 	}).catch((err)=> {
 		return res.json(util.Result(401))

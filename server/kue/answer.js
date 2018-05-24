@@ -2,6 +2,7 @@ const kue = require('kue');
 const queues = kue.createQueue();
 const mongoose = require('mongoose')
 const Question = mongoose.model('Question')
+const Answer = mongoose.model('Answer')
 const Dynamic = mongoose.model('Dynamic')
 const User = mongoose.model('User')
 
@@ -51,45 +52,53 @@ queues.process('praiseAnswer', (job, done)=> {
  	let answer_id = data.answer_id
  	let sender_id = data.sender
  	let receiver_id = data.receiver
- 	// 是否是两次相同行为
- 	Dynamic.find({
- 		type: 2,
- 		action: 3,
- 		user_id: sender_id,
- 		answer_id: answer_id
- 	}).exec((err,dbDynamics)=>{
- 		if ( dbDynamics.length != 0 ) {
- 			// 注意这里返回done
- 			return done()
- 		}
- 		let dynamic = new Dynamic({
+ 	// 回答的问题
+ 	Answer.findById(answer_id)
+ 	.select('question_id')
+ 	.exec((err,dbAnswer)=>{
+ 		let question_id = dbAnswer.question_id
+ 		// 是否是两次相同行为
+	 	Dynamic.find({
 	 		type: 2,
 	 		action: 3,
 	 		user_id: sender_id,
-	 		answer_id: answer_id 
-	 	})
-	 	dynamic.save()
-	 	// 放入用户Feed中
-	 	User.findById(sender_id)
-	 	.select('sendFeed fans')
-	 	.exec((err,sender)=> {
-	 		// 发送者发Feed添加记录
-	 		sender.sendFeed.push(dynamic._id)
-	 		sender.save()
-	 		// 发送者和接收者为同一个时，不接收自己的消息
-	 		if ( sender_id === receiver_id) {
-	 			self.fansReceiveDynamic(sender.fans,dynamic._id,done)
-	 		}else {
-	 			User.findById(receiver_id)
-		 		.select('receiveFeed')
-		 		.exec((err,receiver)=>{
-		 			// 接收者收Feed添加记录
-		 			receiver.receiveFeed.push(dynamic._id)
-		 			receiver.save()
-		 			// 粉丝收Feed添加记录
-		 			self.fansReceiveDynamic(sender.fans,dynamic._id,done)
-		 		})
+	 		question_id: question_id,
+	 		answer_id: answer_id
+	 	}).exec((err,dbDynamics)=>{
+	 		if ( dbDynamics.length != 0 ) {
+	 			// 注意这里返回done
+	 			return done()
 	 		}
+	 		let dynamic = new Dynamic({
+		 		type: 2,
+		 		action: 3,
+		 		user_id: sender_id,
+		 		question_id: question_id,
+		 		answer_id: answer_id 
+		 	})
+		 	dynamic.save()
+		 	// 放入用户Feed中
+		 	User.findById(sender_id)
+		 	.select('sendFeed fans')
+		 	.exec((err,sender)=> {
+		 		// 发送者发Feed添加记录
+		 		sender.sendFeed.push(dynamic._id)
+		 		sender.save()
+		 		// 发送者和接收者为同一个时，不接收自己的消息
+		 		if ( sender_id === receiver_id) {
+		 			self.fansReceiveDynamic(sender.fans,dynamic._id,done)
+		 		}else {
+		 			User.findById(receiver_id)
+			 		.select('receiveFeed')
+			 		.exec((err,receiver)=>{
+			 			// 接收者收Feed添加记录
+			 			receiver.receiveFeed.push(dynamic._id)
+			 			receiver.save()
+			 			// 粉丝收Feed添加记录
+			 			self.fansReceiveDynamic(sender.fans,dynamic._id,done)
+			 		})
+		 		}
+		 	})
 	 	})
  	})
 }); 
