@@ -134,7 +134,6 @@ import axios from 'axios'
 					}).then((res)=> {
 						this.content = ''
 						this.getCommentList(1)
-						console.log(' into ')
 						this.$emit('incrAnswerCommentSum')
 					})					
 				}
@@ -181,13 +180,12 @@ import axios from 'axios'
 			},
 			replyOver() {
 				// 回复后
-				this.getCommentList(1)
-				if (this.from == 'question') {
+				if (this.fromType == 'question') {
 					this.$emit('incrQuestionCommentSum')
 				}else {
-					console.log( ' into ' )
 					this.$emit('incrAnswerCommentSum')
 				}
+				this.getCommentList(1)
 			}
 		},
 		mounted() {

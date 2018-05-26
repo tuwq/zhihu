@@ -1,5 +1,5 @@
 <template>
-  <div class="header-wrapper">
+  <div class="main-header-wrapper">
   	<div class="center">	
   		<router-link to="/" class="logo-link">
   			<svg viewBox="0 0 200 91" width="64" height="30">

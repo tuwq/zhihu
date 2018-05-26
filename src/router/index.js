@@ -1,17 +1,19 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import Home from '@/pages/Home/home.vue';
-import ZIndex from '@/pages/Home/components/z-index.vue';
+import Main from '@/pages/Main/main.vue'
+import Home from '@/pages/Main/Home/home.vue';
+import ZIndex from '@/pages/Main/Home/components/z-index.vue';
+import Detail from '@/pages/Main/Detail/detail.vue';
+import People from '@/pages/Main/People/people.vue';
+import PIndex from '@/pages/Main/People/components/p-index.vue';
+import Edit from '@/pages/Main/People/components//edit.vue'
 import QuestionHome from '@/pages/Question/home.vue';
 import QIndex from '@/pages/Question/components/q-index.vue';
 import LoginHome from '@/pages/Login/home.vue';
-import Detail from '@/pages/Detail/detail.vue';
-import People from '@/pages/People/people.vue';
-import PIndex from 'p_components/p-index.vue';
-import Edit from 'p_components/edit.vue'
 import Test from 'base/testUpload.vue'
 import Cut from 'base/cut.vue'
+import NotFound from 'base/notFound.vue'
 
 Vue.use(Router)
 
@@ -21,28 +23,68 @@ var router = new Router({
   //   return false
   // },
   routes: [
-   	{
-   		path: '/',
-   		redirect: '/home'
-   	},
-   	{
-   		path: '/home',
-  		component: Home,
-  		children: [
+    {
+      path: '/',
+      component: Main,
+      children: [
         {
           path: '',
-          component: ZIndex,
-          name: 'zIndex',
-          meta: {
-              requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的,有子路由时需要写在子路由中
-              keepAlive: false // 需要被缓存
-          }
-        },{
-          path: 'test',
-          component: Test
+          component: Home,
+          children: [
+            {
+              path: '',
+              component: ZIndex,
+              name: 'zIndex',
+              meta: {
+                requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的,有子路由时需要写在子路由中
+              }
+            },
+            {
+              path: 'test',
+              component: Test
+            }]
+        },
+        {
+          path: 'question/:question_id',
+          name: 'question_detail',
+          component: Detail,
+        },
+        {
+          path: 'people',
+          component: People,
+          children: [
+            {
+              path: 'edit',     // 详细路由写前面
+              component: Edit,
+              name: 'edit',
+              meta: {
+                  requireAuth: true,
+              }
+            },
+            {
+              path: ':user_url',   // url上暴露用户id，其实并不合理，应该另取一个用户唯一标识
+              component: PIndex,
+              name: 'people_url', 
+              meta: {
+                  requireAuth: true, 
+              }
+            }
+          ]
         }
       ]
-   	},
+    },
+    {
+      path: '/login',
+      component: LoginHome
+    },
+    {
+      path: '/cut',
+      component: Cut,
+      name: 'cut',
+      meta: {
+          requireAuth: true, 
+      }
+    },
     {
       path: '/question',
       component: QuestionHome,
@@ -54,46 +96,9 @@ var router = new Router({
       ]
     },
     {
-      path: '/login',
-      component: LoginHome
-    },
-    {
-      path: '/question/:question_id',
-      name: 'question_detail',
-      component: Detail,
-      meta: {
-        keepAlive: true // 需要被缓存
-      }
-    },
-    {
-      path: '/people',
-      component: People,  //拥有子路由的父路由无法取name
-      meta: {
-        keepAlive: false // 需要被缓存
-      },
-      children: [{
-        path: 'edit',     // 详细路由写前面
-        component: Edit,
-        name: 'edit',
-        meta: {
-            requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
-        }
-      },
-      {
-        path: ':user_url',   // url上暴露用户id，其实并不合理，应该另取一个用户唯一标识
-        component: PIndex,
-        name: 'people_url', 
-        meta: {
-            requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
-        }
-      }]
-    },{
-      path: '/cut',
-      component: Cut,
-      name: 'cut',
-      meta: {
-          requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
-      }
+      path: '*',
+      component: NotFound,
+      
     }
   ]
 })

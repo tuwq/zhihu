@@ -32,11 +32,11 @@ module.exports = {
       'base':  resolve('src/base'),
       'socket': resolve('src/socket'),
       'store': resolve('src/store'),
-      'z_components': resolve('src/pages/Home/components'),
+      'z_components': resolve('src/pages/Main/Home/components'),
       'question_components': resolve('src/pages/Question/components'),
       'login_components': resolve('src/pages/Login/components'),
-      'detail_components': resolve('src/pages/Detail/components'),
-      'p_components': resolve('src/pages/People/components')
+      'detail_components': resolve('src/pages/Main/Detail/components'),
+      'p_components': resolve('src/pages/Main/People/components')
     }
   },
   module: {

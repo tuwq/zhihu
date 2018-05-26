@@ -1,0 +1,110 @@
+@import url('../../../../common/style/common.less');
+.mask {
+	position: fixed;
+	display: block;
+	left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+	background: rgba(0, 0, 0,0.3);
+	z-index: 100;
+	vertical-align: top;
+	.mask-inner {
+		position: absolute;
+		left: 266px;
+		top: 72px;
+		width: 694px;
+		min-height: 250px;
+		background: #fff;
+		border-radius: 2px;
+		z-index: 120;
+		overflow:auto;
+		overflow-x:hidden;
+	}
+	.idea-title {
+		display: block;
+		width: 694px;
+		height: 58px;
+		line-height: 28px;
+		box-sizing: border-box;
+		padding: 18px 24px;
+		border-bottom: 1px solid rgba(0,0,0,0.1);
+		span {
+				vertical-align: top;
+				font-size: 18px;
+				font-weight: 600;
+			i {
+				text-align: center;
+				svg {
+					position: relative;
+					top: 5px;
+					vertical-align: top;
+					fill: @gray;
+				}
+			}
+		}
+	}
+	.idea-main {
+		display: block;
+		width: 694px;
+		box-sizing: border-box;
+		padding: 12px 24px;
+		img {
+			vertical-align: top;
+		}
+		.idea-content {
+			margin-left: 10px;
+			display: inline-block;
+			box-sizing: border-box;
+			padding: 0px 10px;
+			border: 0 solid #fff;
+			width: 600px;
+			min-height: 60px;
+			font-size: 16px;
+			line-height: 36px;
+			border-radius: 2px;
+			border-style: "solid";
+			overflow: hidden;
+			.input-placeholder;
+		}
+	}
+	.idea-footer {
+		display: block;
+		width: 694px;
+		height: 82px;
+		box-sizing: border-box;
+		padding: 24px;
+		.upload-button {
+			display: inline-block;
+			box-sizing: border-box;
+			width: 153px;
+			height: 34px;
+			padding: 0 16px;
+			border: 1px solid @zhc;
+			background: #fff;
+			color: @zhc;
+			cursor: pointer;
+			i {
+				position: relative;
+				top: 0px;
+				left: -5px;
+			}
+		}
+		.idea-commitBtn {
+			float: right;
+			.clearfix;
+			width: 62px;
+			height: 34px;
+			box-sizing: border-box;
+			border-radius: 2px;
+			border: 1px solid @zhc;
+			padding: 0 16px;
+			font-size: 15px;
+			line-height: 32px;
+			text-align: center;
+			background: #7FC1FF;
+			color: #fff;
+			cursor: pointer;
+		}
+	}
+}

@@ -1,0 +1,115 @@
+.scroll-header-box {
+	position: absolute;
+	top: 0px;
+	left: 0;
+	width: 100%;
+	height: 60px;
+	background: #fff;
+	display: none;
+	.scroll-header-inner {
+		display: flex;
+		-webkit-box-align: center;
+		align-items: center;
+		width: 1000px;
+		height: 100%;
+		padding: 0 16px;
+		margin: 0 auto;
+		.user-avatar {
+			.Avatar {
+				background: #fff;
+				border-radius: 2px;
+			}
+		}
+		.tabList {
+			border-bottom: none;
+			-webkit-box-flex: 1;
+			flex: 1;
+			.top-tab-item {
+				display: inline-block;
+				padding: 0 20px;
+				&.is-active {
+						font-weight: 600;
+						border-bottom: 3px solid blue;
+				}
+				.tab-link {	
+					position: relative;
+					display: inline-block;
+					padding: 14px 0;
+					font-size: 16px;
+					line-height: 22px;
+					color: #1a1a1a;
+					text-align: center;
+					cursor: pointer;
+					.tab-meta {
+						font-weight: 400;
+						margin-left: 6px;
+						font-size: 14px;
+						line-height: 20px;
+						color: #999;
+					}
+				}
+			}
+		}
+		.buttonGroup {
+			a {
+				color: #0084ff;
+				border-color: #0084ff;
+				display: inline-block;
+				padding: 0 16px;
+				line-height: 32px;
+				text-align: center;
+				cursor: pointer;
+				background: none;
+				border: 1px solid;
+				border-radius: 3px;
+				align-items: flex-start;
+				box-sizing: border-box;
+			}
+		}
+	}
+}
+
+.content-arrow-top {
+	display: block;
+	left: 820px !important;
+	top: 258.455px;
+	margin-top: -16px;
+	position: absolute;
+	background: #fff;
+	border: 1px solid #ebebeb;
+	border-radius: 4px;
+	box-shadow: 0 5px 20px rgba(26,26,26,.1);
+	z-index: 203;
+	.arrow-top {
+		position: absolute;
+		left: 30px;
+		top: -24px !important;
+		width: 0px;
+		height: 0px;
+		font-size: 0;
+		border-width: 12px;
+		border-color: transparent transparent #fff transparent !important;
+		border-style: solid;
+		&:after {
+		   
+		}
+	}
+	.menu {
+		padding: 6px 0;
+		.menu-item {
+			line-height: 40px;
+			font-size: 16px;
+			line-height: 40px;
+			color: #1a1a1a;
+			display: block;
+			width: 100%;
+			padding: 0 20px;
+			text-align: left;
+			cursor: pointer;
+			box-sizing: border-box;
+			background: transparent;
+			border: none;
+			span {font-size: 14px;color: #8590a6;}
+		}
+	}
+}

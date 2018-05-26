@@ -1,0 +1,132 @@
+@import url('../../../../common/style/common.less');
+.top {
+	position: relative;
+	width: 100%;
+	height: 132px;
+	background: #94948B;
+}
+.bottom {
+	position: relative;
+	width: 100%;
+	background: #fff;
+	box-sizing: border-box;
+	.userInfo-box {
+		position: relative;
+		margin: 0 20px 24px;
+	}
+	.avatar-box {
+		position: absolute;
+		width: 168px;
+		height: 168px;
+		top: -57px;
+		left: 0;
+		cursor: pointer;
+		z-index: 1;
+		.avatar-inner {
+			display: inline-block;
+			overflow: hidden;
+			vertical-align: top;
+			background: #fff;
+			border: 4px solid #fff;
+			border-radius: 8px;
+			.avatar-img {
+				vertical-align: top;
+				background: #fff;
+				width: 160px;
+				height: 160px;
+				cursor: pointer;
+			}
+		}
+	}
+	.info {
+		padding-top: 16px;
+		padding-left: 32px;
+		border-left: 164px solid transparent;
+		.info-header {
+			position: relative;
+			padding-right: 106px;
+			margin-bottom: 16px;
+			flex: 1;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			.name {
+				font-size: 26px;
+				font-weight: 600;
+				line-height: 30px;
+			}
+			.signature {
+				margin-left: 12px;
+				font-size: 18px;
+				white-space: nowrap;
+			}
+		}
+		.info-body {
+			overflow: hidden;
+			transition: height 300ms ease-out;
+			height: 20px;
+			position: relative;
+			width: 524px;
+			margin-bottom: 18px;
+			.intro-font {
+				font-weight: 600;
+				width: 600px;
+				margin-right: 37px;
+			}
+		}
+		.info-footer {
+			position: relative;
+			padding-top: 8px;
+			.drop {
+				line-height: 1;
+				height: auto;
+				padding: 0;
+				background: transparent;
+				display: inline-block;
+				font-size: 14px;
+				color: #8590a6;
+				text-align: center;
+				cursor: pointer;
+				border: none;
+				box-sizing: border-box;
+				align-items: flex-start;
+			}
+		}
+		.buttons {
+			position: absolute;
+			right: 0;
+			bottom: 0;
+			.attention {
+				color: #fff;
+				background: #0084ff;
+				min-width: 96px;
+				border: #0084ff;
+				display: inline-block;
+				font-size: 14px;
+				padding: 0 16px;
+				line-height: 32px;
+				text-align: center;
+				cursor: pointer;
+				border: 1px solid;
+				border-radius: 3px;
+				box-sizing: border-box;
+			}
+			.private {
+				margin-left: 16px;
+				color: #8590a6;
+				border: 1px solid #8590a6;
+				box-sizing: border-box;
+				cursor: pointer;
+				border-radius: 3px;
+				background: #fff;
+				font-size: 14px;
+				padding: 0 16px;
+				line-height: 32px;
+				display: inline-block;
+				min-width: 96px;
+				text-align: center;
+			}
+		} 
+	} 
+	
+}
