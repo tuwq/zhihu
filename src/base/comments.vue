@@ -134,6 +134,7 @@ import axios from 'axios'
 					}).then((res)=> {
 						this.content = ''
 						this.getCommentList(1)
+						console.log(' into ')
 						this.$emit('incrAnswerCommentSum')
 					})					
 				}
@@ -184,6 +185,7 @@ import axios from 'axios'
 				if (this.from == 'question') {
 					this.$emit('incrQuestionCommentSum')
 				}else {
+					console.log( ' into ' )
 					this.$emit('incrAnswerCommentSum')
 				}
 			}

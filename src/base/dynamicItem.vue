@@ -67,6 +67,7 @@
 			ref="comments"
 			v-if="CommentsLoadStatus"
 			fromType="answer"
+			@incrAnswerCommentSum="item.commentSum++"
 			:commentSum="item.commentSum"
 			:index="index"
 			:answer_id="item.answer_id"
@@ -76,8 +77,9 @@
 		<div class="list-item" v-if="item.type==1">
 			<div class="item-meta-box">
 				<div class="item meta-inner">
-					<span class="meta-title">{{item.action==1?'添加':item.action==2?'关注':item.action==3?'赞同':''}}了问题</span><span>{{updatedAt}}</span>
-					}
+					<span class="meta-title">
+						{{item.action==1?'添加':item.action==2?'关注':item.action==3?'赞同':''}}了问题</span><span>{{updatedAt}}
+					</span>
 				</div>
 			</div>
 			<div class="item-answer-box">

@@ -63,6 +63,7 @@
 			<comments 
 			v-if="CommentsLoadStatus"
 			fromType="answer" 
+			@incrAnswerCommentSum="item.commentSum++"
 			:commentSum="item.commentSum" 
 			:index="index" 
 			:answer_id="item._id" 
@@ -95,7 +96,7 @@ import {mapMutations,mapGetters} from 'vuex';
 			}
 		},
 		methods: {
-			openComment(e,commentSum) {
+			openComment(e) {
 				$(e.target).text().trim()=='收起评论'
 				?$(e.target).text(this.item.commentSum + ' 条评论')
 				:$(e.target).text('收起评论')

@@ -24,6 +24,7 @@
  		<div class="answer-list">
  			<answer-people v-for="(item,index) in answers" :item="item" :index="index" :key="item._id"></answer-people>
  		</div>
+ 		<div style="text-align: center; margin-top: 10px;" v-show="true"><h1>没有更多数据了</h1></div>
  	</div>
 </template>
 
@@ -34,6 +35,11 @@ import answerPeople from 'p_components/answer_people.vue'
 import comments from 'base/comments.vue'
 import axios from 'axios'
 	export default {
+		data() {
+			return {
+				answers: []
+			}
+		},
 		methods: {
 			init() {
 				axios.post('/user/read/answer',{

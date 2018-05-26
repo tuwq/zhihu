@@ -6,9 +6,9 @@
 	 		<button class="bar-item" @click.stop.prevent="changeItem($event,2)">邀请回答</button>
 	 	</div>
 	 	<div class="main-content">
-	 		<recommend v-show="content_type==0"></recommend>
-	 		<hot v-show="content_type==1"></hot>
-	 		<invite v-show="content_type==2"></invite>
+	 		<recommend v-if="content_type==0"></recommend>
+	 		<hot v-if="content_type==1"></hot>
+	 		<invite v-if="content_type==2"></invite>
 	 	</div>
 	</div>
 </template>

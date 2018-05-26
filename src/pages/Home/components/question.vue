@@ -4,12 +4,14 @@
 		<div class="question-inner">
 			<div class="header">
 				<div class="oneLine">来自话题: <span><a target="_blank">{{item.category.content}}</a></span></div>
-				<div class="twoLine" @click.stop.prevent="toUser(item.anonymousStatus==0?item.user_id:null)">
-					<span class="user-avatar"><div class="Popover"><a class="user-avatar-link">
+				<div class="twoLine">
+					<span class="user-avatar"><div class="Popover">
+						<a class="user-avatar-link">
 						<img class="avatar-img"  width="24" height="24" :src="item.anonymousStatus==0?base+item.user_id.avatar:base+'avatar.png'">
 					</a></div></span>
 					<div class="user-signature">
-						<div class="name"><span class="info-name"><a>{{item.anonymousStatus==0?item.user_id.username:'匿名用户'}} ,</a></span></div>
+						<div class="name"><span class="info-name">
+							<a @click.stop.prevent="toUser(item.anonymousStatus==0?item.user_id:null)">{{item.anonymousStatus==0?item.user_id.username:'匿名用户'}} ,</a></span></div>
 						<div class="detail"><div class="info-badge"><div class="text">{{item.anonymousStatus==0?item.user_id.info.industry:''}}</div></div></div>
 					</div>
 				</div>

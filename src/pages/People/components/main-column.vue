@@ -87,17 +87,18 @@ import axios from 'axios'
  				// from， 	0:关注列表  1:粉丝列表
  				// action, 	0:关注增加  1；关注减少
  				let _people_detail_user = copyObj(this.people_detail_user)
+ 				console.log(' detail______________user ',_people_detail_user)
  				if (from==0) {
 					if (action==1) {
-						this._people_detail_user.followerSum++
+						_people_detail_user.followerSum++
 					}else {
-						this._people_detail_user.followerSum--
+						_people_detail_user.followerSum--
 					}
 				}else {
 					if (action==1) {
-						this._people_detail_user.fansSum++
+						_people_detail_user.fansSum++
 					}else {
-						this._people_detail_user.fansSum--
+						_people_detail_user.fansSum--
 					}
 				}
 				this.setPeopleDetailUser(_people_detail_user)

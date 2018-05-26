@@ -27,7 +27,7 @@
  						<div class="item-image"
  						@click.stop.prevent="toUser(item)"><a><img :src="base+item.avatar" width="60" height="60" ></a></div>
  						<div class="item-header">
- 							<h2 class="item-title" @click.stop.prevent="toUser(item)"><a href="">{{item.username}}</a></h2>
+ 							<h2 class="item-title"><a @click.stop.prevent="toUser(item)">{{item.username}}</a></h2>
  							<div class="item-meta">
  								<div class="ztext" v-if="item.info">{{item.info.intro}}</div>
  								<div class="status">

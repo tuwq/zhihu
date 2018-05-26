@@ -17,6 +17,7 @@
 				:item="item"
 				:index="index"></dynamicItem>
 			</div>
+			<div style="text-align: center; margin-top: 10px;" v-show="true"><h1>没有更多数据了</h1></div>
 		</div>
 	</div>
 </template>

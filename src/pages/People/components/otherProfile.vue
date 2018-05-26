@@ -65,10 +65,10 @@ import {mapGetters,mapMutations,mapActions} from 'vuex';
  					}
  					let _people_detail_user = copyObj(this.people_detail_user)
  					if ( action ===  1 ) {
- 						_people_detail_user.fllowerStatus = 1
+ 						_people_detail_user.followStatus = 1
  						_people_detail_user.fansSum++
  					}else {
- 						_people_detail_user.fllowerStatus = 0
+ 						_people_detail_user.followStatus = 0
  						_people_detail_user.fansSum--
  					}
  					this.setPeopleDetailUser(_people_detail_user)

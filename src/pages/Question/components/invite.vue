@@ -52,7 +52,6 @@
 	export default {
 		methods: {
 			clickType(e,type) {
-				console.log(e.target);
 				$(e.target).addClass('active').siblings('a').removeClass('active');
 				if (type) {
 					$('.invite-list').hide().siblings('.attention-list').show();
