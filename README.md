@@ -1,21 +1,28 @@
-# zhihu
+# 一个仿造PC端知乎的练习
 
-> A Vue.js project
+> 技术栈采用less、vue、express、mongoose
 
-## Build Setup
+> 主要功能: 问题、回答、评论的嵌套,赞踩问题回答、用户相互关注,用户动态列表 
+
+## 启动方法
 
 ``` bash
-# install dependencies
+# 添加npm包依赖
 npm install
 
-# serve with hot reload at localhost:8080
+# mongodb测试数据位置
+server\database\data
+
+# 进入server目录下serve运行app.js
+cd server
+node app.js
+
+# 暂未设置图片服务器,打包后无法使用头像上传
+
+# 生产环境下
 npm run dev
+node app.js
 
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
 ```
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
