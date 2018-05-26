@@ -95,7 +95,7 @@ function getUserListInfo(binds,_id,callback) {
 				Follow.getUserBind(user._id,_id,(status)=> {
 					infos.push({
 						answerSum: answerSum,
-						fansLength: dbUser.fans.length,
+						fansSum: dbUser.fans.length,
 						followStatus: status
 					})
 					users.push(user)
