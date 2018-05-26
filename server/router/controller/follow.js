@@ -133,7 +133,7 @@ function getFansData(fans,_id,callback) {
 			.exec((err,answerSum)=> {
 				infos.push({
 					answerSum: answerSum,
-					followSum: fans[i].followers.length,
+					fansSum: fans[i].fans.length,
 					flowerStatus
 				})
 				iterator( i+1 )

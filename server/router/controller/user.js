@@ -266,7 +266,14 @@ exports.readUserAnswer = function (req,res) {
 	tokenUtil.verifyToken(token)
 	.then((_id)=> {
 		let fields = req.body
-		Answer.find({user_id: fields.detail_id},(err,answers)=> {
+		var limit = fields.limit
+		var page = fields.page
+		var skip = limit*(page-1)
+		Answer.find({user_id: fields.detail_id})
+		.sort({'meta.updatedAt': -1})
+		.limit(limit)
+		.skip(skip)
+		.exec((err,answers)=> {
 			self.getAnswersInfo(answers,_id,(answers,infos)=>{
 				return res.json(util.Result({answers,infos}))
 			})
@@ -310,8 +317,14 @@ exports.readUserQuestion = function (req,res) {
 		// 读取我的所有问题
 		// 每个问题的回答数，这个问题所关注的人数
 		let fields = req.body
+		var limit = fields.limit
+		var page = fields.page
+		var skip = limit*(page-1)
 		Question.find({user_id: fields.detail_id})
 		.select('_id meta title')
+		.sort({'meta.updatedAt': -1})
+		.limit(limit)
+		.skip(skip)
 		.exec((err,questions)=> {
 			self.getQuestionInfo(questions,_id,(questions,infos)=> {
 				return res.json(util.Result({questions,infos}))

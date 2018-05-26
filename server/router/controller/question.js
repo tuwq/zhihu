@@ -76,8 +76,7 @@ exports.read = function (req,res) {
 		.exec((err,questions)=> {
 			getCommentSum(questions,(questions)=> {
 				getVote(questions,_id,(questions,infos)=>{
-					let RemainingCount = questions.length;
-					return res.json(util.Result({questions: questions,infos: infos,RemainingCount}))
+					return res.json(util.Result({questions: questions,infos: infos}))
 				})
 			})
 		})	

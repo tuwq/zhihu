@@ -23,10 +23,14 @@ exports.readSend = function (req,res) {
 	.then((me_id)=> {
 		var fields = req.body
 		let target_id = fields.detail_id
+		var limit = fields.limit
+		var page = fields.page
+		var skip = limit*(page-1)
+
 		User.findById(target_id)
 		.populate({
 			path: 'sendFeed',
-			options: {sort: {'meta.updatedAt': -1}}
+			options: {sort: {'meta.updatedAt': -1},limit: limit,skip: skip}
 		})
 		.exec((err,user)=>{
 			// 获得每个动态的信息
