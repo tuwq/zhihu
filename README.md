@@ -19,7 +19,7 @@ node app.js
 
 # 暂未设置图片服务器,打包后无法使用头像上传
 
-# 生产环境下
+# 开发环境下
 npm run dev
 node app.js
 
