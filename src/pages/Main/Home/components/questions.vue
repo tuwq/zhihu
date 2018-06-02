@@ -52,20 +52,6 @@
 				})
 			},
 			Listener() {
-				// 加载更多数据
-				var $win = $(window)
-				$win.on('scroll',()=> {
-					if($win.scrollTop()-($(document).height()-$win.height())>-30){
-		                if (this.pend||this.no_more_data||this.first) {
-		                	return
-		                }
-		                // 这个判断很重要
-		                if ( this.$router.history.current.name == 'zIndex' ) {
-		                	this.getQuestionList()
-		                }
-		               
-		            }
-				})
 				// 添加新的问题后
 				communicationMixin.$on('addQuestion',()=> {
 					this.questionList = []
@@ -74,12 +60,32 @@
 					this.no_more_data = false
 					this.getQuestionList()
 				})
+			},
+			loadMore() {
+				var $win = $(window)
+				if($win.scrollTop()-($(document).height()-$win.height())>-30){
+	                if (this.pend||this.no_more_data||this.first) {
+	                	return
+	                }
+	                if ( this.$router.history.current.name == 'zIndex' ) {
+	                	this.getQuestionList()
+	                }
+	            }
 			}
 		},
 		created() {
 			// 瀑布流监听滚动事件更新数据
 			this.Listener()
 			this.getQuestionList(1)
+		},
+		mounted() {
+			// 加载更多数据
+			var $win = $(window)
+			$win.on('scroll',this.loadMore)
+		},
+		beforeDestroy() {
+			var $win = $(window)
+			$win.off('scroll',this.loadMore)
 		}
 	}
 </script>

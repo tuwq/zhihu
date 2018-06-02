@@ -72,24 +72,30 @@ import axios from 'axios'
 					this.pend = false
 				})
 			},
-			Listener() {
+			loadMore() {
 				// 加载更多数据
 				var $win = $(window)
-				$win.on('scroll',()=> {
-					if($win.scrollTop()-($(document).height()-$win.height())>-30){
-		                if (this.pend||this.no_more_data||this.first) {
-		                	return
-		                }
-		                if ( this.$router.history.current.name == 'people_url' ) {
-		                	this.init()
-		                }
-		            }
-				})
+				if($win.scrollTop()-($(document).height()-$win.height())>-30){
+	                if (this.pend||this.no_more_data||this.first) {
+	                	return
+	                }
+	                if ( this.$router.history.current.name == 'people_url' ) {
+	                	this.init()
+	                }
+	            }
 			}
 		},
 		created() {
 			this.init()
-			this.Listener()
+		},
+		mounted() {
+			// 加载更多数据
+			var $win = $(window)
+			$win.on('scroll',this.loadMore)
+		},
+		beforeDestroy() {
+			var $win = $(window)
+			$win.off('scroll',this.loadMore)
 		},
 		computed: {
 			detail_user_id() {

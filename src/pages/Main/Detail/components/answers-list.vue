@@ -81,23 +81,32 @@ import {readBrowseCount,MessageListener} from 'socket/browse'
 					this.loading = true
 					this.getAnswers()
 				})
-				// 加载更多数据
-				var $win = $(window)
-				$win.on('scroll',()=> {
-					if($win.scrollTop()-($(document).height()-$win.height())>-30){
-		                if (this.pend||this.no_more_data||this.first) {
-		                	return
-		                }
-		                if ( this.$router.history.current.name == 'question_detail' ) {
-		                	 this.getAnswers()
-		                }
-		            }
-				})
+				
+			},
+			loadMore() {
+				const $win = $(window)
+				if($win.scrollTop()-($(document).height()-$win.height())>-30){
+	                if (this.pend||this.no_more_data||this.first) {
+	                	return
+	                }
+	                if ( this.$router.history.current.name == 'question_detail' ) {
+	                	this.getAnswers()       
+	                }    
+	            }
 			}
 		},
 		created() {
 			this.getAnswers()
 			this.listener()
+		},
+		mounted() {
+			// 加载更多数据
+			const $win = $(window)
+			$win.on('scroll',this.loadMore)
+		},
+		beforeDestroy() {
+			const $win = $(window)
+			$win.off('scroll',this.loadMore)
 		},
 		computed: {
 			question_id() {
