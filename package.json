@@ -40,6 +40,7 @@
     "moment": "^2.22.1",
     "mongoose": "^5.0.16",
     "net": "^1.0.2",
+    "qiniu": "^7.2.1",
     "redis": "^2.8.0",
     "socket.io": "^2.1.1",
     "socket.io-client": "^2.1.1",
@@ -101,5 +102,6 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "homepage": "."
 }

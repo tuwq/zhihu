@@ -7,6 +7,7 @@ var Vote = require('./vote.js')
 var Follow = require('./follow.js')
 var Attention = require('./attention.js')
 const util = require('../../common/util.js');
+const qiNiu = require('../service/qiniu')
 const checkUtil = require('../../common/checkUtil.js')
 const tokenUtil = require('../../common/token.js')
 var formidable = require('formidable');
@@ -190,11 +191,14 @@ exports.setAvatar = function (req,res) {
 	// 存放文件的根目录 	   zhihu\static\avatar
     form.uploadDir  = path.normalize(__dirname+'/../../../static/avatar');
     form.parse(req, function(err, fields, files) {
-    	var size = fields.avatar_size;
+    	/*qiNiu.uploadAvatar(fields,files,(key)=>{
+    		req.session.avatar = fields._id+'_'+files.avatar.name;
+       		return res.json(util.Result({path: key}))
+    	},()=>{return res.json(util.Result(1))	})*/
     	// 页面文本框中的name一定要取名
-       	var extname = path.extname(files.avatar.name)
+       	// bg4.jpg
        	var oldpath = files.avatar.path;
-       	// 存放文件的路径为 zhihu\static\avatar\160\id.png
+       	// 存放文件的路径为 zhihu\static\avatar\160\id_123.png
        	var newpath = path.normalize(__dirname+'/../../../static/avatar/arbitrary')+'\\'+fields._id+'_'+files.avatar.name;
        	fs.rename(oldpath,newpath,(err)=> {
        		if (err) {

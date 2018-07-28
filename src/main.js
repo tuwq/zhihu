@@ -9,6 +9,7 @@ import router from './router'
 import fastclick from 'fastclick'
 // 懒加载图片
 import VueLazyload from 'vue-lazyload'
+import './common/js/constant'
 
 fastclick.attach(document.body)
 

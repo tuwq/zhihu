@@ -56,7 +56,7 @@ import {copyObj} from 'common/js/util'
  		data() {
  			return {
  				img_size: 0,
- 				base: '../../../../../static/avatar/160/',
+ 				base: '../../../../../static/avatar/160/'
  			}
  		},
  		methods: {
@@ -86,6 +86,10 @@ import {copyObj} from 'common/js/util'
 				      if (data.status) {
 				      	alert('头像设置失败')
 				      }
+				      // 七牛路径 /upload/avatar/1231_bg1.jpg
+				      // 添加前缀
+/*				      var newPath = me.imgServer + data.result.path
+				      me.$router.push({name: 'cut',params: {path: newPath,user_url: me.user._id}})*/
 				      // 已成功上传头像，去切图页面
 				      // 路径 C:\zhihu\static\avatar\160\匿名用户5aec0.jpg
 				      var path = data.result.path

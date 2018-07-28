@@ -1,0 +1,1 @@
+global.imgServer = 'http://pck17z4c0.bkt.clouddn.com/'

@@ -26,4 +26,14 @@ node app.js
 
 ```
 
+> 图片展示
+![index.png](./index.png)
+![login.png](./login.png)
+![comment.png](./comment.png)
+![detail.png](./detail.png)
+![he.png](./he.png)
+![he2.png](./he2.png)
+![my.png](./my.png)
+![edit.png](./edit.png)
+
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
