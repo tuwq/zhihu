@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"zhihu.sessions"},{"v":2,"key":{"expires":1},"name":"expires_1","ns":"zhihu.sessions","expireAfterSeconds":0}],"uuid":"91d697b255374321b0d7d1ca6a2cbf29"}

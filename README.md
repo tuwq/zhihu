@@ -13,7 +13,7 @@
 npm install
 
 # mongodb测试数据位置
-server\database\data
+./mongo_data
 
 # 进入server目录下serve运行app.js
 cd server
@@ -28,13 +28,13 @@ node app.js
 ```
 
 > 图片展示
-![index.png](./index.png)
-![login.png](./login.png)
-![comment.png](./comment.png)
-![detail.png](./detail.png)
-![he.png](./he.png)
-![he2.png](./he2.png)
-![my.png](./my.png)
-![edit.png](./edit.png)
+![index.png](./static/show/index.png)
+![login.png](./static/show/login.png)
+![comment.png](./static/show/comment.png)
+![detail.png](./static/show/detail.png)
+![he.png](./static/show/he.png)
+![he2.png](./static/show/he2.png)
+![my.png](./static/show/my.png)
+![edit.png](./static/show/edit.png)
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
