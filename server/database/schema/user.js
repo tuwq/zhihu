@@ -68,7 +68,7 @@ var UserSchema = new Schema({
   },
 	avatar: {
     type: String,
-    default: 'avatar.png'
+    default: 'upload/avatar/default.png'
   },
 	status: {
     type: Number,

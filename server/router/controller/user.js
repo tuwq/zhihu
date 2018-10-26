@@ -14,6 +14,7 @@ var formidable = require('formidable');
 var path = require('path')
 var fs = require('fs')
 var gm = require('gm')
+const imgServerUrl = 'http://resource.twenq.com/'
 
 const self = this
 
@@ -34,6 +35,7 @@ exports.pwLogin = function (req,res) {
 				}
 				// 生成token,内部包含了用户id
 				const token = tokenUtil.setToken({_id: dbUser._id})
+				console.log(token)
 				return res.json(util.Result({token: token}))
 			})
 		});
@@ -188,28 +190,72 @@ exports.setAvatar = function (req,res) {
 	// 请求格式不同
 	res.header('content-type','text/html')
 	var form = new formidable.IncomingForm();
-	// 存放文件的根目录 	   zhihu\static\avatar
-    form.uploadDir  = path.normalize(__dirname+'/../../../static/avatar');
+	// 存放文件的根目录 	   /temp/avatar
+    form.uploadDir = path.normalize(__dirname+'/../../temp/avatar');
     form.parse(req, function(err, fields, files) {
-    	/*qiNiu.uploadAvatar(fields,files,(key)=>{
-    		req.session.avatar = fields._id+'_'+files.avatar.name;
+    	try {
+    		let file = files.avatarFile
+	    	let filePath = file.path
+	    	let fileName = file.name
+	    	qiNiu.uploadAvatar(filePath, fileName, fields.userId,(key) =>{
+	    	 	return res.json(util.Result({key: key}))
+	    	}, (err)=>{
+	    		return res.json(util.Result(1))	
+	    	})
+    	} catch(e) {
+    		return res.json(util.Result(1))	
+    	}
+    	/*qiNiu.uploadAvatar(fields, files, (key)=>{
+    		// req.session.avatar = fields._id+'_'+files.avatar.name;
        		return res.json(util.Result({path: key}))
-    	},()=>{return res.json(util.Result(1))	})*/
+    	},()=> {
+    		return res.json(util.Result(1))	
+    	})*/
     	// 页面文本框中的name一定要取名
-       	// bg4.jpg
-       	var oldpath = files.avatar.path;
+       	// bg4.jpg temp文件的位置
        	// 存放文件的路径为 zhihu\static\avatar\160\id_123.png
-       	var newpath = path.normalize(__dirname+'/../../../static/avatar/arbitrary')+'\\'+fields._id+'_'+files.avatar.name;
-       	fs.rename(oldpath,newpath,(err)=> {
-       		if (err) {
-       			return res.json(util.Result(1))	
-       		}else {
-       			req.session.avatar = fields._id+'_'+files.avatar.name;
-       			return res.json(util.Result({path: newpath}))
-       		}
-       	})
+       	// var newpath = path.normalize(__dirname+'/../../../static/avatar/arbitrary')+'\\'+fields._id+'_'+files.avatar.name;
+       	// fs.rename(oldpath,newpath,(err)=> {
+       	// 	if (err) {
+       	// 		return res.json(util.Result(1))	
+       	// 	}else {
+       	// 		req.session.avatar = fields._id+'_'+files.avatar.name;
+       	// 		return res.json(util.Result({path: newpath}))
+       	// 	}
+       	// })
     });
 }
+
+// 存储到本地
+// exports.setAvatar = function (req,res) {
+// 	// 解决ajaxFileUpload传送时MINE类型的问题
+// 	// 请求格式不同
+// 	res.header('content-type','text/html')
+// 	var form = new formidable.IncomingForm();
+// 	// 存放文件的根目录 	   zhihu\static\avatar
+//     form.uploadDir  = path.normalize(__dirname+'/../../../static/avatar');
+//     form.parse(req, function(err, fields, files) {
+//     	/*qiNiu.uploadAvatar(fields,files,(key)=>{
+//     		req.session.avatar = fields._id+'_'+files.avatar.name;
+//        		return res.json(util.Result({path: key}))
+//     	},()=>{return res.json(util.Result(1))	})*/
+//     	// 页面文本框中的name一定要取名
+//        	// bg4.jpg
+//        	var oldpath = files.avatar.path;
+//        	// 存放文件的路径为 zhihu\static\avatar\160\id_123.png
+//        	var newpath = path.normalize(__dirname+'/../../../static/avatar/arbitrary')+'\\'+fields._id+'_'+files.avatar.name;
+//        	fs.rename(oldpath,newpath,(err)=> {
+//        		if (err) {
+//        			return res.json(util.Result(1))	
+//        		}else {
+//        			req.session.avatar = fields._id+'_'+files.avatar.name;
+//        			return res.json(util.Result({path: newpath}))
+//        		}
+//        	})
+//     });
+// }
+
+
 exports.cut = function (req,res) {
 	var token = req.headers.token;
 	tokenUtil.verifyToken(token)
@@ -219,20 +265,38 @@ exports.cut = function (req,res) {
 		const y = fields.y
 		const w = fields.w
 		const h = fields.h
-		var rootPath = path.normalize(__dirname+'/../../../static/avatar')
-		User.findById(_id,(err,dbUser)=> {
+		const avatarHTTPURL = fields.avatarHTTPURL
+		// 下载远程的图片
+		qiNiu.downLoadAvatar(avatarHTTPURL, (localPath, fileName)=>{
+			const targetPath = path.normalize(__dirname+'/../../temp/avatar/cut/'+fileName);
+			// 切图
+			util.gmCutImage(localPath, {x,y,w,h}, targetPath, (err)=>{
+				User.findById(_id, (err, dbUser)=>{
+					if (!dbUser) {
+		        		return res.json(util.Result(401))
+		        	}
+		        	dbUser.avatar = avatarHTTPURL.replace(imgServerUrl, '')
+		        	dbUser.save()
+		        	return res.json(util.Result(0))
+				})
+			})
+		})
+
+		// var rootPath = path.normalize(__dirname+'/../../temp/avatar')
+		/*User.findById(_id,(err,dbUser)=> {
  			if (!dbUser) {
         		return res.json(util.Result(401))
         	}
-        	util.gmImage(rootPath,'arbitrary',req.session.avatar,{x,y,w,h},[24,25,30,34,38,60,160],(err)=> {
-		 		if (err) {
-		 			return res.json(util.Result(1))
-		 		}
-		 		dbUser.avatar = req.session.avatar
-	        	dbUser.save();
-      			return res.json(util.Result(0))
-		 	})
-      	})
+
+    //     	util.gmImage(rootPath,'arbitrary',req.session.avatar,{x,y,w,h},[24,25,30,34,38,60,160],(err)=> {
+		 	// 	if (err) {
+		 	// 		return res.json(util.Result(1))
+		 	// 	}
+		 	// 	dbUser.avatar = req.session.avatar
+	   //      	dbUser.save();
+    //   			return res.json(util.Result(0))
+		 	// })
+      	})*/
 	}).catch((err)=> {
 		return res.json(util.Result(401))
 	})
@@ -356,9 +420,6 @@ exports.getQuestionInfo = function (questions,me_id,callback) {
 		}) 
 	})(0)
 }
-
-
-
 
 exports.detail = function (req,res) {
 	let fields = req.body

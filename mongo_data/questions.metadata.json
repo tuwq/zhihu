@@ -1,1 +1,0 @@
-{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"zhihu.questions"},{"v":2,"key":{"title":1},"name":"title_1","ns":"zhihu.questions","background":true},{"v":2,"key":{"desc":1},"name":"desc_1","ns":"zhihu.questions","background":true}],"uuid":"26fa3d73306946e2b589d16308beb233"}

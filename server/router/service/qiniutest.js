@@ -1,7 +1,7 @@
 const qiniu = require('qiniu')
 
-var accessKey = 'XwXCUlhN-RunaX8r77PBuKZCS7iCoh9pXnz73pT6';
-var secretKey = 'uBQYSw1xV9N4hGFouo_bIhQDQFQX1JTw1EmGMxvW';
+var accessKey = '';
+var secretKey = '';
 var mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
 var options = {
   scope: 'zhihu-img',

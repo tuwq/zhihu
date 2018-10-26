@@ -1,1 +1,0 @@
-{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"zhihu.answerUser"},{"v":2,"key":{"vote":1},"name":"vote_1","ns":"zhihu.answerUser","background":true},{"v":2,"key":{"bad":1},"name":"bad_1","ns":"zhihu.answerUser","background":true}],"uuid":"608b493fded844998ded866a656d1859"}

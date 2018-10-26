@@ -1,4 +1,4 @@
-# 一个仿造PC端知乎的练习
+# 一个仿造PC端知乎的练习 http://web.zhihu.twenq.com
 
 > 技术栈采用less、vue、express、mongoose
 
@@ -14,6 +14,8 @@ npm install
 
 # mongodb测试数据位置
 ./mongo_data
+
+mongod --dbpath D:\mongo
 
 # 进入server目录下serve运行app.js
 cd server

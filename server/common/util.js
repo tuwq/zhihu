@@ -1,8 +1,7 @@
 const fs = require('fs')
 const gm = require('gm')
-
-
-
+const path = require('path')
+const imageSize = 60
 
  // 日期格式化
 Date.prototype.Format = function (fmt) {
@@ -101,6 +100,13 @@ const util = {
           iterator(i+1);   
         });
       })(0);
+  },
+  gmCutImage: function (filePath, config, targetPath, callback) {
+    gm(filePath).crop(config.w,config.h,config.x,config.y).resize(imageSize,imageSize,"!")
+    .write(targetPath,(err)=>{
+        callback(err);
+        return
+    });
   },
   copyObj : function (initalObj) {
       let obj = {};
