@@ -11,7 +11,11 @@
 5. 用户操作时记录动态,并获取动态信息
 
 ## 效果
-<img src="./showImage/login.png" width ='400' height='800' /><img src="./showImage/index.png" width ='400' height='800' />
-<img src="./showImage/my.png" width ='400' height='800' /><img src="./showImage/edit.png" width ='400' height='800' />
-<img src="./showImage/he.png" width ='400' height='800' /><img src="./showImage/he2.png" width ='400' height='800' />
-<img src="./showImage/comment.png" width ='400' height='800' /><img src="./showImage/detail.png" width ='400' height='800' />
+![login.png](./showImage/login.png)
+![index.png](./showImage/index.png)
+![my.png](./showImage/my.png)
+![edit.png](./showImage/edit.png)
+![he.png](./showImage/he.png)
+![he2.png](./showImage/he2.png)
+![comment.png](./showImage/comment.png)
+![detail.png](./showImage/detail.png)
