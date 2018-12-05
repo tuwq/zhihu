@@ -2,7 +2,7 @@ const path = require('path')
 const request = require('request')
 const qiniu = require('qiniu')
 const fs = require('fs')
-const accessKey = '9DvpuH8KdIhIa9ggAXPJohaAx_T6tuSUvOvhgush';
+/*const accessKey = '9DvpuH8KdIhIa9ggAXPJohaAx_T6tuSUvOvhgush';
 const secretKey = 'HEQ4xwyADwlLjjHxSrYLyigzNDOoRFA2mJUuwvS0';
 const publicBucketDomain = 'zhihu-img'
 var mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
@@ -19,7 +19,7 @@ var bucketManager = new qiniu.rs.BucketManager(mac, config);
 putExtra.fname = 'testfile.jpg';
 putExtra.resumeRecordFile = 'progress.log';
 const resourceUrl = 'http://resource.twenq.com/'
-const keyPrefix='upload/avatar/';
+const keyPrefix='upload/avatar/';*/
 
 exports.uploadAvatar2 = function(fields,files,success,fail) {
 	// 图片上传后的路径
