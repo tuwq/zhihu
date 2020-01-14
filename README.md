@@ -1,4 +1,7 @@
 ## 仿造实现知乎
+
+## TODO 需要重构
+
 ## 技术栈
 	前端: Less + Vue
 	服务端: Express + Mongoose  
