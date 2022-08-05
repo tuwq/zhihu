@@ -21,7 +21,7 @@
     "jsonwebtoken": "^8.4.0",
     "kue": "^0.11.6",
     "mime": "^2.4.0",
-    "mongoose": "^5.3.14",
+    "mongoose": "^5.7.5",
     "qiniu": "^7.2.1",
     "request": "^2.88.0",
     "socket.io": "^2.2.0"
